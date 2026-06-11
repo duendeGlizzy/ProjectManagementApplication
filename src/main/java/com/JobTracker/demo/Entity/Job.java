@@ -29,6 +29,7 @@ public class Job {
     private BigDecimal estimatedCost;
     private BigDecimal totalPayment;
     private String address;
+    private String description;
 
     @Enumerated(EnumType.STRING)
     private JobStatus status;

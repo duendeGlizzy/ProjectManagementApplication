@@ -49,6 +49,7 @@ public class JobService {
         newJob.setStatus(JobStatus.BIDDING);
         newJob.setTotalPayment(jobInput.getTotalPayment());
 
+        newJob.setDescription(jobInput.getDescription());
         newJob.setJobType(jobInput.getJobType());
         newJob.setAddress(jobInput.getAddress());
         newJob.setEstimatedCost(jobInput.getEstimatedCost());

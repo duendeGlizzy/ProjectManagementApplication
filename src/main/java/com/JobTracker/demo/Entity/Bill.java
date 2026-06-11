@@ -20,7 +20,7 @@ public class Bill {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long billId;
 
     private BigDecimal totalAmount;
 

@@ -36,6 +36,8 @@ public class VendorService {
 
         currentVendor.setDescription(vendor.getDescription());
         currentVendor.setCompanyName(vendor.getCompanyName());
+        currentVendor.setAddress(vendor.getAddress());
+        currentVendor.setPhoneNumber(vendor.getPhoneNumber());
 
         return vendorRepository.save(currentVendor);
     }

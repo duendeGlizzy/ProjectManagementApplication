@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface LineItemRepository extends JpaRepository<LineItem, Long> {
 
-    List<LineItem> findByBill_Id(Long id);
+    List<LineItem> findByBill_billId(Long id);
 }

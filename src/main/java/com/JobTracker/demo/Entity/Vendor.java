@@ -22,6 +22,10 @@ public class Vendor {
 
     private String description;
 
+    private String address;
+
+    private String phoneNumber;
+
     @OneToMany(mappedBy = "vendor")
     private List<Bill> bills;
 }

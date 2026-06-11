@@ -7,7 +7,6 @@ import com.JobTracker.demo.Repository.LineItemRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import javax.sound.sampled.Line;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -66,7 +65,7 @@ public class LineItemService {
     }
 
     public List<LineItem> findByBillId(Long billId) {
-        return lineItemRepository.findByBill_Id(billId);
+        return lineItemRepository.findByBill_billId(billId);
     }
 
     @Transactional
@@ -93,7 +92,7 @@ public class LineItemService {
     }
 
     private void recalculateBillTotal(Bill bill) {
-        List<LineItem> lineItems = lineItemRepository.findByBill_Id(bill.getId());
+        List<LineItem> lineItems = lineItemRepository.findByBill_billId(bill.getBillId());
 
         BigDecimal runningTotal = BigDecimal.ZERO;
         for(LineItem lineItem : lineItems){
