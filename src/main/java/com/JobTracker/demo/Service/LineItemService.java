@@ -7,6 +7,7 @@ import com.JobTracker.demo.Repository.LineItemRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import javax.sound.sampled.Line;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -39,7 +40,9 @@ public class LineItemService {
         Bill currentBill = billRepository.findById(billId)
                 .orElseThrow(() -> new IllegalArgumentException("Bill not found"));
         newLineItem.setBill(currentBill);
-        return lineItemRepository.save(newLineItem);
+        LineItem savedLineItem = lineItemRepository.save(newLineItem);
+        recalculateBillTotal(currentBill);
+        return savedLineItem;
     }
 
     public List<LineItem> findAll() {
@@ -55,13 +58,18 @@ public class LineItemService {
         if(!lineItemRepository.existsById(lineItemId)) {
             throw new IllegalArgumentException("No LineItem found with id: " + lineItemId);
         }
+        LineItem item = findById(lineItemId);
+        Bill parentBill = item.getBill();
         lineItemRepository.deleteById(lineItemId);
+
+        recalculateBillTotal(parentBill);
     }
 
     public List<LineItem> findByBillId(Long billId) {
         return lineItemRepository.findByBill_Id(billId);
     }
 
+    @Transactional
     public LineItem updateLineItem(Long lineItemId, LineItem lineItem) {
         LineItem currentLineItem = findById(lineItemId);
 
@@ -69,10 +77,32 @@ public class LineItemService {
         currentLineItem.setQuantity(lineItem.getQuantity());
         currentLineItem.setDescription(lineItem.getDescription());
         currentLineItem.setUnitPrice(lineItem.getUnitPrice());
-        currentLineItem.setSubTotal(lineItem.getSubTotal());
-        currentLineItem.setTaxCategory(lineItem.getTaxCategory());
 
-        return lineItemRepository.save(currentLineItem);
+        if (currentLineItem.getUnitPrice() != null && currentLineItem.getQuantity() != 0) {
+            currentLineItem.setSubTotal(currentLineItem.getUnitPrice().multiply(BigDecimal.valueOf(currentLineItem.getQuantity())));
+        } else {
+            currentLineItem.setSubTotal(BigDecimal.ZERO);
+        }
+
+        LineItem updatedItem = lineItemRepository.save(currentLineItem);
+
+        recalculateBillTotal(currentLineItem.getBill());
+
+        return updatedItem;
+
+    }
+
+    private void recalculateBillTotal(Bill bill) {
+        List<LineItem> lineItems = lineItemRepository.findByBill_Id(bill.getId());
+
+        BigDecimal runningTotal = BigDecimal.ZERO;
+        for(LineItem lineItem : lineItems){
+            if(lineItem.getSubTotal() != null){
+                runningTotal = runningTotal.add(lineItem.getSubTotal());
+            }
+        }
+        bill.setTotalAmount(runningTotal);
+        billRepository.save(bill);
     }
 
 

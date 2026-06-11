@@ -15,4 +15,5 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     public List<Job> findByStatus(JobStatus status);
 
 
+    boolean existsByPrimeContractor_PrimeContractorId(Long id);
 }

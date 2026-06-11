@@ -2,6 +2,7 @@ package com.JobTracker.demo.Service;
 
 import com.JobTracker.demo.Entity.Vendor;
 import com.JobTracker.demo.Repository.VendorRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,11 @@ public class VendorService {
     public Vendor findById(Long id) {
         return vendorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vendor Not Found"));
+    }
+
+    @Transactional
+    public Vendor createVendor(Vendor vendor) {
+        return vendorRepository.save(vendor);
     }
 
     public Vendor update(Vendor vendor, Long id) {

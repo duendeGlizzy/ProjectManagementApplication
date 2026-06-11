@@ -83,4 +83,12 @@ public class BillService {
          return billRepository.save(newBill);
     }
 
+    @Transactional
+    public Bill updateBillStatus(Long billId, BillStatus status) {
+        Bill current = billRepository.findById(billId)
+                .orElseThrow(() -> new IllegalArgumentException("Bill not found!"));
+        current.setStatus(status);
+        return billRepository.save(current);
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.JobTracker.demo.Service;
 
 import com.JobTracker.demo.Entity.PrimeContractor;
+import com.JobTracker.demo.Repository.JobRepository;
 import com.JobTracker.demo.Repository.PrimeContractorRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,9 +11,11 @@ import java.util.List;
 public class PrimeContractorService {
 
     private final PrimeContractorRepository primeContractorRepository;
+    private final JobRepository jobRepository;
 
-    public PrimeContractorService(PrimeContractorRepository primeContractorRepository) {
+    public PrimeContractorService(PrimeContractorRepository primeContractorRepository, JobRepository jobRepository) {
         this.primeContractorRepository = primeContractorRepository;
+        this.jobRepository = jobRepository;
     }
 
     public List<PrimeContractor> findAll() {
@@ -32,21 +35,28 @@ public class PrimeContractorService {
         if(!primeContractorRepository.existsById(id)) {
             throw new RuntimeException("Prime Contractor not found");
         }
+        if(jobRepository.existsByPrimeContractor_PrimeContractorId(id)){
+            throw new IllegalArgumentException("Cannot delete contractor: They are currently assigned to active jobs.");        }
         primeContractorRepository.deleteById(id);
     }
 
     public PrimeContractor update(Long id, PrimeContractor primeContractor) {
-        if(!primeContractorRepository.existsById(id)) {
-            throw new RuntimeException("Prime Contractor not found");
-        }
         PrimeContractor currentContractor = findById(id);
 
-        currentContractor.setAddress(primeContractor.getAddress());
-        currentContractor.setCompanyName(primeContractor.getCompanyName());
-        currentContractor.setPhoneNumber(primeContractor.getPhoneNumber());
+        if (primeContractor.getCompanyName() != null && !primeContractor.getCompanyName().isBlank()) {
+            currentContractor.setCompanyName(primeContractor.getCompanyName());
+        }
+        if (primeContractor.getAddress() != null && !primeContractor.getAddress().isBlank()) {
+            currentContractor.setAddress(primeContractor.getAddress());
+        }
+        if (primeContractor.getPhoneNumber() != null && !primeContractor.getPhoneNumber().isBlank()) {
+            currentContractor.setPhoneNumber(primeContractor.getPhoneNumber());
+        }
 
         return primeContractorRepository.save(currentContractor);
     }
+
+
 
 
 

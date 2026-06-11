@@ -92,30 +92,6 @@ public class TaskService {
     }
 
 
-    public Task addBill(Long taskId, Bill bill) {
-        if(!taskRepository.existsById(taskId)) {
-            throw new RuntimeException("Task not found");
-        }
-        Task currentTask = findById(taskId);
-        if(bill == null) {
-            throw new RuntimeException("Bill cannot be null");
-        }
-        currentTask.getBills().add(bill);
-        return taskRepository.save(currentTask);
-    }
-
-    public Task addPayment(Long taskId, Payment payment) {
-        if(!taskRepository.existsById(taskId)) {
-            throw new RuntimeException("Task not found");
-        }
-        Task currentTask = findById(taskId);
-        if(payment == null) {
-            throw new RuntimeException("Payment cannot be null");
-        }
-        currentTask.getPayments().add(payment);
-        return taskRepository.save(currentTask);
-    }
-
     public Task updateStatus(Long id, TaskStatus status) {
         if(!taskRepository.existsById(id)) {
             throw new RuntimeException("Task not found");
