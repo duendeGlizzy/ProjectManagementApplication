@@ -142,7 +142,7 @@ public class JobService {
 
             if(currentJob.getTasks() != null) {
                 for (Task task : currentJob.getTasks()) {
-                    totalPayments = totalPayments.add(taskService.calculateTotalPaymentsReceived(task));
+                    totalPayments = totalPayments.add(taskService.calculateTotalPaymentsReceived(task.getTaskId()));
                 }
             }
             return totalPayments;
@@ -158,7 +158,7 @@ public class JobService {
         BigDecimal totalCost = BigDecimal.ZERO;
         if(currentJob.getTasks() != null) {
             for (Task task : currentJob.getTasks()) {
-                totalCost = totalCost.add(taskService.calculateTotalCost(task));
+                totalCost = totalCost.add(taskService.calculateTotalCost(task.getTaskId()));
             }
         }
         return totalCost;
@@ -174,7 +174,7 @@ public class JobService {
                 if (task.getTotalPrice() != null) {
                     totalContractValue = totalContractValue.add(task.getTotalPrice());
                 }
-                totalExpenses = totalExpenses.add(taskService.calculateTotalCost(task));
+                totalExpenses = totalExpenses.add(taskService.calculateTotalCost(task.getTaskId()));
             }
         }
         return totalContractValue.subtract(totalExpenses);
