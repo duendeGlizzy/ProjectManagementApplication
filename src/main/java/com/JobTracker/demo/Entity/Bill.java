@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -41,5 +42,13 @@ public class Bill {
     private Task task;
 
     @OneToMany(mappedBy = "bill")
-    private List<LineItem> lineItems;
+    private List<LineItem> lineItems = new ArrayList<>();
+
+    public void addLineItem(LineItem lineItem) {
+        if(lineItem != null) {
+            lineItems.add(lineItem);
+            lineItem.setBill(this);
+        }
+    }
 }
+
