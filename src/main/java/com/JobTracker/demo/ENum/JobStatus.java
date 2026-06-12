@@ -2,8 +2,8 @@ package com.JobTracker.demo.ENum;
 
 
 public enum JobStatus {
-    BIDDING,
+    NOT_STARTED,
     STARTED,
-    TESTING,
+    IN_PROGRESS,
     COMPLETED
 }

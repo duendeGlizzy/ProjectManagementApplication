@@ -1,8 +1,9 @@
 package com.JobTracker.demo.ENum;
 
 public enum TaskStatus {
-    In_Queue,
+    IN_QUEUE,
     STARTED,
     IN_PROGRESS,
     COMPLETED
 }
+

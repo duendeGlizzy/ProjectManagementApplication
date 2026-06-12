@@ -1,0 +1,2 @@
+
+export type TaxCategory = 'MATERIALS_SUPPLIES' | 'SUBCONTRACTOR_LABOR' | 'TRAVEL' | 'OFFICE_EXPENSE';
