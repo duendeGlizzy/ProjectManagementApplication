@@ -1,6 +1,6 @@
 import {TaskStatus} from './task-status.enum';
 import {Job} from './job.model';
-import {SubContractor} from '../../contractors/services/sub-contractor';
+import {SubContractor} from '../../contractors/models/sub-contractor.model'
 import {Bill} from "../../financials/services/bill";
 import {Payment} from '../../financials/services/payment';
 

@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/sub_contractors")
+@RequestMapping("/sub-contractors")
 public class SubContractorController {
 
     private final SubContractorService subContractorService;
