@@ -1,1 +1,92 @@
-<p>job-dashboard works!</p>
+<h2>Project Management Workspace</h2>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Project Management Workspace</h2>
+  </div>
+
+  <div *ngIf="errorMessage()" class="alert alert-danger">
+    {{ errorMessage() }}
+  </div>
+
+  <div *ngIf="jobsList().length === 0 && !errorMessage()" class="alert alert-info text-center">
+    No job entries found in the system tracking ledger.
+  </div>
+
+  <div class="mat-elevation-z8 text-nowrap rounded overflow-hidden" *ngIf="jobsList().length > 0">
+    <table mat-table [dataSource]="jobsList()" class="w-100">
+
+      <ng-container matColumnDef="jobId">
+        <th mat-header-cell *matHeaderCellDef> ID </th>
+        <td mat-cell *matCellDef="let job"> <strong>#{{ job.jobId }}</strong> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let job"> {{ job.description }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="jobType">
+        <th mat-header-cell *matHeaderCellDef> Job Type </th>
+        <td mat-cell *matCellDef="let job"> {{ job.jobType }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="estimatedCost">
+        <th mat-header-cell *matHeaderCellDef> Est. Cost </th>
+        <td mat-cell *matCellDef="let job"> {{ job.estimatedCost | currency }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="totalPayment">
+        <th mat-header-cell *matHeaderCellDef> Total Payments </th>
+        <td mat-cell *matCellDef="let job"> {{ job.totalPayment | currency }} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="client">
+        <th mat-header-cell *matHeaderCellDef> Assigned Client </th>
+        <td mat-cell *matCellDef="let job">
+          <span *ngIf="job.client; else noClient">
+            {{ job.client.firstName }} {{ job.client.lastName }}
+          </span>
+          <ng-template #noClient><span class="text-muted text-italic">Unassigned</span></ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="primeContractor">
+        <th mat-header-cell *matHeaderCellDef> Prime Contractor </th>
+        <td mat-cell *matCellDef="let job">
+          <span *ngIf="job.primeContractor; else noClient">
+            {{ job.primeContractor.companyName }}
+          </span>
+          <ng-template #noClient><span class="text-muted text-italic">Unassigned</span></ng-template>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status </th>
+        <td mat-cell *matCellDef="let job">
+          <span class="badge"
+                [ngClass]="{
+                  'bg-warning text-dark': job.status === 'NOT_STARTED',
+                  'bg-info text-white': job.status === 'STARTED' || job.status === 'IN_PROGRESS',
+                  'bg-success text-white': job.status === 'COMPLETED'
+                }">
+            {{ job.status }}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> Actions </th>
+        <td mat-cell *matCellDef="let job" class="text-center">
+          <button mat-flat-button color="primary"
+                  [disabled]="job.status !== 'NOT_STARTED'"
+                  (click)="job.jobId && startJob(job.jobId)">
+            Start Work
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>

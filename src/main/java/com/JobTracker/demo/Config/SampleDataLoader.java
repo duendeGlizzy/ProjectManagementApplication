@@ -97,7 +97,7 @@ public class SampleDataLoader {
             // Task B: Electrical Rough-In (Subcontracted out to VoltTech)
             Task taskB = new Task();
             taskB.setDescription("Main service panel upgrade to 200A and wiring");
-            taskB.setStatus(TaskStatus.In_Queue);
+            taskB.setStatus(TaskStatus.IN_QUEUE);
             taskB.setTotalPrice(new BigDecimal("3500.00")); // Contract Price
             taskB.setIsSubContracted(true);
             taskB = taskService.createTask(taskB, sub1.getSubContractorId(), job1.getJobId());

@@ -3,6 +3,9 @@ package com.JobTracker.demo.Entity;
 
 import com.JobTracker.demo.ENum.JobStatus;
 import com.JobTracker.demo.ENum.JobType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,14 +42,17 @@ public class Job {
 
     @ManyToOne
     @JoinColumn(name = "client_id")
+    @JsonIgnoreProperties("jobs")
     private Client client;
 
 
     @ManyToOne
     @JoinColumn(name = "prime_contractor_id")
+    @JsonIgnoreProperties("jobs")
     private PrimeContractor primeContractor;
 
     @OneToMany(mappedBy = "job")
+    @JsonManagedReference
     private List<Task> tasks;
 
 

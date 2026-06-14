@@ -46,7 +46,7 @@ public class JobService {
         Job newJob = new Job();
 
 
-        newJob.setStatus(JobStatus.BIDDING);
+        newJob.setStatus(JobStatus.NOT_STARTED);
         newJob.setTotalPayment(jobInput.getTotalPayment());
 
         newJob.setDescription(jobInput.getDescription());
@@ -71,6 +71,31 @@ public class JobService {
         }
 
         return jobRepository.save(newJob);
+    }
+
+    public Job updateJob(Long id, Job jobInput, Long clientId, Long primeContractorId) {
+        Job currentJob = findById(id);
+
+        currentJob.setJobType(jobInput.getJobType());
+        currentJob.setAddress(jobInput.getAddress());
+        currentJob.setEstimatedCost(jobInput.getEstimatedCost());
+        currentJob.setStartDate(jobInput.getStartDate());
+        currentJob.setEndDate(jobInput.getEndDate());
+        currentJob.setStatus(jobInput.getStatus());
+        currentJob.setJobType(jobInput.getJobType());
+        currentJob.setTotalPayment(jobInput.getTotalPayment());
+
+        if (clientId == null || !clientRepository.existsById(clientId)) {
+            throw new EntityNotFoundException("Cannot update job: Client id is missing or invalid.");
+        }
+        currentJob.setClient(clientRepository.getReferenceById(clientId));
+        if (primeContractorId != null && primeContractorId > 0) {
+            if (!primeContractorRepository.existsById(primeContractorId)) {
+                throw new EntityNotFoundException("PrimeContractor with id " + primeContractorId + " not found");
+            }
+            currentJob.setPrimeContractor(primeContractorRepository.getReferenceById(primeContractorId));
+        }
+        return jobRepository.save(currentJob);
     }
 
     @Transactional

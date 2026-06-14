@@ -42,6 +42,15 @@ public class JobController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newJob);
     }
 
+    @PutMapping("/{id}/update")
+    public ResponseEntity<Job> updateJob(@PathVariable Long id,
+                                         @RequestBody Job job,
+                                         @RequestParam Long clientId,
+                                         @RequestParam Long primeContractorId) {
+        Job currentJob = jobService.updateJob(id, job, clientId, primeContractorId);
+        return ResponseEntity.ok(currentJob);
+    }
+
     @PutMapping("/{id}/start")
     public ResponseEntity<Job> setBidToStart(@PathVariable Long id) {
         Job job = jobService.setBidToStart(id);

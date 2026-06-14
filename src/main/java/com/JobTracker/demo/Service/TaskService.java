@@ -44,7 +44,7 @@ public class TaskService {
     public Task createTask(Task task, Long subContractorId, Long jobId) {
 
         Task newTask = new Task();
-        newTask.setStatus(TaskStatus.In_Queue);
+        newTask.setStatus(TaskStatus.IN_QUEUE);
         newTask.setIsSubContracted(task.getIsSubContracted());
         newTask.setPayRoll(task.getPayRoll());
         newTask.setDescription(task.getDescription());

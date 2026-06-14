@@ -1,5 +1,6 @@
 package com.JobTracker.demo.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class Client {
 
     @OneToMany(mappedBy = "client")
     @ToString.Exclude
+    @JsonBackReference
     private List<Job> jobs;
 
 
