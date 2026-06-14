@@ -1,5 +1,6 @@
 package com.JobTracker.demo.Controller;
 
+import com.JobTracker.demo.ENum.BillStatus;
 import com.JobTracker.demo.Entity.Bill;
 import com.JobTracker.demo.Service.BillService;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,26 @@ public class BillController {
 
         Bill newBill = billService.createBill(bill, vendorId, taskId);
         return ResponseEntity.status(HttpStatus.CREATED).body(newBill);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Bill> updateBill(@PathVariable Long id,
+                                           @RequestBody Bill bill){
+        Bill currentBill = billService.updateBill(bill,id);
+        return ResponseEntity.ok(currentBill);
+    }
+
+    @PutMapping("/{id}/updateStatus")
+    public ResponseEntity<Bill> updateBillStatus(@PathVariable Long id,
+                                                 @RequestParam BillStatus status){
+        Bill currentBill = billService.updateBillStatus(id,status);
+        return ResponseEntity.ok(currentBill);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBill(@PathVariable Long id){
+        billService.deleteBill(id);
+        return ResponseEntity.noContent().build();
     }
 
 

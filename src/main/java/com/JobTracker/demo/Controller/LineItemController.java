@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/line_items")
+@RequestMapping("/line-items")
 public class LineItemController {
 
     private final LineItemService lineItemService;

@@ -32,8 +32,9 @@ public class PaymentController {
 
     @PostMapping
     public ResponseEntity<Payment> processPayment(@RequestBody Payment payment,
-                                  @RequestParam Long billId){
-        Payment newPayment = paymentService.processPayment(payment, billId);
+                                                  @RequestParam Long billId,
+                                                  @RequestParam Long taskId) {
+        Payment newPayment = paymentService.processPayment(payment, billId, taskId);
         return ResponseEntity.status(HttpStatus.CREATED).body(newPayment);
     }
 

@@ -6,6 +6,7 @@ import com.JobTracker.demo.Repository.BillRepository;
 import com.JobTracker.demo.Repository.TaskRepository;
 import com.JobTracker.demo.Repository.VendorRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -81,6 +82,26 @@ public class BillService {
          }
 
          return billRepository.save(newBill);
+    }
+
+    public Bill updateBill(Bill bill, Long billId) {
+
+        Bill currentBill = billRepository.findById(billId)
+                .orElseThrow(() -> new IllegalArgumentException("Bill not found!"));
+
+        currentBill.setDescription(bill.getDescription());
+        currentBill.setStatus(bill.getStatus());
+        currentBill.setDueDate(bill.getDueDate());
+        currentBill.setIssueDate(bill.getIssueDate());
+
+        return billRepository.save(currentBill);
+
+    }
+
+    public void deleteBill(Long billId) {
+        if(billRepository.existsById(billId)) {
+            billRepository.deleteById(billId);
+        }
     }
 
     @Transactional
