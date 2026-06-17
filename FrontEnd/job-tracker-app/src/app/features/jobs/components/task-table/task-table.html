@@ -1,1 +1,50 @@
-<p>task-table works!</p>
+<h2>Task List:</h2>
+<div class="mat-elevation-z8 text-nowrap rounded overflow-hidden" *ngIf="taskList().length > 0">
+  <table mat-table [dataSource]="taskList()" class="w-100">
+
+    <ng-container matColumnDef="taskId">
+      <th mat-header-cell *matHeaderCellDef> ID </th>
+      <td mat-cell *matCellDef="let task"> <strong>#{{ task.taskId }}</strong> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef> Description </th>
+      <td mat-cell *matCellDef="let task"> {{ task.description }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="totalPrice">
+      <th mat-header-cell *matHeaderCellDef> Total Price </th>
+      <td mat-cell *matCellDef="let task"> {{ task.totalPrice | currency }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="isSubContracted">
+      <th mat-header-cell *matHeaderCellDef> Sub Contract? </th>
+      <td mat-cell *matCellDef="let task"> {{ task.isSubContracted}} </td>
+    </ng-container>
+
+
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef> Status </th>
+      <td mat-cell *matCellDef="let task">
+          <span class="badge"
+                [ngClass]="{
+                  'bg-warning text-dark': task.status === 'IN_QUEUE',
+                  'bg-info text-white': task.status === 'STARTED' || task.status === 'IN_PROGRESS',
+                  'bg-success text-white': task.status === 'COMPLETED'
+                }">
+            {{ task.status }}
+          </span>
+      </td>
+    </ng-container>
+
+
+
+    <!--[routerLink]="['/jobs', row.jobId]"-->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+        style="cursor: pointer;"
+        class="clickable-row">
+    </tr>
+  </table>
+</div>

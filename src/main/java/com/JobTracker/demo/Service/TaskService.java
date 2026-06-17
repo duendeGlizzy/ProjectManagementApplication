@@ -2,6 +2,7 @@ package com.JobTracker.demo.Service;
 
 import com.JobTracker.demo.ENum.TaskStatus;
 import com.JobTracker.demo.Entity.Bill;
+import com.JobTracker.demo.Entity.Job;
 import com.JobTracker.demo.Entity.Payment;
 import com.JobTracker.demo.Entity.Task;
 import com.JobTracker.demo.Repository.*;
@@ -62,10 +63,9 @@ public class TaskService {
         newTask.setBills(new ArrayList<>());
         newTask.setPayments(new ArrayList<>());
 
-        if(!jobRepository.existsById(jobId)){
-            throw new RuntimeException("Job not found");
-        }
-        newTask.setJob(task.getJob());
+        Job job = jobRepository.findById(jobId)
+                        .orElseThrow(() -> new RuntimeException("Job not found"));
+        newTask.setJob(job);
 
         return taskRepository.save(newTask);
     }
@@ -149,6 +149,13 @@ public class TaskService {
         BigDecimal contractPrice = currentTask.getTotalPrice() !=null ? currentTask.getTotalPrice() : BigDecimal.ZERO;
         BigDecimal totalCost = calculateTotalCost(taskId);
         return contractPrice.subtract(totalCost);
+    }
+
+    public List<Task> findAllJobsByJobId(Long jobId) {
+        if(!jobRepository.existsById(jobId)) {
+            throw new RuntimeException("Job not found");
+        }
+        return taskRepository.findAllByJob_JobId(jobId);
     }
 
 

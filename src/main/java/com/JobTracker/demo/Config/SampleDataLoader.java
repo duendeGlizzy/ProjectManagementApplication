@@ -1,6 +1,7 @@
 package com.JobTracker.demo.Config;
 
 import com.JobTracker.demo.ENum.JobStatus;
+import com.JobTracker.demo.ENum.JobType;
 import com.JobTracker.demo.ENum.TaskStatus;
 import com.JobTracker.demo.Entity.*;
 import com.JobTracker.demo.Repository.ClientRepository;
@@ -67,7 +68,6 @@ public class SampleDataLoader {
             vendor1.setCompanyName("BuildAll Material Supply");
             vendor1.setAddress("88 Brickyard Rd, Fall River");
             vendor1.setPhoneNumber("555-4433");
-            // Assuming vendor has a baseline repository save method
             vendor1 = vendorRepository.save(vendor1);
 
             // 5. Create and Save SubContractors (using Service)
@@ -77,11 +77,16 @@ public class SampleDataLoader {
             sub1.setPrice(new BigDecimal("1500.00"));
             sub1 = subContractorService.save(sub1);
 
-            // 6. Create and Save a Job (linked to Client1 and Prime1)
+            // 6. Create and Save a Job (With all tracking metrics attached)
             Job job1 = new Job();
             job1.setDescription("Residential Kitchen Remodel & Panel Upgrade");
             job1.setStatus(JobStatus.STARTED);
-            // Assuming your createNewJob or save methods take these parameters or handle binding
+            job1.setJobType(JobType.DELEADING);
+            job1.setEstimatedCost(new BigDecimal("18500.00"));
+            job1.setTotalPayment(new BigDecimal("5000.00"));
+            job1.setStartDate(LocalDateTime.now().minusDays(10));
+            job1.setEndDate(LocalDateTime.now().plusDays(20));
+
             job1 = jobService.createNewJob(job1, client1.getClientId(), prime1.getPrimeContractorId());
 
             // 7. Create Tasks for Job1 (using TaskService)
@@ -89,16 +94,16 @@ public class SampleDataLoader {
             Task taskA = new Task();
             taskA.setDescription("Drywall installation and framing extensions");
             taskA.setStatus(TaskStatus.IN_PROGRESS);
-            taskA.setTotalPrice(new BigDecimal("5000.00")); // Contract Price
+            taskA.setTotalPrice(new BigDecimal("5000.00"));
             taskA.setIsSubContracted(false);
-            taskA.setPayRoll(new BigDecimal("1200.00")); // Internal Labor allocation
+            taskA.setPayRoll(new BigDecimal("1200.00"));
             taskA = taskService.createTask(taskA, null, job1.getJobId());
 
             // Task B: Electrical Rough-In (Subcontracted out to VoltTech)
             Task taskB = new Task();
             taskB.setDescription("Main service panel upgrade to 200A and wiring");
             taskB.setStatus(TaskStatus.IN_QUEUE);
-            taskB.setTotalPrice(new BigDecimal("3500.00")); // Contract Price
+            taskB.setTotalPrice(new BigDecimal("3500.00"));
             taskB.setIsSubContracted(true);
             taskB = taskService.createTask(taskB, sub1.getSubContractorId(), job1.getJobId());
 
@@ -108,11 +113,10 @@ public class SampleDataLoader {
             bill1.setIssueDate(LocalDateTime.now().minusDays(5));
             bill1.setDueDate(LocalDateTime.now().plusDays(25));
 
-            // Generate Line Items to populate the bill input
             LineItem item1 = new LineItem();
             item1.setDescription("Premium 2x4 Studs");
             item1.setQuantity(50);
-            item1.setUnitPrice(new BigDecimal("6.50")); // Dynamic subtotal logic handles this multiplication!
+            item1.setUnitPrice(new BigDecimal("6.50"));
 
             LineItem item2 = new LineItem();
             item2.setDescription("Drywall Sheets 4x8");
@@ -122,19 +126,17 @@ public class SampleDataLoader {
             bill1.addLineItem(item1);
             bill1.addLineItem(item2);
 
-            // Save the bill through BillService to calculate totals and establish constraints
             bill1 = billService.createBill(bill1, vendor1.getVendorId(), taskA.getTaskId());
 
-            // 9. Process a partial or complete payment transaction against the newly generated Bill
+            // 9. Process a payment transaction against the newly generated Bill
             Payment payment1 = new Payment();
-            payment1.setCheckAmount(bill1.getTotalAmount()); // Match exact amount to clear the bill
+            payment1.setCheckAmount(bill1.getTotalAmount());
             payment1.setDateReceived(LocalDateTime.now());
-            // Assuming payment fields require a reference or a clean processing route
-            payment1 = paymentService.processPayment(payment1, bill1.getBillId());
+
+            // 💡 FIXED: Reference 'taskA.getTaskId()' directly to avoid the NullPointerException
+            payment1 = paymentService.processPayment(payment1, bill1.getBillId(), taskA.getTaskId());
 
             System.out.println(">> Sample data tracking structures seeded successfully!");
         };
     }
-
-
 }

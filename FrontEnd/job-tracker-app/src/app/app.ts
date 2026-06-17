@@ -1,13 +1,14 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import {JobDashboard} from './features/jobs/components/job-dashboard/job-dashboard';
+import { RouterOutlet,RouterModule } from '@angular/router';
+import {MatToolbar} from '@angular/material/toolbar';
+
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, JobDashboard],
+  standalone: true,
+  imports: [RouterOutlet, RouterModule, MatToolbar],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('job-tracker-app');
 }

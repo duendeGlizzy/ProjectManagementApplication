@@ -1,15 +1,15 @@
 import {TaskStatus} from './task-status.enum';
 import {Job} from './job.model';
 import {SubContractor} from '../../contractors/models/sub-contractor.model'
-import {Bill} from "../../financials/services/bill";
-import {Payment} from '../../financials/services/payment';
+import {Bill} from "../../financials/models/bill.model";
+import {Payment} from '../../financials/models/payment.model';
 
 
 export interface Task{
 
   taskId?: number;
 
-  isContracted: boolean;
+  isSubContracted: boolean;
   totalPrice: number;
   description: string;
   payRoll: number;

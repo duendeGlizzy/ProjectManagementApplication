@@ -1,6 +1,7 @@
 package com.JobTracker.demo.Entity;
 
 import com.JobTracker.demo.ENum.TaxCategory;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,5 +32,6 @@ public class LineItem {
 
     @ManyToOne
     @JoinColumn(name = "bill_id")
+    @JsonBackReference
     private Bill bill;
 }

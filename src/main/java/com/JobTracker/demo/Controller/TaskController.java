@@ -84,5 +84,11 @@ public class TaskController {
         return ResponseEntity.ok(netProfit);
     }
 
+    @GetMapping("/tasksByJob/{id}")
+    public ResponseEntity<List<Task>> getJobsByJobId(@PathVariable Long id) {
+        List<Task> tasks = taskService.findAllJobsByJobId(id);
+        return ResponseEntity.ok(tasks);
+    }
+
 
 }

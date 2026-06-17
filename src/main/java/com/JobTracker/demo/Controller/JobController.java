@@ -46,7 +46,7 @@ public class JobController {
     public ResponseEntity<Job> updateJob(@PathVariable Long id,
                                          @RequestBody Job job,
                                          @RequestParam Long clientId,
-                                         @RequestParam Long primeContractorId) {
+                                         @RequestParam(required = false) Long primeContractorId) {
         Job currentJob = jobService.updateJob(id, job, clientId, primeContractorId);
         return ResponseEntity.ok(currentJob);
     }

@@ -34,10 +34,16 @@ export class JobService {
     return this.http.put<Job>(`${this.apiUrl}/${id}/start`, {})
   }
 
-  updateJob(id: number, job: Job, clientID: number, primeContractorId: number): Observable<Job> {
-    const params = new HttpParams()
-    .set('clientId', clientID.toString())
-    .set('primeContractorId', primeContractorId.toString());
+  updateJob(id: number, job: Job, clientID: number, primeContractorId?: number): Observable<Job> {
+    let params = new HttpParams()
+      .set('clientId', clientID.toString());
+
+    if(primeContractorId == null){
+      params = params.set('primeContractorId', '')
+    }else{
+     params = params.set('primeContractorId', primeContractorId.toString());
+    }
+
     return this.http.put<Job>(`${this.apiUrl}/${id}/update`, job, {params});
   }
 

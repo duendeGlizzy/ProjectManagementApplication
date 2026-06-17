@@ -1,4 +1,4 @@
-import {Bill} from '../../financials/services/bill';
+import {Bill} from '../../financials/models/bill.model';
 
 export interface Vendor {
 

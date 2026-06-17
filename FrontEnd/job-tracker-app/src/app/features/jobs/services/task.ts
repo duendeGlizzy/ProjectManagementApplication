@@ -56,6 +56,10 @@ export class TaskService {
 
   }
 
+  getTasksByJobId(jobId: number): Observable<Task[]> {
+    return this.http.get<Task[]>(`${this.apiUrl}/tasksByJob/${jobId}`)
+  }
+
 
 
 

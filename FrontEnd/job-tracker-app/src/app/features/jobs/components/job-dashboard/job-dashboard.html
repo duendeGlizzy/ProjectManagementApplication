@@ -1,7 +1,87 @@
-<h2>Project Management Workspace</h2>
+
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2>Project Management Workspace</h2>
+    <button mat-raised-button color="primary" routerLink="/jobs/new">
+      Add Job
+    </button>
+  </div>
+
+
+
+  <div class="card p-3 mb-4 shadow-sm" style="background-color: #fcfcfc; border: 1px solid #e0e0e0;">
+    <h5 style="color: #555; font-size: 0.95rem; font-weight: 500; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
+      <mat-icon style="font-size: 1.2rem; width: 20px; height: 20px;">filter_list</mat-icon> Search Filters Ledger Mappings
+    </h5>
+
+    <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: flex-start;">
+
+      <mat-form-field appearance="outline" style="flex: 1; min-width: 220px;">
+        <mat-label>Client Last Name</mat-label>
+        <input matInput
+               [formControl]="clientCtrl"
+               [matAutocomplete]="clientAuto"
+               placeholder="Type client name..."
+               (keyup.enter)="onSearch()">
+        <mat-autocomplete #clientAuto="matAutocomplete" (optionSelected)="onSearch()">
+          <mat-option *ngFor="let client of filteredClients | async" [value]="client">
+            {{ client }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="clientCtrl.hasError('invalidAutocompleteSelection')">
+          Must select matching listed client.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1; min-width: 220px;">
+        <mat-label>Contractor Company</mat-label>
+        <input matInput
+               [formControl]="companyCtrl"
+               [matAutocomplete]="companyAuto"
+               placeholder="Type company name..."
+               (keyup.enter)="onSearch()">
+        <mat-autocomplete #companyAuto="matAutocomplete" (optionSelected)="onSearch()">
+          <mat-option *ngFor="let company of filteredCompanies | async" [value]="company">
+            {{ company }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="companyCtrl.hasError('invalidAutocompleteSelection')">
+          Must select matching listed contractor.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" style="flex: 1; min-width: 220px;">
+        <mat-label>Project Status</mat-label>
+        <mat-select [(ngModel)]="statusFilter" (selectionChange)="onSearch()">
+          <mat-option value="">All Status Configurations</mat-option>
+          <mat-option *ngFor="let opt of statusOptions" [value]="opt.value">{{ opt.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div style="display: flex; gap: 8px; margin-top: 4px;">
+        <button mat-raised-button
+                color="accent"
+                type="button"
+                (click)="onSearch()"
+                [disabled]="isLoading() || clientCtrl.invalid || companyCtrl.invalid">
+          <mat-icon>search</mat-icon> Search
+        </button>
+        <button mat-button type="button" (click)="onClearFilters()" [disabled]="isLoading()">
+          Reset
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage()" class="alert alert-danger">
+    {{ errorMessage() }}
+  </div>
+
+  <div *ngIf="isLoading()" class="text-center my-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading query specifications data...</span>
+    </div>
   </div>
 
   <div *ngIf="errorMessage()" class="alert alert-danger">
@@ -11,6 +91,9 @@
   <div *ngIf="jobsList().length === 0 && !errorMessage()" class="alert alert-info text-center">
     No job entries found in the system tracking ledger.
   </div>
+
+  <!-- TABLE-->
+
 
   <div class="mat-elevation-z8 text-nowrap rounded overflow-hidden" *ngIf="jobsList().length > 0">
     <table mat-table [dataSource]="jobsList()" class="w-100">
@@ -86,7 +169,15 @@
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+          [routerLink]="['/jobs', row.jobId]"
+          style="cursor: pointer;"
+          class="clickable-row">
+      </tr>
     </table>
   </div>
+
+
+
+
 </div>
