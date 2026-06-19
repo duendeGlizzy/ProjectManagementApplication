@@ -39,7 +39,7 @@ export class JobService {
       .set('clientId', clientID.toString());
 
     if(primeContractorId == null){
-      params = params.set('primeContractorId', '')
+      params = params.set('primeContractorId', '0')
     }else{
      params = params.set('primeContractorId', primeContractorId.toString());
     }

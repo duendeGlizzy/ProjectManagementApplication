@@ -1,7 +1,9 @@
 package com.JobTracker.demo.Service;
 
 import com.JobTracker.demo.ENum.JobStatus;
+import com.JobTracker.demo.Entity.Client;
 import com.JobTracker.demo.Entity.Job;
+import com.JobTracker.demo.Entity.PrimeContractor;
 import com.JobTracker.demo.Entity.Task;
 import com.JobTracker.demo.Repository.ClientRepository;
 import com.JobTracker.demo.Repository.JobRepository;
@@ -86,15 +88,17 @@ public class JobService {
         currentJob.setJobType(jobInput.getJobType());
         currentJob.setTotalPayment(jobInput.getTotalPayment());
 
-        if (clientId == null || !clientRepository.existsById(clientId)) {
-            throw new EntityNotFoundException("Cannot update job: Client id is missing or invalid.");
-        }
-        currentJob.setClient(clientRepository.getReferenceById(clientId));
+
+        Client client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new EntityNotFoundException("Client with id " + clientId + " not found"));
+        currentJob.setClient(client);
+
         if (primeContractorId != null && primeContractorId > 0) {
-            if (!primeContractorRepository.existsById(primeContractorId)) {
-                throw new EntityNotFoundException("PrimeContractor with id " + primeContractorId + " not found");
-            }
-            currentJob.setPrimeContractor(primeContractorRepository.getReferenceById(primeContractorId));
+            PrimeContractor contractor = primeContractorRepository.findById(primeContractorId)
+                    .orElseThrow(() -> new EntityNotFoundException("PrimeContractor with id " + primeContractorId + " not found"));
+            currentJob.setPrimeContractor(contractor);
+        }else{
+            currentJob.setPrimeContractor(null);
         }
         return jobRepository.save(currentJob);
     }
