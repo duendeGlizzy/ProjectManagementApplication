@@ -1,10 +1,7 @@
 package com.JobTracker.demo.Service;
 
 import com.JobTracker.demo.ENum.TaskStatus;
-import com.JobTracker.demo.Entity.Bill;
-import com.JobTracker.demo.Entity.Job;
-import com.JobTracker.demo.Entity.Payment;
-import com.JobTracker.demo.Entity.Task;
+import com.JobTracker.demo.Entity.*;
 import com.JobTracker.demo.Repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -77,16 +74,26 @@ public class TaskService {
         taskRepository.deleteById(id);
     }
 
-    public Task update(Long id, Task task) {
-        if(!taskRepository.existsById(id)) {
-            throw new RuntimeException("Task not found");
-        }
-        Task currentTask = findById(id);
+    public Task update(Long id, Task task, Long subContractorId) {
+
+        Task currentTask = taskRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("Task not found"));
 
         currentTask.setDescription(task.getDescription());
+        currentTask.setIsSubContracted(task.getIsSubContracted());
         currentTask.setStatus(task.getStatus());
+        currentTask.setTotalPrice(task.getTotalPrice());
+        currentTask.setPayRoll(task.getPayRoll());
         currentTask.setStartDate(task.getStartDate());
         currentTask.setEndDate(task.getEndDate());
+
+        if(subContractorId != null) {
+            SubContractor sub = subContractorRepository.findById(subContractorId)
+                    .orElseThrow(() -> new RuntimeException("SubContractor not found"));
+            currentTask.setSubContractor(sub);
+        }else{
+            currentTask.setSubContractor(null);
+        }
 
         return taskRepository.save(currentTask);
     }

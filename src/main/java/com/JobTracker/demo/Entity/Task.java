@@ -2,6 +2,7 @@ package com.JobTracker.demo.Entity;
 
 import com.JobTracker.demo.ENum.TaskStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -40,20 +41,20 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "sub_contractor_id")
-    @JsonBackReference
+    @JsonIgnoreProperties("tasks")
     private SubContractor subContractor;
 
     @ManyToOne
     @JoinColumn(name = "job_id")
-    @JsonBackReference
+    @JsonIgnoreProperties("tasks")
     private Job job;
 
     @OneToMany(mappedBy = "task")
-    @JsonManagedReference
+    @JsonIgnoreProperties("task")
     private List<Payment> payments;
 
     @OneToMany(mappedBy = "task")
-    @JsonManagedReference
+    @JsonIgnoreProperties("task")
     private List<Bill> bills;
 
 

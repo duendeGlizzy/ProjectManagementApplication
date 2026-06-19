@@ -73,6 +73,7 @@ public class JobService {
         return jobRepository.save(newJob);
     }
 
+    @Transactional
     public Job updateJob(Long id, Job jobInput, Long clientId, Long primeContractorId) {
         Job currentJob = findById(id);
 

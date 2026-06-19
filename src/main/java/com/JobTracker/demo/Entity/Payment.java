@@ -2,6 +2,7 @@ package com.JobTracker.demo.Entity;
 
 import com.JobTracker.demo.ENum.PaymentMethod;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,7 +31,7 @@ public class Payment {
 
     @ManyToOne
     @JoinColumn(name = "task_id")
-    @JsonBackReference
+    @JsonIgnoreProperties("payments")
     private Task task;
 
 

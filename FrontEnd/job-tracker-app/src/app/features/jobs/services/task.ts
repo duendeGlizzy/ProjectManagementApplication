@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { Task } from '../models/task.model';
 import {TaskStatus} from '../models/task-status.enum';
@@ -31,13 +31,17 @@ export class TaskService {
     return this.http.post<Task>(this.apiUrl, task, {params});
   }
 
-  updateTask(taskId: number, task: Task): Observable<Task> {
-    return this.http.put<Task>(`${this.apiUrl}/${taskId}/update`, task);
+  updateTask(taskId: number, task: Task, subContractorId?: number | null): Observable<Task> {
+    let params = new HttpParams();
+    if (subContractorId != null) {
+      params = params.set('subContractorId', subContractorId.toString());
+    }
+    return this.http.put<Task>(`${this.apiUrl}/${taskId}/update`, task, {params});
   }
 
   updateStatus(id: number, status: TaskStatus): Observable<Task> {
-    return this.http.put<Task>(`${this.apiUrl}/${id}/status`, status);
-  }
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.put<Task>(`${this.apiUrl}/${id}/status`, JSON.stringify(status), { headers });  }
 
   deleteTask(id: number): Observable<void>{
     return this.http.delete<void>(`${this.apiUrl}/${id}`);

@@ -1,5 +1,7 @@
 package com.JobTracker.demo.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,6 +29,6 @@ public class SubContractor {
     private BigDecimal price;
 
     @OneToMany(mappedBy = "subContractor")
-    @JsonManagedReference
+    @JsonIgnoreProperties("subContractor")
     private List<Task> tasks;
 }

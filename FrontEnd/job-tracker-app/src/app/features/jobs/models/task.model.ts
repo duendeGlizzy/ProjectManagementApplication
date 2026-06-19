@@ -14,7 +14,7 @@ export interface Task{
   description: string;
   payRoll: number;
 
-  taskStatus?: TaskStatus;
+  status?: TaskStatus;
 
   startDate?: string | Date;
   endDate?: string | Date;

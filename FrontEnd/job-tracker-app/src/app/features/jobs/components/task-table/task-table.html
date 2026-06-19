@@ -1,5 +1,10 @@
-<h2>Task List:</h2>
-<div class="mat-elevation-z8 text-nowrap rounded overflow-hidden" *ngIf="taskList().length > 0">
+<h3 style="color: #555; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px; font-weight: 500;">Tasks</h3>
+
+<div>
+  <button matButton="tonal" [routerLink]="['/tasks/new']" [queryParams]="{ jobId: jobId }">New task</button>
+</div>
+<div class="mat-elevation-z8 text-nowrap rounded overflow-hidden" *ngIf="taskList().length > 0"
+     style="margin-bottom: 5px; max-height:350px; overflow-y:auto; overflow-x: auto;">
   <table mat-table [dataSource]="taskList()" class="w-100">
 
     <ng-container matColumnDef="taskId">
@@ -40,9 +45,11 @@
 
 
 
-    <!--[routerLink]="['/jobs', row.jobId]"-->
+
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+        [routerLink]="['/tasks', row.taskId]"
+        [queryParams]="{ jobId: jobId }"
         style="cursor: pointer;"
         class="clickable-row">
     </tr>

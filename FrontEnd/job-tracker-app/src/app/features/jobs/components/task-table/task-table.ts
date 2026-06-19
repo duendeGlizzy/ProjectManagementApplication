@@ -1,15 +1,14 @@
 import {
-  Component, OnInit, ChangeDetectorRef, OnDestroy, signal,
+  Component, ChangeDetectorRef, signal,
   Input, numberAttribute, OnChanges, SimpleChanges } from '@angular/core';
 import {CurrencyPipe, NgClass, NgIf} from '@angular/common';
-import {MatButton} from '@angular/material/button';
-import { ActivatedRoute, RouterModule, Router } from '@angular/router';
+import {  RouterModule} from '@angular/router';
 import {TaskService} from '../../services/task';
-import {Job} from '../../models/job.model';
-import {Subscription} from 'rxjs';
+
 import { Task } from '../../models/task.model'
 
 import { MatTableModule } from '@angular/material/table';
+import {MatButton} from '@angular/material/button';
 
 
 @Component({
@@ -17,11 +16,11 @@ import { MatTableModule } from '@angular/material/table';
   standalone: true,
   imports: [
     CurrencyPipe,
-    MatButton,
     MatTableModule,
     NgIf,
     RouterModule,
     NgClass,
+    MatButton,
   ],
   templateUrl: './task-table.html',
   styleUrl: './task-table.css',

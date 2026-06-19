@@ -1,5 +1,6 @@
 package com.JobTracker.demo.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,6 @@ public class Vendor {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "vendor")
-    @JsonManagedReference
+    @JsonIgnoreProperties("vendor")
     private List<Bill> bills;
 }

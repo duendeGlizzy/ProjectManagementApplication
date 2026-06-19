@@ -1,6 +1,7 @@
 package com.JobTracker.demo.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,6 +29,6 @@ public class PrimeContractor {
 
     @OneToMany(mappedBy = "primeContractor")
     @ToString.Exclude
-    @JsonBackReference
+    @JsonIgnoreProperties("primeContractor")
     private List<Job> jobs;
 }

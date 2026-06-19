@@ -52,7 +52,7 @@ public class Job {
     private PrimeContractor primeContractor;
 
     @OneToMany(mappedBy = "job")
-    @JsonManagedReference
+    @JsonIgnoreProperties("job")
     private List<Task> tasks;
 
 
