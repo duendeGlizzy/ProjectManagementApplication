@@ -134,7 +134,6 @@ public class SampleDataLoader {
             payment1.setDateReceived(LocalDateTime.now());
 
             // 💡 FIXED: Reference 'taskA.getTaskId()' directly to avoid the NullPointerException
-            payment1 = paymentService.processPayment(payment1, bill1.getBillId(), taskA.getTaskId());
 
             System.out.println(">> Sample data tracking structures seeded successfully!");
         };

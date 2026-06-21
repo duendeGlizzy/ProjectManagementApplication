@@ -1,0 +1,43 @@
+NEED TO DO
+
+make/adjust business logic for job/task/bill the current setup doesnt work
+
+In job I need:
+
+1:
+a method to find the total payments received if
+task = complete get total cost of each and add up
+
+
+
+
+2:
+a method to find the total cost of the job
+each task.payroll added up + job.bills.total added up
+
+In Task:
+
+1:
+write method in task to get total cost - payroll to help job logic
+
+UI:
+
+1:
+make UI look better in general
+
+2:
+add breadCrumbs ? for the job creation though to task creation
+
+Financials:
+
+need full crud
+
+Contractors:
+
+need full crud
+
+Security:
+
+need to implement wait till end?
+
+

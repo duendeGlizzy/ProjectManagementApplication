@@ -30,12 +30,9 @@ public class PaymentController {
         return ResponseEntity.ok(payment);
     }
 
-    @PostMapping
-    public ResponseEntity<Payment> processPayment(@RequestBody Payment payment,
-                                                  @RequestParam Long billId,
-                                                  @RequestParam Long taskId) {
-        Payment newPayment = paymentService.processPayment(payment, billId, taskId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newPayment);
+    @PutMapping("/{id}")
+    public ResponseEntity<Payment> recordClientPayment(@PathVariable Long id, @RequestBody Payment payment) {
+        return ResponseEntity.ok(paymentService.recordClientPayment(payment, id));
     }
 
 }

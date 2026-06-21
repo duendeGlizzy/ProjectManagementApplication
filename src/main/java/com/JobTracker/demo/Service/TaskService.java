@@ -57,8 +57,7 @@ public class TaskService {
             }
         }
 
-        newTask.setBills(new ArrayList<>());
-        newTask.setPayments(new ArrayList<>());
+
 
         Job job = jobRepository.findById(jobId)
                         .orElseThrow(() -> new RuntimeException("Job not found"));
@@ -112,41 +111,9 @@ public class TaskService {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new EntityNotFoundException("Task not found with id: " + taskId));
 
-        BigDecimal materialCosts = BigDecimal.ZERO;
-        if (task.getBills() != null) {
-            for (Bill bill : task.getBills()) {
-                if (bill.getTotalAmount() != null) {
-                    materialCosts = materialCosts.add(bill.getTotalAmount());
-                }
-            }
-        }
-
-        BigDecimal labourCosts = BigDecimal.ZERO;
-        if (Boolean.TRUE.equals(task.getIsSubContracted()) && task.getSubContractor() != null) {
-            if (task.getSubContractor().getPrice() != null) {
-                labourCosts = task.getSubContractor().getPrice();
-            }
-        } else if (task.getPayRoll() != null) {
-            labourCosts = task.getPayRoll();
-        }
-
-        return materialCosts.add(labourCosts);
+        return task.getPayRoll() != null ? task.getPayRoll() : BigDecimal.ZERO;
     }
 
-    public BigDecimal calculateTotalPaymentsReceived(Long taskId) {
-        Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new EntityNotFoundException("Task not found with id: " + taskId));
-
-        BigDecimal totalPayments = BigDecimal.ZERO;
-        if (task.getPayments() != null) {
-            for (Payment payment : task.getPayments()) {
-                if (payment.getCheckAmount() != null) {
-                    totalPayments = totalPayments.add(payment.getCheckAmount());
-                }
-            }
-        }
-        return totalPayments;
-    }
 
     public BigDecimal calculateTaskNetProfit(Long taskId) {
         if(!taskRepository.existsById(taskId)) {
@@ -158,12 +125,14 @@ public class TaskService {
         return contractPrice.subtract(totalCost);
     }
 
-    public List<Task> findAllJobsByJobId(Long jobId) {
+    public List<Task> findAllTasksByJobId(Long jobId) {
         if(!jobRepository.existsById(jobId)) {
             throw new RuntimeException("Job not found");
         }
         return taskRepository.findAllByJob_JobId(jobId);
     }
+
+
 
 
 

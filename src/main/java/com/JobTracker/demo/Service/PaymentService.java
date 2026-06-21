@@ -1,10 +1,13 @@
 package com.JobTracker.demo.Service;
 
 import com.JobTracker.demo.ENum.BillStatus;
+import com.JobTracker.demo.Entity.Job;
 import com.JobTracker.demo.Entity.Payment;
 import com.JobTracker.demo.Entity.Task;
+import com.JobTracker.demo.Repository.JobRepository;
 import com.JobTracker.demo.Repository.PaymentRepository;
 import com.JobTracker.demo.Repository.TaskRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +18,12 @@ import java.util.List;
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
-    private final BillService billService;
-    private final TaskRepository taskRepository;
+    private final JobRepository jobRepository;
 
     public PaymentService(PaymentRepository paymentRepository,
-                          BillService billService,
-                          TaskRepository taskRepository) {
+                          JobRepository jobRepository) {
         this.paymentRepository = paymentRepository;
-        this.billService = billService;
-        this.taskRepository = taskRepository;
+        this.jobRepository = jobRepository;
     }
 
     public List<Payment> findAll() {
@@ -44,17 +44,12 @@ public class PaymentService {
     }
 
     @Transactional
-    public Payment processPayment(Payment payment, Long billId, Long taskId) {
+    public Payment recordClientPayment(Payment payment, Long jobId) {
+        Job job = jobRepository.findById(jobId)
+                .orElseThrow(() -> new EntityNotFoundException("Job not found"));
 
-        Task currentTask = taskRepository.findById(taskId)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
-        payment.setTask(currentTask);
-
-        Payment currentPayment = paymentRepository.save(payment);
-
-        billService.updateBillStatus(billId, BillStatus.PAYED);
-
-        return currentPayment;
+        payment.setJob(job);
+        return paymentRepository.save(payment);
     }
 
 

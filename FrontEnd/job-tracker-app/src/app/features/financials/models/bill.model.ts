@@ -2,6 +2,7 @@ import {BillStatus} from "./bill-status.enum";
 import {Task} from '../../jobs/models/task.model';
 import {LineItem} from './line-item.model';
 import {Vendor} from '../../contractors/models/vendor.model';
+import {Job} from '../../jobs/models/job.model';
 
 export interface Bill{
 
@@ -17,7 +18,7 @@ export interface Bill{
   billStatus: BillStatus;
 
   vendor?: Vendor;
-  task?: Task;
+  job?: Job;
   lineItems?: LineItem[];
 
 

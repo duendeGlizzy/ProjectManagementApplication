@@ -22,7 +22,6 @@ export interface Task{
 
   subContractor?: SubContractor;
   job?: Job;
-  payments?: Payment[];
-  bills?: Bill[];
+
 
 }

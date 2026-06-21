@@ -1,9 +1,42 @@
+<mat-toolbar color="primary" class="main-header shadow-sm">
+  <button mat-icon-button (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span style="font-weight: 500; margin-left: 8px;">JobTracker Enterprise Enterprise</span>
+</mat-toolbar>
 
-  <mat-toolbar color="primary" class="shadow-sm">
-    <span>Job Tracker App</span>
-  </mat-toolbar>
+<mat-sidenav-container class="app-container">
+  <mat-sidenav #sidenav mode="side" opened class="app-sidenav">
+    <mat-nav-list class="navigation-links">
 
-  <div>
-    <router-outlet></router-outlet>
-  </div>
+      <div class="nav-section-title">Operations</div>
+      <a mat-list-item routerLink="/jobs" routerLinkActive="active-link" (click)="sidenav.mode === 'over' && sidenav.close()">
+        <mat-icon matListItemIcon color="primary">dashboard</mat-icon>
+        <span matListItemTitle>Job Dashboard</span>
+      </a>
 
+      <a mat-list-item routerLink="/contractors" routerLinkActive="active-link" (click)="sidenav.mode === 'over' && sidenav.close()">
+        <mat-icon matListItemIcon color="accent">engineering</mat-icon>
+        <span matListItemTitle>Contractor Ledger</span>
+      </a>
+
+      <div class="nav-section-title">Accounts</div>
+      <a mat-list-item routerLink="/financials" routerLinkActive="active-link" (click)="sidenav.mode === 'over' && sidenav.close()">
+        <mat-icon matListItemIcon style="color: #2e7d32;">payments</mat-icon>
+        <span matListItemTitle>Financial Dashboard</span>
+      </a>
+
+      <a mat-list-item routerLink="/clients" routerLinkActive="active-link" (click)="sidenav.mode === 'over' && sidenav.close()">
+        <mat-icon matListItemIcon style="color: #7b1fa2;">groups</mat-icon>
+        <span matListItemTitle>Client Profiles</span>
+      </a>
+
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="main-viewport-content">
+    <div class="router-stage">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

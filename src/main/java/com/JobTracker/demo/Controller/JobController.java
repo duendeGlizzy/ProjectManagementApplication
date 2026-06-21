@@ -1,7 +1,9 @@
 package com.JobTracker.demo.Controller;
 
 import com.JobTracker.demo.ENum.JobStatus;
+import com.JobTracker.demo.Entity.Bill;
 import com.JobTracker.demo.Entity.Job;
+import com.JobTracker.demo.Entity.Payment;
 import com.JobTracker.demo.Entity.Task;
 import com.JobTracker.demo.Service.JobService;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/jobs")
@@ -94,16 +97,21 @@ public class JobController {
         return ResponseEntity.ok(totalPayments);
     }
 
-    @GetMapping("/{id}/totalCost")
-    public ResponseEntity<BigDecimal> getJobTotalCost(@PathVariable Long id) {
-        BigDecimal totalCost = jobService.calculateTotalCost(id);
-        return ResponseEntity.ok(totalCost);
+    @GetMapping("/{id}/financial-breakdown")
+    public ResponseEntity<Map<String, BigDecimal>> getJobFinancialBreakdown(@PathVariable Long id) {
+        return ResponseEntity.ok(jobService.calculateDetailedJobBreakdown(id));
     }
 
-    @GetMapping("/{id}/netProfit")
-    public ResponseEntity<BigDecimal> getJobNetProfit(@PathVariable Long id) {
-        BigDecimal netProfit = jobService.calculateNetProfit(id);
-        return ResponseEntity.ok(netProfit);
+    @GetMapping("/{id}/ledgers/expenses")
+    public ResponseEntity<List<Bill>> getJobExpenseLedger(@PathVariable Long id) {
+        Job job = jobService.findById(id);
+        return ResponseEntity.ok(job.getBills()); // Instantly grabs all project vendor bills
+    }
+
+    @GetMapping("/{id}/ledgers/invoices")
+    public ResponseEntity<List<Payment>> getJobInvoiceLedger(@PathVariable Long id) {
+        Job job = jobService.findById(id);
+        return ResponseEntity.ok(job.getPayments()); // Instantly grabs all collected client revenue
     }
 
 }

@@ -1,0 +1,69 @@
+.main-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 64px;
+  border-radius: 0 !important; /* Removes any top bar rounding */
+}
+
+.app-container {
+  position: absolute;
+  top: 64px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #f4f6f9; /* Keeps the page shading depth active */
+}
+
+.app-sidenav {
+  width: 250px;
+  border-right: 1px solid #e0e0e0;
+  background-color: white;
+  border-radius: 0 !important; /* Ensures the sidebar container has sharp corners */
+}
+
+/* Forces all sidebar links to remain perfectly sharp and flat */
+.navigation-links .mat-mdc-list-item {
+  border-radius: 0 !important;
+  margin: 0 !important;
+}
+
+.nav-section-title {
+  padding: 16px 16px 8px 16px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #888;
+  font-weight: 600;
+}
+
+.navigation-links mat-icon {
+  margin-right: 12px;
+}
+
+/* Sharp, boxy active tab highlighter */
+.active-link {
+  background-color: rgba(63, 81, 181, 0.08) !important;
+  color: #3f51b5 !important;
+  font-weight: 500;
+  border-right: 4px solid #3f51b5;
+  border-radius: 0 !important;
+}
+
+.main-viewport-content {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.router-stage {
+  padding: 24px;
+  min-height: calc(100vh - 64px);
+  box-sizing: border-box;
+}
+
+.shadow-sm {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}

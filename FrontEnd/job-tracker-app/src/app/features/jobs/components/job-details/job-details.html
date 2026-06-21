@@ -1,168 +1,217 @@
+<div class="container-wrapper" style="max-width: 900px; margin: 2rem auto; padding: 0 1rem;">
 
-  <div class="container-wrapper" style="max-width: 900px; margin: 2rem auto; padding: 0 1rem;">
-
-    <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; min-height: 200px;">
-      <mat-spinner diameter="50"></mat-spinner>
-    </div>
-
-    <mat-card *ngIf="!isLoading && errorMessage" style="padding: 24px; border-left: 5px solid #f44336;">
-      <mat-card-content style="display: flex; align-items: center; gap: 12px; color: #f44336;">
-        <mat-icon>error</mat-icon>
-        <span>{{ errorMessage }}</span>
-      </mat-card-content>
-      <mat-card-actions>
-        <button mat-button color="primary" routerLink="/jobs">Back to Dashboard</button>
-      </mat-card-actions>
-    </mat-card>
-
-    <mat-card class="shadow-sm" *ngIf="!isLoading && job">
-      <mat-card-header
-        style="background-color: #3f51b5; color: white; padding: 20px; border-top-left-radius: 4px; border-top-right-radius: 4px;">
-        <div
-          style="display: flex; justify-content: space-between; width: 100%; align-items: center; flex-wrap: wrap; gap: 12px;">
-          <div>
-            <mat-card-title style="font-size: 1.4rem; font-weight: 500;">
-              Job Specifications #{{ job?.jobId }}
-            </mat-card-title>
-            <mat-card-subtitle style="color: rgba(255,255,255,0.85); margin-top: 4px; font-size: 0.95rem;">
-              Classification Type: <strong>{{ job?.jobType }}</strong>
-            </mat-card-subtitle>
-
-          </div>
-
-
-          <mat-chip-set>
-            <div>
-              <button (click)="progressJob(job.status)" matButton="tonal">progress Job</button>
-            </div>
-            <mat-chip disableRipple style="background-color: rgba(255,255,255,0.2); color: white;">
-              {{ job?.status ? job.status.replace('_', ' ') : 'PENDING' }}
-            </mat-chip>
-          </mat-chip-set>
-
-        </div>
-
-      </mat-card-header>
-
-      <mat-card-content style="padding: 24px;">
-
-        <div style="margin-bottom: 2rem;">
-          <h3 style="color: #555; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px; font-weight: 500;">Scope of
-            Work</h3>
-          <p style="font-size: 1.1rem; line-height: 1.6; white-space: pre-wrap; margin-top: 8px; color: #333;">
-            {{ job?.description }}
-          </p>
-        </div>
-
-        <div style="margin-bottom: 2rem;">
-          <h3 style="color: #555; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px; font-weight: 500;">Job Site
-            Address</h3>
-          <p style="font-size: 1.1rem; line-height: 1.6; white-space: pre-wrap; margin-top: 8px; color: #333;">
-            {{ job?.address }}
-          </p>
-        </div>
-
-        <div style="margin-bottom: 2rem;">
-          <h3 style="color: #555; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px; font-weight: 500;">Financial
-            Metrics</h3>
-          <div style="display: flex; gap: 24px; flex-wrap: wrap; margin-top: 12px;">
-
-            <div
-              style="flex: 1; min-width: 200px; background: #fffde7; padding: 16px; border-radius: 6px; border-left: 4px solid #fbc02d;">
-              <span
-                style="color: #616161; font-size: 0.9rem; display: block; font-weight: 500;">Estimated Project Cost</span>
-              <strong style="font-size: 1.4rem; color: #f57f17;">{{ job?.estimatedCost | currency }}</strong>
-            </div>
-
-            <div
-              style="flex: 1; min-width: 200px; background: #e8f5e9; padding: 16px; border-radius: 6px; border-left: 4px solid #4caf50;">
-              <span
-                style="color: #616161; font-size: 0.9rem; display: block; font-weight: 500;">Total Payments Settled</span>
-              <strong style="font-size: 1.4rem; color: #1b5e20;">{{ job?.totalPayment | currency }}</strong>
-            </div>
-
-            <div
-              style="flex: 1; min-width: 200px; background: #f5f5f5; padding: 16px; border-radius: 6px; border-left: 4px solid #9e9e9e;">
-              <span
-                style="color: #616161; font-size: 0.9rem; display: block; font-weight: 500;">Outstanding Balance</span>
-              <strong style="font-size: 1.4rem; color: #212121;">
-                {{ ((job?.estimatedCost || 0) - (job?.totalPayment || 0)) | currency }}
-              </strong>
-            </div>
-
-          </div>
-        </div>
-
-        <div style="display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 2rem;">
-
-          <div
-            style="flex: 1; min-width: 250px; background: #f9f9f9; padding: 16px; border-radius: 6px; border-left: 4px solid #3f51b5;">
-            <h4 style="margin: 0 0 8px 0; color: #3f51b5; display: flex; align-items: center; gap: 6px;">
-              <mat-icon style="font-size: 20px; width:20px; height:20px;">person</mat-icon>
-              Associated Client
-            </h4>
-            <p style="margin: 4px 0; font-size: 1.05rem; font-weight: 500;">
-              {{ job?.client?.firstName }} {{ job?.client?.lastName }}
-            </p>
-            <small style="color: #777;">Client ID: {{ job?.client?.clientId }}</small>
-          </div>
-
-          <div
-            style="flex: 1; min-width: 250px; background: #f9f9f9; padding: 16px; border-radius: 6px; border-left: 4px solid #009688;">
-            <h4 style="margin: 0 0 8px 0; color: #009688; display: flex; align-items: center; gap: 6px;">
-              <mat-icon style="font-size: 20px; width:20px; height:20px;">business</mat-icon>
-              Prime Contractor
-            </h4>
-            <p style="margin: 4px 0; font-size: 1.05rem; font-weight: 500;" *ngIf="job?.primeContractor">
-              {{ job?.primeContractor?.companyName }}
-            </p>
-            <p style="margin: 4px 0; font-size: 1.05rem; color: #777; font-style: italic;"
-               *ngIf="!job?.primeContractor">
-              Direct Contract (None)
-            </p>
-            <small style="color: #777;" *ngIf="job?.primeContractor">Contractor
-              ID: {{ job?.primeContractor?.primeContractorId }}</small>
-          </div>
-
-        </div>
-        <div>
-          <app-task-table [jobId]="job.jobId"></app-task-table>
-        </div>
-
-        <div>
-          <h3 style="color: #555; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px; font-weight: 500;">Project
-            Timeline</h3>
-          <div style="display: flex; gap: 32px; margin-top: 12px; flex-wrap: wrap;">
-            <div>
-              <span style="color: #777; font-size: 0.9rem; display: block;">Commencement Date</span>
-              <strong
-                style="font-size: 1.05rem;">{{ job?.startDate ? (job?.startDate | date:'longDate') : 'Not Set' }}</strong>
-            </div>
-            <div>
-              <span style="color: #777; font-size: 0.9rem; display: block;">Target Completion Date</span>
-              <strong
-                style="font-size: 1.05rem;">{{ job?.endDate ? (job?.endDate | date:'longDate') : 'Not Set' }}</strong>
-            </div>
-            <div>
-              <span style="color: #777; font-size: 0.9rem; display: block;">Days To Complete</span>
-              <strong style="font-size: 1.05rem;">{{ calculateTimeToComplete() }}</strong>
-            </div>
-
-
-          </div>
-
-
-        </div>
-
-      </mat-card-content>
-
-      <mat-card-actions align="end"
-                        style="padding: 16px; gap: 8px; background-color: #fafafa; border-top: 1px solid #e0e0e0;">
-        <button mat-button="tonal" [routerLink]="['/jobs/new', job.jobId]">Edit Job</button>
-        <button mat-button color="primary" routerLink="/jobs">
-          <mat-icon>arrow_back</mat-icon>
-          Return to List
-        </button>
-      </mat-card-actions>
-    </mat-card>
+  <div *ngIf="isLoading" style="display: flex; justify-content: center; align-items: center; min-height: 200px;">
+    <mat-spinner diameter="50"></mat-spinner>
   </div>
+
+  <mat-card *ngIf="!isLoading && errorMessage" style="padding: 24px; border-left: 5px solid #f44336;">
+    <mat-card-content style="display: flex; align-items: center; gap: 12px; color: #f44336;">
+      <mat-icon>error</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button color="primary" routerLink="/jobs">Back to Dashboard</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="shadow-sm" *ngIf="!isLoading && job">
+    <mat-card-header style="background-color: #3f51b5; color: white; padding: 20px; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+      <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; flex-wrap: wrap; gap: 12px;">
+        <div>
+          <mat-card-title style="font-size: 1.5rem; font-weight: 500; margin-bottom: 4px;">
+            {{ job?.jobType }} Project
+          </mat-card-title>
+          <mat-card-subtitle style="color: rgba(255,255,255,0.8); font-size: 0.95rem;">
+            ID: #{{ job?.jobId }} &bull; {{ job?.address }}
+          </mat-card-subtitle>
+        </div>
+        <span [class]="'status-badge ' + job?.status?.toLowerCase()" style="padding: 6px 16px; border-radius: 20px; font-weight: 500; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+          {{ job?.status }}
+        </span>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content style="padding: 24px;">
+
+      <div style="display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; align-items: center; background: #fafafa; padding: 12px; border-radius: 6px; border: 1px solid #e0e0e0;">
+        <span style="font-weight: 500; color: #555; font-size: 0.9rem;">Workflow Action:</span>
+
+        <button mat-flat-button
+                style="background-color: #2e7d32; color: white;"
+                *ngIf="job?.status === 'NOT_STARTED'"
+                (click)="progressJob()">
+          <mat-icon>play_arrow</mat-icon> Start Project Work
+        </button>
+
+        <button mat-flat-button
+                style="background-color: #3f51b5; color: white;"
+                *ngIf="job?.status === 'STARTED'"
+                (click)="progressJob()">
+          <mat-icon>check_circle</mat-icon> Mark Project Completed
+        </button>
+
+        <span *ngIf="job?.status === 'COMPLETED'" style="color: #2e7d32; display: flex; align-items: center; gap: 6px; font-size: 0.9rem; font-weight: 500;">
+          <mat-icon style="color: #2e7d32;">verified</mat-icon> This project is complete and archived.
+        </span>
+      </div>
+
+      <div style="background-color: #f8f9fa; border-radius: 6px; padding: 16px; margin-bottom: 24px; display: flex; gap: 24px; border-left: 4px solid #3f51b5;">
+        <div style="flex: 1;">
+          <span style="color: #666; font-size: 0.85rem; display: block; margin-bottom: 4px; text-transform: uppercase; font-weight: 500;">Client Details</span>
+          <strong style="font-size: 1.05rem; color: #333;">{{ job?.client?.firstName }} {{ job?.client?.lastName }}</strong>
+          <span style="display: block; color: #555; font-size: 0.9rem; margin-top: 2px;">{{ job?.client?.phoneNumber }}</span>
+        </div>
+        <div style="flex: 1; border-left: 1px solid #e0e0e0; padding-left: 24px;" *ngIf="job?.primeContractor">
+          <span style="color: #666; font-size: 0.85rem; display: block; margin-bottom: 4px; text-transform: uppercase; font-weight: 500;">Prime Contractor</span>
+          <strong style="font-size: 1.05rem; color: #333;">{{ job?.primeContractor?.companyName }}</strong>
+          <span style="display: block; color: #555; font-size: 0.9rem; margin-top: 2px;">{{ job?.primeContractor?.companyName }}</span>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 24px;">
+        <h3 style="color: #333; font-size: 1.1rem; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px; font-weight: 500;">Description</h3>
+        <p style="color: #555; line-height: 1.5; margin-top: 8px; font-size: 0.95rem;">{{ job?.description }}</p>
+      </div>
+
+      <div style="margin-bottom: 32px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px; margin-bottom: 16px;">
+          <h3 style="color: #333; font-size: 1.1rem; font-weight: 500; margin: 0;">Financial Health Overview</h3>
+          <button mat-icon-button color="primary" (click)="refreshFinancialMetrics()" [disabled]="isRefreshing" matTooltip="Recalculate metrics">
+            <mat-icon [class.spinner-spin]="isRefreshing">refresh</mat-icon>
+          </button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+          <div style="background: linear-gradient(135deg, #e8f5e9, #c8e6c9); padding: 16px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); border-left: 4px solid #2e7d32;">
+            <span style="color: #2e7d32; font-size: 0.85rem; font-weight: 500; text-transform: uppercase; display: block;">Total Revenue Collected</span>
+            <strong style="font-size: 1.6rem; color: #1b5e20; display: block; margin-top: 4px;">{{ paymentsSettled | currency }}</strong>
+            <span style="font-size: 0.75rem; color: #388e3c; margin-top: 4px; display: block;">Client progress payments</span>
+          </div>
+
+          <div style="background: linear-gradient(135deg, #ede7f6, #d1c4e9); padding: 16px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); border-left: 4px solid #7b1fa2;">
+            <span style="color: #7b1fa2; font-size: 0.85rem; font-weight: 500; text-transform: uppercase; display: block;">Settled Production Cost</span>
+            <strong style="font-size: 1.6rem; color: #4a148c; display: block; margin-top: 4px;">{{ completedTasksCost | currency }}</strong>
+            <span style="font-size: 0.75rem; color: #6a1b9a; margin-top: 4px; display: block;">From completed milestones</span>
+          </div>
+
+          <div style="background: linear-gradient(135deg, #fff3e0, #ffe0b2); padding: 16px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); border-left: 4px solid #ef6c00;">
+            <span style="color: #ef6c00; font-size: 0.85rem; font-weight: 500; text-transform: uppercase; display: block;">Outstanding Task Budget</span>
+            <strong style="font-size: 1.6rem; color: #e65100; display: block; margin-top: 4px;">{{ outstandingTasksCost | currency }}</strong>
+            <span style="font-size: 0.75rem; color: #f57c00; margin-top: 4px; display: block;">Pending operations allocations</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 24px;">
+        <mat-tab-group animationDuration="200ms" color="primary">
+
+          <mat-tab label="Production Tasks">
+            <div style="padding: 20px 0;">
+              <app-task-table [jobId]="job?.jobId"></app-task-table>
+            </div>
+          </mat-tab>
+
+          <mat-tab label="Financial Ledgers">
+            <div style="padding: 20px 0; display: flex; flex-direction: column; gap: 24px;">
+
+              <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+                <div style="background-color: #f5f5f5; padding: 12px 16px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;">
+                  <h4 style="margin: 0; color: #3f51b5; font-weight: 500; font-size: 1rem;">Accounts Payable & Project Expenses</h4>
+                  <span style="background-color: #3f51b5; color: white; font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; font-weight: bold;">
+                    {{ job?.bills?.length || 0 }} Entries
+                  </span>
+                </div>
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                  <thead>
+                  <tr style="background: #fafafa; border-bottom: 1px solid #e0e0e0; color: #666;">
+                    <th style="padding: 12px 16px;">Description</th>
+                    <th style="padding: 12px 16px;">Status</th>
+                    <th style="padding: 12px 16px; text-align: right;">Total Bill Amount</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let bill of job?.bills" style="border-bottom: 1px solid #eee; color: #444;">
+                    <td style="padding: 12px 16px;">{{ bill.description }}</td>
+                    <td style="padding: 12px 16px;">
+                      <span [class]="'status-badge ' + bill.billStatus?.toLowerCase()">{{ bill.billStatus }}</span>
+                    </td>
+                    <td style="padding: 12px 16px; text-align: right; font-weight: 600; color: #222;">
+                      {{ bill.totalAmount | currency }}
+                    </td>
+                  </tr>
+                  <tr *ngIf="!job?.bills?.length">
+                    <td colspan="3" style="padding: 24px; text-align: center; color: #888; font-style: italic;">
+                      No logged material expenses or vendor accounts payable for this project.
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
+                <div style="background-color: #f5f5f5; padding: 12px 16px; border-bottom: 1px solid #e0e0e0; display: flex; justify-content: space-between; align-items: center;">
+                  <h4 style="margin: 0; color: #4caf50; font-weight: 500; font-size: 1rem;">Client Draws & Collected Revenue</h4>
+                  <span style="background-color: #4caf50; color: white; font-size: 0.75rem; padding: 2px 8px; border-radius: 10px; font-weight: bold;">
+                    {{ job?.payments?.length || 0 }} Receipts
+                  </span>
+                </div>
+                <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
+                  <thead>
+                  <tr style="background: #fafafa; border-bottom: 1px solid #e0e0e0; color: #666;">
+                    <th style="padding: 12px 16px;">Payment Date</th>
+                    <th style="padding: 12px 16px;">Reference Code</th>
+                    <th style="padding: 12px 16px; text-align: right;">Amount Collected</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let payment of job?.payments" style="border-bottom: 1px solid #eee; color: #444;">
+                    <td style="padding: 12px 16px;">{{ payment.dateReceived | date:'mediumDate' }}</td>
+                    <td style="padding: 12px 16px; font-family: monospace; color: #555;">{{ payment.referenceNumber || 'N/A' }}</td>
+                    <td style="padding: 12px 16px; text-align: right; font-weight: 600; color: #2e7d32;">
+                      {{ payment.checkAmount | currency }}
+                    </td>
+                  </tr>
+                  <tr *ngIf="!job?.payments?.length">
+                    <td colspan="3" style="padding: 24px; text-align: center; color: #888; font-style: italic;">
+                      No incoming payment timeline values recorded for this client.
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+
+      <div style="margin-top: 32px; background-color: #fafafa; padding: 16px; border-radius: 6px; border: 1px solid #e0e0e0;">
+        <h3 style="color: #333; font-size: 1.1rem; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px; font-weight: 500; margin-top: 0;">
+          Project Timeline
+        </h3>
+        <div style="display: flex; gap: 32px; margin-top: 12px; flex-wrap: wrap;">
+          <div>
+            <span style="color: #777; font-size: 0.9rem; display: block;">Commencement Date</span>
+            <strong style="font-size: 1.05rem; color: #333;">{{ job?.startDate ? (job?.startDate | date:'longDate') : 'Not Set' }}</strong>
+          </div>
+          <div>
+            <span style="color: #777; font-size: 0.9rem; display: block;">Target Completion Date</span>
+            <strong style="font-size: 1.05rem; color: #333;">{{ job?.endDate ? (job?.endDate | date:'longDate') : 'Not Set' }}</strong>
+          </div>
+          <div>
+            <span style="color: #777; font-size: 0.9rem; display: block;">Days To Complete</span>
+            <strong style="font-size: 1.05rem; color: #333;">{{ calculateTimeToComplete() }} Days</strong>
+          </div>
+        </div>
+      </div>
+
+    </mat-card-content>
+
+    <mat-card-actions align="end" style="padding: 16px; gap: 8px; background-color: #fafafa; border-top: 1px solid #e0e0e0;">
+      <button mat-button color="primary" [routerLink]="['/jobs/new', job?.jobId]">
+        <mat-icon>edit</mat-icon> Modify Project
+      </button>
+      <button mat-button color="warn" routerLink="/jobs">Close</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

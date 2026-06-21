@@ -49,13 +49,7 @@ public class Task {
     @JsonIgnoreProperties("tasks")
     private Job job;
 
-    @OneToMany(mappedBy = "task")
-    @JsonIgnoreProperties("task")
-    private List<Payment> payments;
 
-    @OneToMany(mappedBy = "task")
-    @JsonIgnoreProperties("task")
-    private List<Bill> bills;
 
 
 

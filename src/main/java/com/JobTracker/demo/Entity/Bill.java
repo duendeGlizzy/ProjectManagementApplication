@@ -42,9 +42,9 @@ public class Bill {
     private Vendor vendor;
 
     @ManyToOne
-    @JoinColumn(name = "task_id")
-    @JsonIgnoreProperties({"bills", "job", "subContractor"})
-    private Task task;
+    @JoinColumn(name = "job_id", nullable = false)
+    private Job job;
+
 
     @OneToMany(mappedBy = "bill")
     @JsonIgnoreProperties("bill")

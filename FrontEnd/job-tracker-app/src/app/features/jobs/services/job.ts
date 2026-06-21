@@ -76,6 +76,10 @@ export class JobService {
     return this.http.get<number>(`${this.apiUrl}/${id}/netProfit`)
   }
 
+  getJobFinancialBreakdown(id: number): Observable<{ totalPaymentsSettled: number; completedTaskCost: number; outstandingTaskCost: number }> {
+    return this.http.get<{ totalPaymentsSettled: number; completedTaskCost: number; outstandingTaskCost: number }>(`${this.apiUrl}/${id}/financial-breakdown`);
+  }
+
 
 
 }

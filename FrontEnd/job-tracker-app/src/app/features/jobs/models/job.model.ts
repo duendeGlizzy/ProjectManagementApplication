@@ -3,6 +3,8 @@ import { JobType} from './job-type.enum';
 import {Client} from './client.model';
 import {PrimeContractor} from '../../contractors/models/prime-contractor.model';
 import {Task} from './task.model';
+import {Bill} from '../../financials/models/bill.model';
+import {Payment} from '../../financials/models/payment.model';
 
 
 export interface Job{
@@ -22,6 +24,8 @@ export interface Job{
   client?: Client;
   primeContractor?: PrimeContractor;
   tasks?: Task[];
+  bills?: Bill[];
+  payments?: Payment[];
 
 
 

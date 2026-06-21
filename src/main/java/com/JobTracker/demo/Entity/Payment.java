@@ -26,13 +26,14 @@ public class Payment {
 
     private LocalDateTime dateReceived;
 
+    private String referenceNumber;
+
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 
     @ManyToOne
-    @JoinColumn(name = "task_id")
-    @JsonIgnoreProperties("payments")
-    private Task task;
+    @JoinColumn(name = "job_id", nullable = false)
+    private Job job;
 
 
 

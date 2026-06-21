@@ -72,11 +72,6 @@ public class TaskController {
         return ResponseEntity.ok(totalCost);
     }
 
-    @GetMapping("/{id}/totalPayments")
-    public ResponseEntity<BigDecimal> getTotalPayments(@PathVariable Long id) {
-        BigDecimal totalPayments = taskService.calculateTotalPaymentsReceived(id);
-        return ResponseEntity.ok(totalPayments);
-    }
 
     @GetMapping("/{id}/netProfit")
     public ResponseEntity<BigDecimal> getNetProfit(@PathVariable Long id) {
@@ -86,7 +81,7 @@ public class TaskController {
 
     @GetMapping("/tasksByJob/{id}")
     public ResponseEntity<List<Task>> getJobsByJobId(@PathVariable Long id) {
-        List<Task> tasks = taskService.findAllJobsByJobId(id);
+        List<Task> tasks = taskService.findAllTasksByJobId(id);
         return ResponseEntity.ok(tasks);
     }
 

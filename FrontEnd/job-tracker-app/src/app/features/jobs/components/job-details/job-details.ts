@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterModule, Router } from '@angular/router';
 import { JobService } from '../../services/job';
 import { Job } from '../../models/job.model';
 import { Subscription } from 'rxjs';
+import { MatTabsModule } from '@angular/material/tabs';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,7 +20,8 @@ import {TaskTable} from '../task-table/task-table';
   standalone: true,
   imports: [
     CommonModule, MatCardModule, MatButtonModule, MatChipsModule,
-    MatIconModule, MatProgressSpinnerModule, RouterModule, TaskTable
+    MatIconModule, MatProgressSpinnerModule, RouterModule, TaskTable,
+    MatTabsModule
   ],
   templateUrl: './job-details.html',
   styleUrl: './job-details.css',
@@ -30,6 +32,12 @@ export class JobDetails implements OnInit, OnDestroy {
   errorMessage = '';
   private routeSub!: Subscription;
 
+  jobId!: number;
+  paymentsSettled: number = 0;
+  completedTasksCost: number = 0;
+  outstandingTasksCost: number = 0;
+  isRefreshing = false;
+
   constructor(
     private route: ActivatedRoute,
     private jobService: JobService,
@@ -37,21 +45,20 @@ export class JobDetails implements OnInit, OnDestroy {
     private cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit() {
-    // Listen to parameter changes from the router mapping link
+  ngOnInit(): void {
     this.routeSub = this.route.paramMap.subscribe(params => {
-      const idParam = params.get('id');
-      const jobId = Number(idParam);
+      const id = params.get('id');
+      if (id) {
+        this.jobId = +id; // Now it's explicitly assigned!
+        this.loadJobData(this.jobId);
 
-      if (jobId && !isNaN(jobId)) {
-        this.loadJobData(jobId);
-      } else {
-        this.errorMessage = 'Invalid Job Identifier';
-        this.isLoading = false;
-        this.cdr.detectChanges();
+        // 💡 MOVE THIS HERE so it waits for the jobId to exist!
+        this.refreshFinancialMetrics();
       }
     });
   }
+
+
 
   ngOnDestroy() {
     if (this.routeSub) {
@@ -80,9 +87,11 @@ export class JobDetails implements OnInit, OnDestroy {
     });
   }
 
-  progressJob(status: JobStatus) {
+  progressJob(): void {
     if (this.job && this.job.jobId != null) {
-      if (this.job.status === "NOT_STARTED") {
+
+      // 1. Progress from IN_QUEUE to IN_PROGRESS
+      if (this.job.status === 'NOT_STARTED') {
         this.jobService.startJob(this.job.jobId).subscribe({
           next: () => {
             if (this.job && this.job.jobId != null) {
@@ -91,9 +100,11 @@ export class JobDetails implements OnInit, OnDestroy {
           },
           error: (err) => {
             console.error("Unable to execute state progression interface command:", err);
-          },
+          }
         });
-      }else if (this.job.status === "STARTED") {
+
+        // 2. Progress from IN_PROGRESS to COMPLETED
+      } else if (this.job.status === 'STARTED') {
         this.jobService.completeJob(this.job.jobId).subscribe({
           next: () => {
             if (this.job && this.job.jobId != null) {
@@ -105,6 +116,7 @@ export class JobDetails implements OnInit, OnDestroy {
           }
         });
       }
+
     }
   }
 
@@ -130,6 +142,23 @@ export class JobDetails implements OnInit, OnDestroy {
     const days = Math.ceil(timeDifferenceMs /(1000*60*60*24));
     return days < 0 ? 0:days;
   }
+
+  refreshFinancialMetrics(): void {
+    this.isRefreshing = true;
+    this.jobService.getJobFinancialBreakdown(this.jobId).subscribe({
+      next: (data) => {
+        this.paymentsSettled = data.totalPaymentsSettled;
+        this.completedTasksCost = data.completedTaskCost;
+        this.outstandingTasksCost = data.outstandingTaskCost;
+        this.isRefreshing = false;
+      },
+      error: (err) => {
+        console.error("Failed to refresh financial metrics", err);
+        this.isRefreshing = false;
+      }
+    });
+  }
+
 
 
 

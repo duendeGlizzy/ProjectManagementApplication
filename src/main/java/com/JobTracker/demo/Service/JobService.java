@@ -1,10 +1,7 @@
 package com.JobTracker.demo.Service;
 
 import com.JobTracker.demo.ENum.JobStatus;
-import com.JobTracker.demo.Entity.Client;
-import com.JobTracker.demo.Entity.Job;
-import com.JobTracker.demo.Entity.PrimeContractor;
-import com.JobTracker.demo.Entity.Task;
+import com.JobTracker.demo.Entity.*;
 import com.JobTracker.demo.Repository.ClientRepository;
 import com.JobTracker.demo.Repository.JobRepository;
 import com.JobTracker.demo.Repository.PrimeContractorRepository;
@@ -14,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class JobService {
@@ -97,15 +96,15 @@ public class JobService {
             PrimeContractor contractor = primeContractorRepository.findById(primeContractorId)
                     .orElseThrow(() -> new EntityNotFoundException("PrimeContractor with id " + primeContractorId + " not found"));
             currentJob.setPrimeContractor(contractor);
-        }else{
+        } else {
             currentJob.setPrimeContractor(null);
         }
         return jobRepository.save(currentJob);
     }
 
     @Transactional
-    public Job setBidToStart(Long id){
-        if(!jobRepository.existsById(id)){
+    public Job setBidToStart(Long id) {
+        if (!jobRepository.existsById(id)) {
             throw new EntityNotFoundException("Job with id " + id + " not found");
         }
         Job currentJob = jobRepository.findById(id)
@@ -117,8 +116,8 @@ public class JobService {
     }
 
     @Transactional
-    public Job setJobToCompleted(Long id){
-        if(!jobRepository.existsById(id)){
+    public Job setJobToCompleted(Long id) {
+        if (!jobRepository.existsById(id)) {
             throw new EntityNotFoundException("Job with id " + id + " not found");
         }
         Job currentJob = jobRepository.findById(id)
@@ -128,19 +127,18 @@ public class JobService {
     }
 
     @Transactional
-    public Job addTasktoJob(Long jobId, Task task){
-        if(!jobRepository.existsById(jobId)){
+    public Job addTasktoJob(Long jobId, Task task) {
+        if (!jobRepository.existsById(jobId)) {
             throw new EntityNotFoundException("Job with id " + jobId + " not found");
         }
         Job currentJob = jobRepository.findById(jobId)
                 .orElseThrow(() -> new EntityNotFoundException("Job with id " + jobId + " not found"));
 
-        if(currentJob.getTasks().contains(task)){
+        if (currentJob.getTasks().contains(task)) {
             List<Task> tasks = new ArrayList<>();
             tasks.add(task);
             currentJob.setTasks(tasks);
-        }
-        else{
+        } else {
             currentJob.getTasks().add(task);
         }
         return jobRepository.save(currentJob);
@@ -149,70 +147,60 @@ public class JobService {
     //Searching jobs
     @Transactional(readOnly = true)
     public List<Job> findJobsByClientLastName(String clientLastName) {
-            return jobRepository.findByClient_LastName(clientLastName);
+        return jobRepository.findByClient_LastName(clientLastName);
     }
+
     @Transactional(readOnly = true)
     public List<Job> findJobsByPrimeContractorCompanyName(String primeContractorCompanyName) {
         return jobRepository.findByPrimeContractor_CompanyName(primeContractorCompanyName);
     }
+
     @Transactional(readOnly = true)
     public List<Job> findJobsByStatus(JobStatus jobStatus) {
         return jobRepository.findByStatus(jobStatus);
     }
 
 
-
     public BigDecimal calculateTotalPaymentsReceived(Long jobId) {
-            if(!jobRepository.existsById(jobId)) {
-                throw new EntityNotFoundException("Job with id " + jobId + " not found");
-            }
-           Job currentJob = jobRepository.findById(jobId).
-                   orElseThrow(() -> new EntityNotFoundException("Job with id " + jobId + " not found")) ;
+        Job job = jobRepository.findById(jobId)
+                .orElseThrow(() -> new EntityNotFoundException("Job with id " + jobId + " not found"));
 
-            BigDecimal totalPayments = BigDecimal.ZERO;
+        if (job.getPayments() == null) return BigDecimal.ZERO;
 
-            if(currentJob.getTasks() != null) {
-                for (Task task : currentJob.getTasks()) {
-                    totalPayments = totalPayments.add(taskService.calculateTotalPaymentsReceived(task.getTaskId()));
-                }
-            }
-            return totalPayments;
+        BigDecimal paymentsReceived = BigDecimal.ZERO;
+        for (Payment payment : job.getPayments()) {
+            paymentsReceived = paymentsReceived.add(payment.getCheckAmount());
+        }
+        return paymentsReceived;
     }
 
-    public BigDecimal calculateTotalCost(Long jobId) {
-        if(!jobRepository.existsById(jobId)) {
-            throw new EntityNotFoundException("Job with id " + jobId + " not found");
-        }
+
+    public Map<String, BigDecimal> calculateDetailedJobBreakdown(Long jobId) {
         Job currentJob = jobRepository.findById(jobId)
                 .orElseThrow(() -> new EntityNotFoundException("Job with id " + jobId + " not found"));
 
-        BigDecimal totalCost = BigDecimal.ZERO;
-        if(currentJob.getTasks() != null) {
-            for (Task task : currentJob.getTasks()) {
-                totalCost = totalCost.add(taskService.calculateTotalCost(task.getTaskId()));
-            }
-        }
-        return totalCost;
-    }
-
-    public BigDecimal calculateNetProfit(Long jobId) {
-        Job currentJob = findById(jobId);
-        BigDecimal totalContractValue = BigDecimal.ZERO;
-        BigDecimal totalExpenses = BigDecimal.ZERO;
+        BigDecimal totalPaymentsSettled = this.calculateTotalPaymentsReceived(jobId);
+        BigDecimal completedTaskCost = BigDecimal.ZERO;
+        BigDecimal outstandingTaskCost = BigDecimal.ZERO;
 
         if (currentJob.getTasks() != null) {
             for (Task task : currentJob.getTasks()) {
-                if (task.getTotalPrice() != null) {
-                    totalContractValue = totalContractValue.add(task.getTotalPrice());
+                BigDecimal taskPrice = task.getTotalPrice() != null ? task.getTotalPrice() : BigDecimal.ZERO;
+
+                if (task.getStatus() != null && task.getStatus().name().equalsIgnoreCase("COMPLETED")) {
+                    completedTaskCost = completedTaskCost.add(taskPrice);
+                } else {
+                    outstandingTaskCost = outstandingTaskCost.add(taskPrice);
                 }
-                totalExpenses = totalExpenses.add(taskService.calculateTotalCost(task.getTaskId()));
             }
         }
-        return totalContractValue.subtract(totalExpenses);
+        Map<String, BigDecimal> breakdown = new HashMap<>();
+        breakdown.put("totalPaymentsSettled", totalPaymentsSettled);
+        breakdown.put("completedTaskCost", completedTaskCost);
+        breakdown.put("outstandingTaskCost", outstandingTaskCost);
+
+        return breakdown;
     }
-
-
-
 
 
 }

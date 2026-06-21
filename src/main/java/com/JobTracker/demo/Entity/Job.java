@@ -55,6 +55,12 @@ public class Job {
     @JsonIgnoreProperties("job")
     private List<Task> tasks;
 
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Bill> bills;
+
+    @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Payment> payments;
+
 
 
 

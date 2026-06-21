@@ -3,6 +3,7 @@ package com.JobTracker.demo.Service;
 import com.JobTracker.demo.ENum.BillStatus;
 import com.JobTracker.demo.Entity.*;
 import com.JobTracker.demo.Repository.BillRepository;
+import com.JobTracker.demo.Repository.JobRepository;
 import com.JobTracker.demo.Repository.TaskRepository;
 import com.JobTracker.demo.Repository.VendorRepository;
 import jakarta.transaction.Transactional;
@@ -18,13 +19,15 @@ public class BillService {
     private final BillRepository billRepository;
     private final TaskRepository taskRepository;
     private final VendorRepository vendorRepository;
+    private final JobRepository jobRepository;
 
     public BillService(BillRepository billRepository,
                        TaskRepository taskRepository,
-                       VendorRepository vendorRepository) {
+                       VendorRepository vendorRepository, JobRepository jobRepository) {
         this.billRepository = billRepository;
         this.taskRepository = taskRepository;
         this.vendorRepository = vendorRepository;
+        this.jobRepository = jobRepository;
     }
 
     public List<Bill> findAll() {
@@ -37,23 +40,20 @@ public class BillService {
     }
 
     @Transactional
-    public Bill createBill(Bill bill, Long vendorId, Long taskId) {
+    public Bill createBill(Bill bill, Long vendorId, Long jobId) {
          Bill newBill = new Bill();
 
          newBill.setDescription(bill.getDescription());
          newBill.setStatus(BillStatus.RECEIVED);
-         newBill.setDueDate(bill.getDueDate());
-         newBill.setIssueDate(bill.getIssueDate());
+
+         Job job = jobRepository.findById(jobId)
+                 .orElseThrow(() -> new IllegalArgumentException("Job not found!"));
+         newBill.setJob(job);
 
          Vendor vendor = vendorRepository.findById(vendorId)
                  .orElseThrow(() -> new IllegalArgumentException("Vendor not found!"));
-
          newBill.setVendor(vendor);
 
-         Task task = taskRepository.findById(taskId)
-                 .orElseThrow(() -> new IllegalArgumentException("Task not found!"));
-
-         newBill.setTask(task);
 
              BigDecimal runningTotalAmount = BigDecimal.ZERO;
              if(bill.getLineItems() != null) {

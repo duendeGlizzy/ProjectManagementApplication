@@ -1,5 +1,6 @@
 import { Task } from "../../jobs/models/task.model";
 import {PaymentMethod} from "./payment-method.enum";
+import {Job} from '../../jobs/models/job.model';
 
 
 export interface Payment {
@@ -10,8 +11,9 @@ export interface Payment {
  dateReceived: string | Date;
 
  paymentMethod: PaymentMethod;
+ referenceNumber: string;
 
- task?: Task;
+ job?: Job;
 
 
 }
