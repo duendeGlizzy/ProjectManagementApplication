@@ -1,8 +1,7 @@
-import { NgFor, NgIf, CurrencyPipe } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ActivatedRoute, Router, RouterModule} from '@angular/router';
 
-// Angular Material Imports
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -16,7 +15,6 @@ import { MatNativeDateModule } from '@angular/material/core';
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {TaskService} from '../../services/task';
 import {SubContractorService} from '../../../contractors/services/sub-contractor';
-import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-task-form',
@@ -24,7 +22,6 @@ import { MatDialog } from '@angular/material/dialog';
   imports: [
     NgFor,
     NgIf,
-    CurrencyPipe,
     ReactiveFormsModule,
     RouterModule,
     MatCardModule,
@@ -65,8 +62,7 @@ export class TaskForm implements OnInit {
               private subContractorService: SubContractorService,
               private route: ActivatedRoute,
               private router: Router,
-              private cdr: ChangeDetectorRef,
-              private dialog: MatDialog,) {
+              private cdr: ChangeDetectorRef,) {
   }
 
   ngOnInit() {
@@ -211,7 +207,6 @@ export class TaskForm implements OnInit {
   private handleError(err: any): void {
     console.error('CRITICAL SYSTEM TRANSACTION FAULT:', err);
 
-    // Parse deep validation errors if the backend sent a specific response map message
     if (err.error && typeof err.error === 'string') {
       this.errorMessage = `Backend Error: ${err.error}`;
     } else if (err.error && err.error.message) {
@@ -221,7 +216,7 @@ export class TaskForm implements OnInit {
     }
 
     this.isLoading = false;
-    this.cdr.detectChanges(); // Clear loading indicator and render the error box immediately
+    this.cdr.detectChanges();
   }
 
 

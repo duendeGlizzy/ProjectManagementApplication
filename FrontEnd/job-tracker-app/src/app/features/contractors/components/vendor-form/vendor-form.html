@@ -5,7 +5,7 @@
     <mat-card-header style="background-color: #3f51b5; color: white; padding: 16px; margin: -12px -12px 20px -12px;">
       <mat-card-title style="font-size: 1.2rem; font-weight: 500; display: flex; align-items: center; gap: 8px;">
         <mat-icon>{{ isEditMode ? 'edit' : 'add_circle_outline' }}</mat-icon>
-        <span>{{ isEditMode ? 'Edit Prime Contractor Details' : 'Register New Prime Contractor' }}</span>
+        <span>{{ isEditMode ? 'Edit Vendor Details' : 'Register New Vendor' }}</span>
       </mat-card-title>
     </mat-card-header>
 
@@ -13,24 +13,37 @@
       {{ errorMessage }}
     </div>
 
-    <form [formGroup]="primeContractorForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="vendorForm" (ngSubmit)="onSubmit()">
       <mat-card-content style="display: flex; flex-direction: column; gap: 16px;">
 
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Company Name</mat-label>
           <input matInput formControlName="companyName" placeholder="e.g. Acme Supply Co.">
-          <mat-error *ngIf="primeContractorForm.get('companyName')?.hasError('required')">
+          <mat-error *ngIf="vendorForm.get('companyName')?.hasError('required')">
             Company Name is required.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Description / Services Provided</mat-label>
+          <textarea matInput formControlName="description" rows="3" placeholder="e.g. Lumber, building supplies, hardware materials"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Business Address</mat-label>
+          <input matInput formControlName="address" placeholder="123 Industrial Parkway, Suite A">
+          <mat-error *ngIf="vendorForm.get('address')?.hasError('required')">
+            Address tracking information is required.
           </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Phone Number</mat-label>
           <input matInput formControlName="phoneNumber" placeholder="555-0199">
-          <mat-error *ngIf="primeContractorForm.get('phoneNumber')?.hasError('required')">
+          <mat-error *ngIf="vendorForm.get('phoneNumber')?.hasError('required')">
             Phone number entry is required.
           </mat-error>
-          <mat-error *ngIf="primeContractorForm.get('phoneNumber')?.hasError('pattern')">
+          <mat-error *ngIf="vendorForm.get('phoneNumber')?.hasError('pattern')">
             Please enter a valid phone number.
           </mat-error>
         </mat-form-field>
@@ -41,9 +54,9 @@
         <button mat-button type="button" routerLink="/contractors" [disabled]="isSubmitting" style="border-radius: 0 !important;">
           Cancel
         </button>
-        <button mat-flat-button color="primary" type="submit" [disabled]="primeContractorForm.invalid || isSubmitting" style="border-radius: 0 !important; font-weight: 500;">
+        <button mat-flat-button color="primary" type="submit" [disabled]="vendorForm.invalid || isSubmitting" style="border-radius: 0 !important; font-weight: 500;">
           <mat-icon style="font-size: 18px; width: 18px; height: 18px; margin-right: 4px;">save</mat-icon>
-          <span>{{ isEditMode ? 'Update Prime Contractor' : 'Save Prime Contractor' }}</span>
+          <span>{{ isEditMode ? 'Update Vendor' : 'Save Vendor' }}</span>
         </button>
       </mat-card-actions>
     </form>

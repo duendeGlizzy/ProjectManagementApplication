@@ -9,6 +9,7 @@ import { Task } from '../../models/task.model'
 
 import { MatTableModule } from '@angular/material/table';
 import {MatButton} from '@angular/material/button';
+import {MatIcon} from '@angular/material/icon';
 
 
 @Component({
@@ -21,12 +22,13 @@ import {MatButton} from '@angular/material/button';
     RouterModule,
     NgClass,
     MatButton,
+    MatIcon,
   ],
   templateUrl: './task-table.html',
   styleUrl: './task-table.css',
 })
 export class TaskTable implements OnChanges {
-  taskList = signal<Task[]>([]) ;
+  taskList = signal<Task[]>([]);
    errorMessage= '';
 
   @Input({transform: numberAttribute}) jobId!: number;

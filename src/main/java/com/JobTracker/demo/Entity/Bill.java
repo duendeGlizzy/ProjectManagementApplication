@@ -43,6 +43,7 @@ public class Bill {
 
     @ManyToOne
     @JoinColumn(name = "job_id", nullable = false)
+    @JsonIgnoreProperties({"bills", "tasks", "payments", "client", "primeContractor"})
     private Job job;
 
 

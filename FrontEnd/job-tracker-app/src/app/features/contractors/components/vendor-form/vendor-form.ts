@@ -7,13 +7,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import {SubContractorService} from '../../services/sub-contractor';
-import {SubContractor} from '../../models/sub-contractor.model';
-import {PrimeContractorService} from '../../services/prime-contractor';
-import {PrimeContractor} from '../../models/prime-contractor.model';
+import { VendorService } from '../../services/vendor';
+import { Vendor } from '../../models/vendor.model';
 
 @Component({
-  selector: 'app-prime-contractor-form',
+  selector: 'app-vendor-form',
   standalone: true,
   imports: [
     CommonModule,
@@ -24,75 +22,77 @@ import {PrimeContractor} from '../../models/prime-contractor.model';
     MatInputModule,
     MatButtonModule,
     MatIconModule
-
   ],
-  templateUrl: './prime-contractor-form.html',
-  styleUrl: './prime-contractor-form.css',
+  templateUrl: './vendor-form.html',
+  styleUrl: './vendor-form.css',
 })
-export class PrimeContractorForm implements OnInit {
-  primeContractorForm!: FormGroup;
+export class VendorForm implements OnInit {
+  vendorForm!: FormGroup;
   isEditMode = false;
-  primeContractorId: number | null = null;
+  vendorId: number | null = null;
   errorMessage = '';
   isSubmitting = false;
 
-  constructor(private primeContractorService: PrimeContractorService,
+  constructor(private vendorService: VendorService,
               private router: Router,
-              private route: ActivatedRoute,
-              private fb: FormBuilder,) {
-  }
+              private fb: FormBuilder,
+              private route: ActivatedRoute,) { }
 
   ngOnInit() {
     this.initForm();
 
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
-      this.primeContractorId = +idParam;
+      this.vendorId = +idParam;
       this.isEditMode = true;
-      this.loadVendorData(this.primeContractorId)
+      this.loadVendorData(this.vendorId)
     }
   }
 
   private initForm(): void {
-    this.primeContractorForm = this.fb.group({
+    this.vendorForm = this.fb.group({
       companyName: ['', [Validators.required, Validators.maxLength(100)]],
+      description: ['', [Validators.maxLength(255)]],
+      address: ['', [Validators.required, Validators.maxLength(255)]],
       phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9\\-\\+ ]{7,15}$')]],
     });
   }
 
   private loadVendorData(id: number): void {
-    this.primeContractorService.getPrimeContractor(id).subscribe({
-      next: (primeContractor: PrimeContractor) => {
-        this.primeContractorForm.patchValue({
-          companyName: primeContractor.companyName,
-          phoneNumber: primeContractor.phoneNumber,
+    this.vendorService.getVendorById(id).subscribe({
+      next: (vendor: Vendor) => {
+        this.vendorForm.patchValue({
+          companyName: vendor.companyName,
+          description: vendor.description,
+          address: vendor.address,
+          phoneNumber: vendor.phoneNumber,
         });
       },
       error: error => {
         console.error(error);
-        this.errorMessage = 'could not load prime contractor';
+        this.errorMessage = 'could not load vendor';
       }
     });
   }
 
   onSubmit() {
-    if(this.primeContractorForm.invalid) {
+    if(this.vendorForm.invalid) {
       return;
     }
 
     this.isSubmitting = true;
     this.errorMessage = '';
-    const primeContractorPayLoad: PrimeContractor = this.primeContractorForm.value;
+    const vendorPayLoad: Vendor = this.vendorForm.value;
 
-    if(this.isEditMode && this.primeContractorId !== null){
-      this.primeContractorService.updatePrimeContractor( this.primeContractorId, primeContractorPayLoad).subscribe({
+    if(this.isEditMode && this.vendorId !== null){
+      this.vendorService.updateVendor(vendorPayLoad, this.vendorId).subscribe({
         next:()=> this.navigateBack(),
-        error: (err) => this.handleError(err, 'failed to update prime contractor'),
+        error: (err) => this.handleError(err, 'failed to update vendor')
       });
     }else{
-      this.primeContractorService.createPrimeContractor(primeContractorPayLoad).subscribe({
+      this.vendorService.createVendor(vendorPayLoad).subscribe({
         next: () => this.navigateBack(),
-        error: (err) => this.handleError(err, 'failed to create prime contractor'),
+        error: (err) => this.handleError(err, 'failed to create vendor')
       });
     }
   }

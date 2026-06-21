@@ -1,8 +1,19 @@
 <h3 style="color: #555; border-bottom: 1px solid #e0e0e0; padding-bottom: 6px; font-weight: 500;">Tasks</h3>
 
-<div>
-  <button matButton="tonal" [routerLink]="['/tasks/new']" [queryParams]="{ jobId: jobId }">New task</button>
+
+
+<div style="margin-bottom: 20px;">
+  <button mat-flat-button
+          color="primary"
+          [routerLink]="['/tasks/new']" [queryParams]="{ jobId: jobId }"
+          style="border-radius: 0 !important; padding: 8px 20px; font-weight: 500; height: 42px; letter-spacing: 0.4px; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);">
+    <mat-icon style="margin: 0; font-size: 20px; width: 20px; height: 20px;">add_circle_outline</mat-icon>
+    <span>New Task</span>
+  </button>
 </div>
+
+
+
 <div class="mat-elevation-z8 text-nowrap rounded overflow-hidden" *ngIf="taskList().length > 0"
      style="margin-bottom: 5px; max-height:350px; overflow-y:auto; overflow-x: auto;">
   <table mat-table [dataSource]="taskList()" class="w-100">
