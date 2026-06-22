@@ -11,6 +11,8 @@ import {PrimeContractorForm} from './features/contractors/components/prime-contr
 import {VendorForm} from './features/contractors/components/vendor-form/vendor-form';
 import {ClientDashboard} from './features/jobs/components/client-dashboard/client-dashboard';
 import {ClientForm} from './features/jobs/components/client-form/client-form';
+import {BillForm} from './features/financials/components/bill-form/bill-form';
+import {PaymentForm} from './features/financials/components/payment-form/payment-form';
 
 
 
@@ -23,6 +25,10 @@ export const routes: Routes = [
   { path: 'jobs/new', component: JobForm },
   { path: 'jobs/new/:id', component: JobForm },
   { path: 'jobs/:id', component: JobDetails },
+
+  {path: 'jobs/:id/bills/new', component: BillForm},
+  {path: 'jobs/:id/payments/new', component: PaymentForm},
+
 
   { path: 'tasks/new', component: TaskForm },
   { path: 'tasks/new/:id', component: TaskForm },
@@ -44,6 +50,7 @@ export const routes: Routes = [
   {path: 'clients/new/:id', component: ClientForm},
 
   {path: 'financials', component: FinancialDashboard},
+
 
 
 
