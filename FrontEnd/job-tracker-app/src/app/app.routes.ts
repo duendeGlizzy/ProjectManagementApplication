@@ -10,6 +10,7 @@ import {SubContractorForm} from './features/contractors/components/sub-contracto
 import {PrimeContractorForm} from './features/contractors/components/prime-contractor-form/prime-contractor-form';
 import {VendorForm} from './features/contractors/components/vendor-form/vendor-form';
 import {ClientDashboard} from './features/jobs/components/client-dashboard/client-dashboard';
+import {ClientForm} from './features/jobs/components/client-form/client-form';
 
 
 
@@ -38,8 +39,12 @@ export const routes: Routes = [
   {path: 'contractors/vendor/new', component: VendorForm},
   {path: 'contractors/vendor/new/:id', component: VendorForm},
 
-  {path: 'financials', component: FinancialDashboard},
   {path: 'clients', component: ClientDashboard},
+  {path: 'clients/new', component: ClientForm},
+  {path: 'clients/new/:id', component: ClientForm},
+
+  {path: 'financials', component: FinancialDashboard},
+
 
 
 

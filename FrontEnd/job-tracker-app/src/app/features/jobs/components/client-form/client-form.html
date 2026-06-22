@@ -1,0 +1,84 @@
+<div style="max-width: 600px; margin: 2rem auto; padding: 0 1rem;">
+
+  <mat-card style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); padding: 16px;">
+    <mat-card-header style="margin-bottom: 20px;">
+      <mat-card-title style="color: #333; font-weight: 500; font-size: 1.4rem;">
+        {{ isEditMode ? 'Edit Client' : 'New Client' }}
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="errorMessage"
+           style="background-color: #ffebee; color: #c62828; padding: 12px 16px; margin-bottom: 20px; border-left: 4px solid #e53935; font-size: 0.9rem; border-radius: 4px;">
+        {{ errorMessage }}
+      </div>
+
+      <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" style="display: flex; flex-direction: column; gap: 12px;">
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>First Name</mat-label>
+          <input matInput formControlName="firstName" placeholder="Enter first name">
+          <mat-error *ngIf="clientForm.get('firstName')?.hasError('required')">
+            First name is required.
+          </mat-error>
+          <mat-error *ngIf="clientForm.get('firstName')?.hasError('maxlength')">
+            Cannot exceed 100 characters.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Last Name</mat-label>
+          <input matInput formControlName="lastName" placeholder="Enter last name">
+          <mat-error *ngIf="clientForm.get('lastName')?.hasError('maxlength')">
+            Cannot exceed 255 characters.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Address</mat-label>
+          <input matInput formControlName="address" placeholder="Enter street address">
+          <mat-error *ngIf="clientForm.get('address')?.hasError('required')">
+            Address is required.
+          </mat-error>
+          <mat-error *ngIf="clientForm.get('address')?.hasError('maxlength')">
+            Cannot exceed 255 characters.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Phone Number</mat-label>
+          <input matInput formControlName="phoneNumber" placeholder="Enter phone number">
+          <mat-error *ngIf="clientForm.get('phoneNumber')?.hasError('required')">
+            Phone number is required.
+          </mat-error>
+          <mat-error *ngIf="clientForm.get('phoneNumber')?.hasError('pattern')">
+            Please enter a valid phone number (7-15 digits).
+          </mat-error>
+        </mat-form-field>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 16px;">
+
+          <button mat-stroked-button
+                  type="button"
+                  (click)="navigateBack()"
+                  [disabled]="isSubmitting"
+                  style="border-radius: 4px; height: 42px; padding: 0 20px;">
+            Cancel
+          </button>
+
+          <button mat-flat-button
+                  color="primary"
+                  type="submit"
+                  [disabled]="clientForm.invalid || isSubmitting"
+                  style="border-radius: 4px; height: 42px; padding: 0 24px; font-weight: 500; min-width: 100px;">
+            <span *ngIf="!isSubmitting">{{ isEditMode ? 'Save Changes' : 'Create Client' }}</span>
+            <span *ngIf="isSubmitting">Saving...</span>
+          </button>
+
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+</div>
