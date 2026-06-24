@@ -43,8 +43,11 @@ public class BillService {
     public Bill createBill(Bill bill, Long vendorId, Long jobId) {
          Bill newBill = new Bill();
 
+
          newBill.setDescription(bill.getDescription());
          newBill.setStatus(BillStatus.RECEIVED);
+         newBill.setIssueDate(bill.getIssueDate());
+         newBill.setDueDate(bill.getDueDate());
 
          Job job = jobRepository.findById(jobId)
                  .orElseThrow(() -> new IllegalArgumentException("Job not found!"));

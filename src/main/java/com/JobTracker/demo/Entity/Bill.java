@@ -2,6 +2,7 @@ package com.JobTracker.demo.Entity;
 
 import com.JobTracker.demo.ENum.BillStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -10,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +29,15 @@ public class Bill {
 
     private BigDecimal totalAmount;
 
-    private LocalDateTime issueDate;
+    private LocalDate issueDate;
 
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 
     private String description;
 
+    //metaData for pdf file uploads handing storage with aws
+    private String receiptAttachmentKey;
+    private String receiptFileName;
 
     @Enumerated(EnumType.STRING)
     private BillStatus status;

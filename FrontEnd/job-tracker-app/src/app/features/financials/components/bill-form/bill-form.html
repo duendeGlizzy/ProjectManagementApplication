@@ -1,1 +1,169 @@
-<p>bill-form works!</p>
+<div class="container-wrapper" style="max-width: 600px; margin: 2rem auto; padding: 0 1rem;">
+
+  <mat-card class="shadow-sm">
+    <mat-card-header style="background-color: #3f51b5; color: white; padding: 20px; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+      <mat-card-title style="font-size: 1.3rem; font-weight: 500;">
+        Log New Project Bill Expense
+      </mat-card-title>
+      <mat-card-subtitle style="color: rgba(255,255,255,0.8); margin-top: 4px;">
+        Job Context: #{{ targetJobId }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <div *ngIf="isLoadingData" style="display: flex; justify-content: center; align-items: center; padding: 40px;">
+      <mat-spinner diameter="40"></mat-spinner>
+    </div>
+
+    <mat-card-content style="padding: 24px;" *ngIf="!isLoadingData && billForm">
+
+      <div *ngIf="errorMessage" style="background-color: #ffebee; color: #c62828; padding: 12px; margin-bottom: 20px; border-left: 4px solid #e53935; border-radius: 4px; font-size: 0.9rem;">
+        {{ errorMessage }}
+      </div>
+
+      <form [formGroup]="billForm" (ngSubmit)="onSubmit()">
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+
+          <mat-form-field appearance="outline" style="width: 100%;">
+            <mat-label>Description</mat-label>
+            <input matInput formControlName="description" placeholder="General summary of the bill details">
+            <mat-error *ngIf="billForm.get('description')?.hasError('required')">
+              Description details are required
+            </mat-error>
+          </mat-form-field>
+
+          <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            <mat-form-field appearance="outline" style="flex: 1; min-width: 200px;">
+              <mat-label>Issue Date</mat-label>
+              <input matInput [matDatepicker]="issuePicker" formControlName="issueDate" placeholder="Choose a date">
+              <mat-datepicker-toggle matIconSuffix [for]="issuePicker"></mat-datepicker-toggle>
+              <mat-datepicker #issuePicker></mat-datepicker>
+              <mat-error *ngIf="billForm.get('issueDate')?.hasError('required')">
+                Issue date is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="flex: 1; min-width: 200px;">
+              <mat-label>Due Date</mat-label>
+              <input matInput [matDatepicker]="duePicker" formControlName="dueDate" placeholder="Choose a date">
+              <mat-datepicker-toggle matIconSuffix [for]="duePicker"></mat-datepicker-toggle>
+              <mat-datepicker #duePicker></mat-datepicker>
+              <mat-error *ngIf="billForm.get('dueDate')?.hasError('required')">
+                Due date is required
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            <mat-form-field appearance="outline" style="flex: 1; min-width: 200px;">
+              <mat-label>Associated Vendor Target</mat-label>
+              <mat-select formControlName="vendorId">
+                <mat-option *ngFor="let vendor of vendors" [value]="vendor.vendorId">
+                  {{ vendor.companyName }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="billForm.get('vendorId')?.hasError('required')">
+                Please attach an associated vendor
+              </mat-error>
+            </mat-form-field>
+
+            <button mat-mini-fab color="primary" type="button" style="margin-top: 6px;" (click)="openAddVendorDialog()" matTooltip="Create New Client Profile">
+              <mat-icon>add</mat-icon>
+            </button>
+
+            <mat-form-field appearance="outline" style="flex: 1; min-width: 200px;">
+              <mat-label>Payment Lifecycle Status</mat-label>
+              <mat-select formControlName="billStatus">
+                <mat-option value="RECEIVED">RECEIVED</mat-option>
+                <mat-option value="DUE">DUE</mat-option>
+                <mat-option value="PAYED">PAYED</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+        </div>
+
+        <div formArrayName="lineItems" style="margin-top: 24px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e0e0e0; padding-bottom: 8px; margin-bottom: 16px;">
+            <h3 style="margin: 0; font-size: 1.1rem; font-weight: 500; color: #333;">Line Itemization</h3>
+            <button mat-stroked-button type="button" color="primary" (click)="addLineItem()">
+              <mat-icon>add</mat-icon> Add Item
+            </button>
+          </div>
+
+          <div *ngIf="lineItems.length === 0" style="text-align: center; color: #757575; padding: 20px 0; font-style: italic; background: #fafafa; border: 1px dashed #e0e0e0; border-radius: 4px; margin-bottom: 16px;">
+            No item line adjustments loaded. Add items manually above if total calculations are needed.
+          </div>
+
+          <div *ngFor="let item of lineItems.controls; let i=index" [formGroupName]="i" style="display: flex; gap: 12px; flex-wrap: wrap; background: #f9f9f9; padding: 12px; border-radius: 4px; margin-bottom: 12px; align-items: center;">
+
+            <mat-form-field appearance="outline" style="flex: 2; min-width: 150px; margin-bottom: -1.25rem;">
+              <mat-label>Description</mat-label>
+              <input matInput formControlName="description" placeholder="Item details">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="width: 80px; margin-bottom: -1.25rem;">
+              <mat-label>Qty</mat-label>
+              <input matInput type="number" formControlName="quantity">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="width: 110px; margin-bottom: -1.25rem;">
+              <mat-label>Unit Price</mat-label>
+              <span matPrefix>$&nbsp;</span>
+              <input matInput type="number" formControlName="unitPrice" placeholder="0.00">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="flex: 1; min-width: 160px; margin-bottom: -1.25rem;">
+              <mat-label>Tax Category</mat-label>
+              <mat-select formControlName="taxCategory">
+                <mat-option *ngFor="let cat of taxCategories" [value]="cat">
+                  {{ cat }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <button mat-icon-button type="button" color="warn" (click)="removeLineItem(i)" style="margin-top: 4px;">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-top: 32px; background: #fafafa; border: 1px solid #e0e0e0; border-radius: 4px; padding: 16px;">
+          <h4 style="margin: 0 0 12px 0; font-size: 0.95rem; font-weight: 500; color: #424242;">Receipt Audit Document</h4>
+
+          <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+            <input type="file" #fileInput (change)="onFileSelected($event)" accept="application/pdf" style="display: none;">
+
+            <button mat-stroked-button type="button" color="primary" (click)="fileInput.click()" style="border-radius: 4px;">
+              <mat-icon>cloud_upload</mat-icon>
+              <span>Choose PDF File</span>
+            </button>
+
+            <div *ngIf="selectedFile" style="display: inline-flex; align-items: center; gap: 6px; background: #e8f5e9; color: #2e7d32; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: 500;">
+              <mat-icon style="font-size: 16px; width: 16px; height: 16px; margin: 0;">picture_as_pdf</mat-icon>
+              <span>{{ selectedFile.name }}</span>
+            </div>
+
+            <span *ngIf="!selectedFile" style="color: #6c757d; font-size: 0.85rem; font-style: italic;">
+              No file attachment selected.
+            </span>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; border-top: 1px solid #e0e0e0; padding-top: 16px;">
+          <button mat-button type="button" [routerLink]="['/jobs', targetJobId]">
+            Cancel
+          </button>
+
+          <button mat-flat-button type="submit" color="primary" [disabled]="billForm.invalid || isSubmitting" style="padding: 0 24px;">
+            <span *ngIf="!isSubmitting">Submit Expense</span>
+            <span *ngIf="isSubmitting" style="display: inline-flex; align-items: center; gap: 8px;">
+              Processing...
+            </span>
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

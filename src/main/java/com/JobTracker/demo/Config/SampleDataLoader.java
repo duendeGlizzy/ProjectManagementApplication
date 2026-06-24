@@ -110,8 +110,8 @@ public class SampleDataLoader {
             // 8. Create a Vendor Bill for materials used on Task A (Framing)
             Bill bill1 = new Bill();
             bill1.setDescription("Lumber, drywall sheets, and fastening screws");
-            bill1.setIssueDate(LocalDateTime.now().minusDays(5));
-            bill1.setDueDate(LocalDateTime.now().plusDays(25));
+            bill1.setIssueDate(LocalDate.now().minusDays(5));
+            bill1.setDueDate(LocalDate.now().plusDays(25));
 
             LineItem item1 = new LineItem();
             item1.setDescription("Premium 2x4 Studs");

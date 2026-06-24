@@ -15,6 +15,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {TaskService} from '../../services/task';
 import {SubContractorService} from '../../../contractors/services/sub-contractor';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import {SubcontractorDialogComponent} from '../subcontractor-dialog/subcontractor-dialog';
+import {MatTooltip} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-task-form',
@@ -33,7 +36,9 @@ import {SubContractorService} from '../../../contractors/services/sub-contractor
     MatCheckboxModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatDialogModule,
+    MatTooltip,
 
   ],
   templateUrl: './task-form.html',
@@ -62,7 +67,8 @@ export class TaskForm implements OnInit {
               private subContractorService: SubContractorService,
               private route: ActivatedRoute,
               private router: Router,
-              private cdr: ChangeDetectorRef,) {
+              private cdr: ChangeDetectorRef,
+              private dialog: MatDialog,) {
   }
 
   ngOnInit() {
@@ -218,6 +224,26 @@ export class TaskForm implements OnInit {
     this.isLoading = false;
     this.cdr.detectChanges();
   }
+
+  openAddSubContractorDialog(): void {
+    const dialogRef = this.dialog.open(SubcontractorDialogComponent, {
+      width: '400px',
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe((newSub) => {
+      if (newSub) {
+        this.subContractors.push(newSub);
+
+        this.taskForm.patchValue({
+          subContractorId: newSub.subContractorId
+        });
+
+        this.cdr.detectChanges();
+      }
+    });
+  }
+
 
 
 

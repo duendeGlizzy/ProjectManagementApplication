@@ -15,7 +15,7 @@ export interface Bill{
   issueDate?: string | Date;
   dueDate?: string | Date;
 
-  billStatus: BillStatus;
+  status: BillStatus;
 
   vendor?: Vendor;
   job?: Job;

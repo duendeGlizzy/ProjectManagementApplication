@@ -58,6 +58,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+
+          },
           "configurations": {
             "production": {
               "buildTarget": "job-tracker-app:build:production"

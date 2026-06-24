@@ -41,6 +41,13 @@ export class BillService {
     return this.http.put<Bill>(`${this.apiUrl}/${id}/updateStatus`, {}, {params});
 
   }
+  uploadBillWithReceipt(formData: FormData, vendorId: number, jobId: number): Observable<Bill> {
+    let params = new HttpParams()
+      .set('vendorId', vendorId.toString())
+      .set('jobId', jobId.toString());
+
+    return this.http.post<Bill>(this.apiUrl, formData, { params });
+  }
 
 
 }

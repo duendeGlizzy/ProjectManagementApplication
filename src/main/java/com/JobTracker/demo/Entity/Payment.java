@@ -28,6 +28,10 @@ public class Payment {
 
     private String referenceNumber;
 
+    //metaData for pdf file uploads handing storage with aws
+    private String checkAttachmentKey;
+    private String checkFileName;
+
     @Enumerated(EnumType.STRING)
     private PaymentMethod paymentMethod;
 

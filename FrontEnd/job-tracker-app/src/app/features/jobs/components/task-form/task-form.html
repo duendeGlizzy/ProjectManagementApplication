@@ -23,11 +23,16 @@
             </mat-select>
           </mat-form-field>
 
+
           <div style="flex: 1; min-width: 250px; display: flex; align-items: center; padding-left: 4px;">
             <mat-checkbox formControlName="isSubContracted" color="primary">
               Is this Task Outsourced/Sub-Contracted?
             </mat-checkbox>
+
+
+
           </div>
+
         </div>
 
         <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 8px;">
@@ -45,8 +50,11 @@
             <mat-icon matPrefix style="color: #777; margin-right: 4px;">payments</mat-icon>
             <mat-error *ngIf="taskForm.get('payRoll')?.hasError('required')">Internal ledger track expense field required.</mat-error>
             <mat-error *ngIf="taskForm.get('payRoll')?.hasError('min')">Value cannot fall below zero.</mat-error>
+
           </mat-form-field>
+
         </div>
+
 
         <div style="display: flex; margin-bottom: 8px;" *ngIf="taskForm.get('isSubContracted')?.value">
           <mat-form-field appearance="outline" style="width: 100%;">
@@ -59,7 +67,13 @@
             </mat-select>
             <mat-error *ngIf="taskForm.get('subContractorId')?.hasError('required')">An active sub-contractor profile attachment is required.</mat-error>
           </mat-form-field>
+
+          <button mat-mini-fab color="primary" type="button" style="margin-top: 6px; margin-left: 6px;" (click)="openAddSubContractorDialog()" matTooltip="Create New Client Profile">
+            <mat-icon>add</mat-icon>
+          </button>
+
         </div>
+
 
         <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 8px;">
           <mat-form-field appearance="outline" style="flex: 1; min-width: 250px;">

@@ -1,0 +1,17 @@
+{
+  "/vendors": {
+    "target": "http://localhost:8080/api",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/tasks": {
+    "target": "http://localhost:8080/api",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/bills": {
+    "target": "http://localhost:8080/api",
+    "secure": false,
+    "logLevel": "debug"
+  }
+}
