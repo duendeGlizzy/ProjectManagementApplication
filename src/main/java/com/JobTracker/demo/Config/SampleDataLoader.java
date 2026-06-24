@@ -131,7 +131,7 @@ public class SampleDataLoader {
             // 9. Process a payment transaction against the newly generated Bill
             Payment payment1 = new Payment();
             payment1.setCheckAmount(bill1.getTotalAmount());
-            payment1.setDateReceived(LocalDateTime.now());
+            payment1.setDateReceived(LocalDate.now());
 
             // 💡 FIXED: Reference 'taskA.getTaskId()' directly to avoid the NullPointerException
 

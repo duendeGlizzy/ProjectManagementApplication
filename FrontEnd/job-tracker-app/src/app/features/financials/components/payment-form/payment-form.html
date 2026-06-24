@@ -1,1 +1,99 @@
-<p>payment-form works!</p>
+<div class="container-wrapper" style="max-width: 600px; margin: 2rem auto; padding: 0 1rem;">
+
+  <mat-card class="shadow-sm">
+    <mat-card-header style="background-color: #2e7d32; color: white; padding: 20px; border-top-left-radius: 4px; border-top-right-radius: 4px;">
+      <mat-card-title style="font-size: 1.3rem; font-weight: 500;">
+        Record Job Payment Received
+      </mat-card-title>
+      <mat-card-subtitle style="color: rgba(255,255,255,0.8); margin-top: 4px;">
+        Job Context Reference: #{{ targetJobId }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content style="padding: 24px;" *ngIf="paymentForm">
+
+      <div *ngIf="errorMessage" style="background-color: #ffebee; color: #c62828; padding: 12px; margin-bottom: 20px; border-left: 4px solid #e53935; border-radius: 4px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+
+        <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+          <mat-form-field appearance="outline" style="flex: 1; min-width: 200px;">
+            <mat-label>Check Amount</mat-label>
+            <span matPrefix>$&nbsp;</span>
+            <input matInput type="number" formControlName="checkAmount" step="0.01" placeholder="0.00">
+            <mat-error *ngIf="paymentForm.get('checkAmount')?.hasError('required')">
+              Payment verification amount is required.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="flex: 1; min-width: 200px;">
+            <mat-label>Date Received</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dateReceived">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="paymentForm.get('dateReceived')?.hasError('required')">
+              Log tracking date is required.
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px;">
+          <mat-form-field appearance="outline" style="flex: 1; min-width: 200px;">
+            <mat-label>Payment Method</mat-label>
+            <mat-select formControlName="paymentMethod">
+              <mat-option *ngFor="let method of paymentMethods" [value]="method.value">
+                {{ method.label }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="flex: 1; min-width: 200px;">
+            <mat-label>Reference / Check #</mat-label>
+            <input matInput formControlName="referenceNumber" placeholder="e.g., Check #1024">
+          </mat-form-field>
+        </div>
+
+        <div style="margin-top: 16px; border: 1px dashed #ccc; padding: 16px; border-radius: 4px; text-align: center; background: #fafafa;">
+          <label style="display: block; font-weight: 500; color: #495057; margin-bottom: 8px; font-size: 0.9rem;">
+            Attach Scanned Check or Receipt Document
+          </label>
+
+          <input type="file" #fileInput (change)="onFileSelected($event)" accept="application/pdf,image/*" style="display: none;">
+
+          <div style="display: flex; justify-content: center; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <button mat-stroked-button type="button" color="accent" (click)="fileInput.click()" [disabled]="isSubmitting">
+              <mat-icon>cloud_upload</mat-icon>
+              <span>Upload Document</span>
+            </button>
+
+            <div *ngIf="selectedFile" style="display: inline-flex; align-items: center; gap: 6px; background: #e8f5e9; color: #2e7d32; padding: 6px 12px; border-radius: 4px; font-size: 0.85rem; font-weight: 500;">
+              <mat-icon style="font-size: 16px; width: 16px; height: 16px; margin: 0;">attachment</mat-icon>
+              <span>{{ selectedFile.name }}</span>
+            </div>
+
+            <span *ngIf="!selectedFile" style="color: #6c757d; font-size: 0.85rem; font-style: italic;">
+              No document asset attached.
+            </span>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; border-top: 1px solid #e0e0e0; padding-top: 16px;">
+          <button mat-button type="button" [disabled]="isSubmitting" [routerLink]="['/jobs', targetJobId]">
+            Cancel
+          </button>
+
+          <button mat-flat-button type="submit" color="primary" [disabled]="paymentForm.invalid || isSubmitting" style="min-width: 140px;">
+            <span *ngIf="!isSubmitting">Post Payment</span>
+            <span *ngIf="isSubmitting" style="display: flex; align-items: center; gap: 8px;">
+              <mat-spinner diameter="18" color="warn"></mat-spinner> Recording...
+            </span>
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

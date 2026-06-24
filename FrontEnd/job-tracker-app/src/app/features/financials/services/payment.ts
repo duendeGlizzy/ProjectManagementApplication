@@ -28,6 +28,15 @@ export class PaymentService {
     return this.http.post<Payment>(this.apiUrl, payment, {params});
   }
 
+  uploadPaymentWithCheck(formData: FormData, jobId: number): Observable<Payment> {
+    let params = new HttpParams()
+      .set('jobId', jobId.toString());
+
+    return this.http.post<Payment>(this.apiUrl, formData, {params});
+
+  }
+
+
 
 
 

@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -24,7 +25,7 @@ public class Payment {
 
     private BigDecimal checkAmount;
 
-    private LocalDateTime dateReceived;
+    private LocalDate dateReceived;
 
     private String referenceNumber;
 
@@ -37,6 +38,7 @@ public class Payment {
 
     @ManyToOne
     @JoinColumn(name = "job_id", nullable = false)
+    @JsonIgnoreProperties({"payments", "tasks", "bills"})
     private Job job;
 
 

@@ -1,6 +1,7 @@
 package com.JobTracker.demo.Service;
 
 import com.JobTracker.demo.ENum.BillStatus;
+import com.JobTracker.demo.Entity.Bill;
 import com.JobTracker.demo.Entity.Job;
 import com.JobTracker.demo.Entity.Payment;
 import com.JobTracker.demo.Entity.Task;
@@ -50,6 +51,23 @@ public class PaymentService {
 
         payment.setJob(job);
         return paymentRepository.save(payment);
+    }
+
+    @Transactional
+    public Payment createPayment(Payment payment, Long jobId) {
+        Payment newPayment = new Payment();
+
+        newPayment.setPaymentMethod(payment.getPaymentMethod());
+        newPayment.setDateReceived(payment.getDateReceived());
+        newPayment.setCheckAmount(payment.getCheckAmount());
+        newPayment.setReferenceNumber(payment.getReferenceNumber());
+
+        Job currentJob = jobRepository.findById(jobId)
+                .orElseThrow(() -> new EntityNotFoundException("Job not found"));
+
+        newPayment.setJob(currentJob);
+
+        return paymentRepository.save(newPayment);
     }
 
 
