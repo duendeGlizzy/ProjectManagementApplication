@@ -1,3 +1,6 @@
+/* ==========================================================================
+   1. Core Layout Container
+   ========================================================================== */
 .financial-dashboard-container {
   max-width: 1340px;
   margin: 2rem auto;
@@ -5,7 +8,9 @@
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-/* Control Row Elements Styling */
+/* ==========================================================================
+   2. Control & Filtering Toolbar
+   ========================================================================== */
 .report-filter-bar {
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -26,33 +31,39 @@
   flex-wrap: wrap;
 }
 
-.date-field ::v-deep .mat-mdc-form-field-subscript-wrapper {
-  display: none !important; /* Hide clean layout padding bounds */
-}
-
 .control-btn {
   height: 50px !important;
   font-weight: 500 !important;
   border-radius: 6px !important;
 }
 
-/* Operational Metrics KPIs Layout */
-.kpi-row {
+/* ==========================================================================
+   3. Operational Metrics KPI Cards Layout
+   ========================================================================== */
+.financial-cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
 }
 
-.kpi-card {
+.metric-panel-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 1.5rem;
   box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.kpi-label {
+.card-metric-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-metric-info .label {
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -60,15 +71,36 @@
   letter-spacing: 0.5px;
 }
 
-.kpi-val {
+.card-metric-info .amount {
   font-size: 1.75rem;
   font-weight: 700;
   margin: 0.5rem 0 0 0;
-  color: #0f172a;
 }
 
-/* Layout Core View Panes Split setup */
-.split-pane-layout {
+/* Metric Circular Icon Badges */
+.metric-icon-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50px;
+}
+
+/* Contextual Card Variant States */
+.border-incoming { border-left: 4px solid #16a34a; }
+.bg-incoming { background-color: #f0fdf4; color: #16a34a; }
+
+.border-outflows { border-left: 4px solid #dc2626; }
+.bg-outflows { background-color: #fef2f2; color: #dc2626; }
+
+.border-balance { border-left: 4px solid #2563eb; }
+.bg-balance { background-color: #eff6ff; color: #2563eb; }
+
+/* ==========================================================================
+   4. Split View Layout (Ledger & Sidebar Panel)
+   ========================================================================== */
+.report-content-split {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 1.5rem;
@@ -76,7 +108,7 @@
 }
 
 @media (max-width: 992px) {
-  .split-pane-layout {
+  .report-content-split {
     grid-template-columns: 1fr;
   }
 }
@@ -101,20 +133,25 @@
   color: #1e293b;
 }
 
-/* Custom Styled View Report Table */
+/* ==========================================================================
+   5. Itemized Billing Table Styles
+   ========================================================================== */
 .table-responsive {
   width: 100%;
   overflow-x: auto;
 }
 
-.custom-report-table {
+/* Base selector updates to support alternate matching markup */
+.custom-report-table,
+.billing-ledger-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.88rem;
   text-align: left;
 }
 
-.custom-report-table th {
+.custom-report-table th,
+.billing-ledger-table th {
   background: #f8fafc;
   color: #475569;
   font-weight: 600;
@@ -125,17 +162,21 @@
   letter-spacing: 0.3px;
 }
 
-.custom-report-table td {
+.custom-report-table td,
+.billing-ledger-table td {
   padding: 12px 16px;
   border-bottom: 1px solid #f1f5f9;
   color: #334155;
 }
 
-.custom-report-table tbody tr:hover {
+.custom-report-table tbody tr:hover,
+.billing-ledger-table tbody tr:hover {
   background-color: #f8fafc;
 }
 
-/* Tax Side Panels Formatting Rules */
+/* ==========================================================================
+   6. Tax Category Allocation Side Panels
+   ========================================================================== */
 .tax-list-group {
   padding: 1rem 1.5rem;
   display: flex;
@@ -188,7 +229,9 @@
   border-radius: 4px;
 }
 
-/* Utility Design Blocks Modifier flags */
+/* ==========================================================================
+   7. Functional Utility Classes
+   ========================================================================== */
 .text-success { color: #16a34a !important; }
 .text-danger { color: #dc2626 !important; }
 .font-mono { font-family: monospace; }

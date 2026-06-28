@@ -31,7 +31,7 @@ import autoTable from 'jspdf-autotable';
   templateUrl: './financial-dashboard.html',
   styleUrls: ['./financial-dashboard.css']
 })
-export class FinancialDashboardComponent implements OnInit {
+export class FinancialDashboard implements OnInit {
   // Calendar binds defaulted to current Year-To-Date range
   reportStartDate: Date = new Date(new Date().getFullYear(), 0, 1);
   reportEndDate: Date = new Date();
@@ -76,7 +76,7 @@ export class FinancialDashboardComponent implements OnInit {
   }
 
   /**
-   * Generates operational accounting ledger audits as a multi-page PDF output file
+   * Generates operational accounting ledger audits as a multipage PDF output file
    */
   downloadReportPdf(): void {
     const data = this.reportData();

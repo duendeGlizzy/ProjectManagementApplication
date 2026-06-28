@@ -21,16 +21,13 @@ public class JobService {
     private final JobRepository jobRepository;
     private final ClientRepository clientRepository;
     private final PrimeContractorRepository primeContractorRepository;
-    private final TaskService taskService;
 
     public JobService(JobRepository jobRepository,
                       ClientRepository clientRepository,
-                      PrimeContractorRepository primeContractorRepository,
-                      TaskService taskService) {
+                      PrimeContractorRepository primeContractorRepository) {
         this.jobRepository = jobRepository;
         this.clientRepository = clientRepository;
         this.primeContractorRepository = primeContractorRepository;
-        this.taskService = taskService;
     }
 
     public List<Job> findAll() {

@@ -81,22 +81,7 @@ public class ReportService {
             );
         }).toList();
 
-        Map<String, BigDecimal> dynamicTaxBreakdown = new HashMap<>();
-
-        for(TaxCategory cat : TaxCategory.values()) {
-            dynamicTaxBreakdown.put(cat.name(), BigDecimal.ZERO);
-        }
-
-        for(BillReportSummary bill : billSummaries) {
-            for(LineItemReportSummary item : bill.getLineItems()){
-                if(item.getTaxCategory() != null){
-                    String catKey = item.getTaxCategory().name();
-                    BigDecimal currentSum = dynamicTaxBreakdown.getOrDefault(catKey, BigDecimal.ZERO);
-
-                    dynamicTaxBreakdown.put(catKey, currentSum.add(item.getSubTotal()));
-                }
-            }
-        }
+        Map<String, BigDecimal> dynamicTaxBreakdown = getStringBigDecimalMap(billSummaries);
 
         BigDecimal totalIncoming = paymentSummaries.stream()
                 .map(PaymentReportSummary::getCheckAmount)
@@ -118,5 +103,25 @@ public class ReportService {
                 billSummaries,
                 dynamicTaxBreakdown
         );
+    }
+
+    private static Map<String, BigDecimal> getStringBigDecimalMap(List<BillReportSummary> billSummaries) {
+        Map<String, BigDecimal> dynamicTaxBreakdown = new HashMap<>();
+
+        for(TaxCategory cat : TaxCategory.values()) {
+            dynamicTaxBreakdown.put(cat.name(), BigDecimal.ZERO);
+        }
+
+        for(BillReportSummary bill : billSummaries) {
+            for(LineItemReportSummary item : bill.getLineItems()){
+                if(item.getTaxCategory() != null){
+                    String catKey = item.getTaxCategory().name();
+                    BigDecimal currentSum = dynamicTaxBreakdown.getOrDefault(catKey, BigDecimal.ZERO);
+
+                    dynamicTaxBreakdown.put(catKey, currentSum.add(item.getSubTotal()));
+                }
+            }
+        }
+        return dynamicTaxBreakdown;
     }
 }

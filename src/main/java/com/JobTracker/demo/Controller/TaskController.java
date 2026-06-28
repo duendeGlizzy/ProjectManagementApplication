@@ -37,7 +37,8 @@ public class TaskController {
                                            @RequestParam(required = false) Long subContractorId,
                                            @RequestParam Long jobId) {
 
-        Task newTask = new Task();
+        new Task();
+        Task newTask;
         if(subContractorId != null){
             newTask = taskService.createTask(task, subContractorId, jobId);
 

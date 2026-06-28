@@ -1,18 +1,13 @@
 package com.JobTracker.demo.Service;
 
-import com.JobTracker.demo.ENum.BillStatus;
-import com.JobTracker.demo.Entity.Bill;
 import com.JobTracker.demo.Entity.Job;
 import com.JobTracker.demo.Entity.Payment;
-import com.JobTracker.demo.Entity.Task;
 import com.JobTracker.demo.Repository.JobRepository;
 import com.JobTracker.demo.Repository.PaymentRepository;
-import com.JobTracker.demo.Repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -42,15 +37,6 @@ public class PaymentService {
             throw new RuntimeException("Payment not found");
         }
         paymentRepository.deleteById(paymentId);
-    }
-
-    @Transactional
-    public Payment recordClientPayment(Payment payment, Long jobId) {
-        Job job = jobRepository.findById(jobId)
-                .orElseThrow(() -> new EntityNotFoundException("Job not found"));
-
-        payment.setJob(job);
-        return paymentRepository.save(payment);
     }
 
     @Transactional

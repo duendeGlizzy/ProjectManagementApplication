@@ -5,8 +5,6 @@ import com.JobTracker.demo.Entity.*;
 import com.JobTracker.demo.Repository.ClientRepository;
 import com.JobTracker.demo.Repository.VendorRepository;
 import com.JobTracker.demo.Service.*;
-import jakarta.persistence.EntityManager;
-import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +24,7 @@ public class SampleDataLoader {
     }
 
     // 2. Separate component class to manage transactional boundaries correctly during execution context
+    @SuppressWarnings("ReassignedVariable")
     @Component
     public static class TransactionalDataInitializer {
 
@@ -37,7 +36,6 @@ public class SampleDataLoader {
         private final TaskService taskService;
         private final BillService billService;
         private final PaymentService paymentService;
-        private final EntityManager entityManager;
 
         public TransactionalDataInitializer(
                 ClientRepository clientRepository,
@@ -47,8 +45,7 @@ public class SampleDataLoader {
                 JobService jobService,
                 TaskService taskService,
                 BillService billService,
-                PaymentService paymentService,
-                EntityManager entityManager) {
+                PaymentService paymentService) {
             this.clientRepository = clientRepository;
             this.primeContractorService = primeContractorService;
             this.vendorRepository = vendorRepository;
@@ -57,7 +54,6 @@ public class SampleDataLoader {
             this.taskService = taskService;
             this.billService = billService;
             this.paymentService = paymentService;
-            this.entityManager = entityManager;
         }
 
         public void runDataInjection() {
@@ -252,6 +248,6 @@ public class SampleDataLoader {
             billService.createBill(bRecentUnpaid, vendor2.getVendorId(), job1.getJobId());
 
             System.out.println(">> Financial report data load injection complete. Verify analytics dashboard views.");
-        };
+        }
     }
 }

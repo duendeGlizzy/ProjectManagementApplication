@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface JobRepository extends JpaRepository<Job, Long> {
 
-    public List<Job> findByClient_LastName(String lastName);
+     List<Job> findByClient_LastName(String lastName);
 
-    public List<Job> findByPrimeContractor_CompanyName(String companyName);
+     List<Job> findByPrimeContractor_CompanyName(String companyName);
 
-    public List<Job> findByStatus(JobStatus status);
+     List<Job> findByStatus(JobStatus status);
 
 
     boolean existsByPrimeContractor_PrimeContractorId(Long id);

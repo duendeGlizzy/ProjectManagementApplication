@@ -3,9 +3,7 @@ package com.JobTracker.demo.Entity;
 
 import com.JobTracker.demo.ENum.JobStatus;
 import com.JobTracker.demo.ENum.JobType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

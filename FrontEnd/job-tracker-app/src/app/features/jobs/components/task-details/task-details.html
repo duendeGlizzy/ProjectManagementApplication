@@ -35,7 +35,7 @@
             <div>
               <button (click)="task.status && progressTask(task.status)" matButton="tonal">progress Task</button>
             </div>
-            <mat-chip disableRipple style="background-color: rgba(255,255,255,0.2); color: white;">
+            <mat-chip disableRipple="" style="background-color: rgba(255,255,255,0.2); color: white;">
               {{ task?.status ? task.status.replace('_', ' ') : 'PENDING' }}
             </mat-chip>
           </mat-chip-set>

@@ -5,7 +5,6 @@ import {JobDetails} from './features/jobs/components/job-details/job-details';
 import {TaskDetails} from './features/jobs/components/task-details/task-details';
 import {TaskForm} from './features/jobs/components/task-form/task-form';
 import {ContractorDashboard} from './features/contractors/components/contractor-dashboard/contractor-dashboard';
-import {FinancialDashboard} from './features/financials/components/financial-dashboard/financial-dashboard';
 import {SubContractorForm} from './features/contractors/components/sub-contractor-form/sub-contractor-form';
 import {PrimeContractorForm} from './features/contractors/components/prime-contractor-form/prime-contractor-form';
 import {VendorForm} from './features/contractors/components/vendor-form/vendor-form';
@@ -13,6 +12,7 @@ import {ClientDashboard} from './features/jobs/components/client-dashboard/clien
 import {ClientForm} from './features/jobs/components/client-form/client-form';
 import {BillForm} from './features/financials/components/bill-form/bill-form';
 import {PaymentForm} from './features/financials/components/payment-form/payment-form';
+import {FinancialDashboard} from './features/financials/components/financial-dashboard/financial-dashboard';
 
 
 

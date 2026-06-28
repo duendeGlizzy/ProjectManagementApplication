@@ -4,6 +4,7 @@ import com.JobTracker.demo.ENum.BillStatus;
 import com.JobTracker.demo.Entity.Bill;
 import com.JobTracker.demo.Repository.FileStorageService;
 import com.JobTracker.demo.Service.BillService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
 
 @RestController
+@Slf4j
 @RequestMapping("/bills")
 public class BillController {
 
@@ -61,7 +63,7 @@ public class BillController {
             Bill newBill = billService.createBill(bill, vendorId, jobId);
             return ResponseEntity.status(HttpStatus.CREATED).body(newBill);
         }catch(Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

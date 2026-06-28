@@ -25,7 +25,7 @@
             ID: #{{ job?.jobId }} &bull; {{ job?.address }}
           </mat-card-subtitle>
         </div>
-        <span [class]="'status-badge ' + job?.status?.toLowerCase()" style="padding: 6px 16px; border-radius: 20px; font-weight: 500; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
+        <span [class]="'status-badge ' + job?.status?.toLowerCase()" style="padding: 6px 16px; border-radius: 20px; font-weight: 500; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 2px 4px rgba(0,0,0,0.15);">
           {{ job?.status }}
         </span>
       </div>
@@ -123,7 +123,7 @@
                     </span>
                   </div>
                   <button mat-stroked-button color="primary" [routerLink]="['/jobs', job?.jobId, 'bills', 'new']" style="border-radius: 4px; font-weight: 500;">
-                    <mat-icon style="font-size: 18px; width: 18px; height: 18px; margin: 0; margin-right: 4px;">add</mat-icon>
+                    <mat-icon style="font-size: 18px; width: 18px; height: 18px; margin: 0 4px 0 0;">add</mat-icon>
                     Add Bill
                   </button>
                 </div>
@@ -163,7 +163,7 @@
                     </span>
                   </div>
                   <button mat-stroked-button color="primary" [routerLink]="['/jobs', job?.jobId, 'payments', 'new']" style="border-radius: 4px; font-weight: 500;">
-                    <mat-icon style="font-size: 18px; width: 18px; height: 18px; margin: 0; margin-right: 4px;">add</mat-icon>
+                    <mat-icon style="font-size: 18px; width: 18px; height: 18px; margin: 0 4px 0 0;">add</mat-icon>
                     Record Payment
                   </button>
                 </div>

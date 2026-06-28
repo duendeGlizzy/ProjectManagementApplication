@@ -1,7 +1,6 @@
 package com.JobTracker.demo.Entity;
 
 import com.JobTracker.demo.ENum.TaxCategory;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

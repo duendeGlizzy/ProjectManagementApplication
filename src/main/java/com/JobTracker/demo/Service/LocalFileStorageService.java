@@ -35,7 +35,7 @@ public class LocalFileStorageService implements FileStorageService {
         try{
             if(file.isEmpty())throw new IllegalArgumentException("File is empty");
 
-            String uniqueName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+            String uniqueName = UUID.randomUUID() + "_" + file.getOriginalFilename();
             Path targetFolder = this.rootLocation.resolve(folder);
             Files.createDirectories(targetFolder);
 

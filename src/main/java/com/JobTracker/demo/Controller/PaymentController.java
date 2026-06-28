@@ -3,6 +3,7 @@ package com.JobTracker.demo.Controller;
 import com.JobTracker.demo.Entity.Payment;
 import com.JobTracker.demo.Repository.FileStorageService;
 import com.JobTracker.demo.Service.PaymentService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 import java.util.List;
 
 @RestController
+@Slf4j
 @RequestMapping("/payments")
 public class PaymentController {
 
@@ -38,16 +41,11 @@ public class PaymentController {
         return ResponseEntity.ok(payment);
     }
 
-   // @PutMapping("/{id}")
-    //public ResponseEntity<Payment> recordClientPayment(@PathVariable Long id, @RequestBody Payment payment) {
-     //   return ResponseEntity.ok(paymentService.recordClientPayment(payment, id));
-    //}
-
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Payment> createPayment(
             @RequestPart("payment") String paymentJson,
             @RequestPart(value="check" , required = false) MultipartFile file,
-            @RequestParam Long jobId)throws Exception {
+            @RequestParam Long jobId) {
 
         try{
             ObjectMapper objectMapper = new ObjectMapper();
@@ -65,7 +63,7 @@ public class PaymentController {
 
             return ResponseEntity.status(HttpStatus.CREATED).body(newPayment);
         }catch(Exception e){
-            e.printStackTrace();
+            log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
