@@ -53,7 +53,7 @@ public class Bill {
     private Job job;
 
 
-    @OneToMany(mappedBy = "bill")
+    @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("bill")
     private List<LineItem> lineItems = new ArrayList<>();
 

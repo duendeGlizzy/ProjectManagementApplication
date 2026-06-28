@@ -1,1 +1,127 @@
-<p>financial-dashboard works!</p>
+<div class="financial-dashboard-container">
+
+  <div class="report-filter-bar shadow-sm">
+    <div class="filter-inputs">
+      <mat-form-field appearance="outline" class="date-field">
+        <mat-label>Start Date</mat-label>
+        <input matInput [matDatepicker]="startPicker" [(ngModel)]="reportStartDate">
+        <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+        <mat-datepicker #startPicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="date-field">
+        <mat-label>End Date</mat-label>
+        <input matInput [matDatepicker]="endPicker" [(ngModel)]="reportEndDate">
+        <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+        <mat-datepicker #endPicker></mat-datepicker>
+      </mat-form-field>
+
+      <button mat-flat-button color="primary" (click)="generateCustomReport()" class="control-btn">
+        <mat-icon>analytics</mat-icon> Update Report
+      </button>
+    </div>
+
+    <button mat-stroked-button color="warn" (click)="downloadReportPdf()" [disabled] = "!reportData()" class="control-btn pdf-btn">
+      <mat-icon>picture_as_pdf</mat-icon> Export PDF
+    </button>
+  </div>
+
+  <div class="spinner-container" *ngIf="isLoading()">
+    <mat-spinner diameter="45"></mat-spinner>
+    <span class="spinner-text">Analyzing Financial Metrics...</span>
+  </div>
+
+  <div class="report-workspace-view" *ngIf="!isLoading() && reportData() as data">
+
+    <div class="financial-cards-grid">
+      <div class="metric-panel-card shadow-sm border-incoming">
+        <div class="card-metric-info">
+          <span class="label text-muted">Incoming Receipts</span>
+          <h2 class="amount font-mono text-success">{{ data.totalIncoming | currency }}</h2>
+        </div>
+        <div class="metric-icon-box bg-incoming">
+          <mat-icon>trending_up</mat-icon>
+        </div>
+      </div>
+
+      <div class="metric-panel-card shadow-sm border-outflows">
+        <div class="card-metric-info">
+          <span class="label text-muted">Vendor Outflows</span>
+          <h2 class="amount font-mono text-danger">{{ data.totalOutgoing | currency }}</h2>
+        </div>
+        <div class="metric-icon-box bg-outflows">
+          <mat-icon>trending_down</mat-icon>
+        </div>
+      </div>
+
+      <div class="metric-panel-card shadow-sm border-balance">
+        <div class="card-metric-info">
+          <span class="label text-muted">Net Workspace Balance</span>
+          <h2 class="amount font-mono" [ngClass]="data.netProfit >= 0 ? 'text-success' : 'text-danger'">
+            {{ data.netProfit | currency }}
+          </h2>
+        </div>
+        <div class="metric-icon-box bg-balance">
+          <mat-icon>account_balance_wallet</mat-icon>
+        </div>
+      </div>
+    </div>
+
+    <div class="report-content-split">
+
+      <div class="pane-table-card shadow-sm ledger-table-wrapper">
+        <div class="card-header">
+          <h3>Itemized Bill Expenditure Breakdown</h3>
+        </div>
+        <div class="table-responsive">
+          <table class="billing-ledger-table">
+            <thead>
+            <tr>
+              <th>Bill Reference</th>
+              <th>Vendor Context</th>
+              <th>Item Description</th>
+              <th>Tax Class</th>
+              <th class="text-center">Qty</th>
+              <th class="text-right">Unit Rate</th>
+              <th class="text-right">Subtotal</th>
+            </tr>
+            </thead>
+            <tbody>
+            <ng-container *ngFor="let bill of data.outgoingBills">
+              <tr *ngFor="let item of bill.lineItems">
+                <td class="font-mono text-muted">#{{ bill.billId }}</td>
+                <td class="font-medium">{{ bill.vendorCompanyName }}</td>
+                <td>{{ item.description }}</td>
+                <td><span class="tax-badge">{{ item.taxCategory }}</span></td>
+                <td class="text-center font-mono">{{ item.quantity }}</td>
+                <td class="text-right font-mono">{{ item.unitPrice | currency }}</td>
+                <td class="text-right font-mono font-medium">{{ item.subTotal | currency }}</td>
+              </tr>
+            </ng-container>
+            <tr *ngIf="!data.outgoingBills || data.outgoingBills.length === 0">
+              <td colspan="7" class="text-center text-muted py-4">No bill expenditures found within the selected date range.</td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="pane-table-card shadow-sm tax-sidebar">
+        <div class="card-header">
+          <h3>Tax Category Allocations</h3>
+        </div>
+        <div class="tax-list-group">
+          <div class="tax-item-row" *ngFor="let entry of data.expenseBreakdownByTaxCategory | keyvalue">
+            <div class="tax-info">
+              <mat-icon class="tax-icon">receipt</mat-icon>
+              <span class="tax-name">{{ entry.key.replace('_', ' ') }}</span>
+            </div>
+            <span class="tax-amount font-mono">{{ entry.value | currency }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

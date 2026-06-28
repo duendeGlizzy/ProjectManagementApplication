@@ -4,7 +4,6 @@ import com.JobTracker.demo.ENum.BillStatus;
 import com.JobTracker.demo.Entity.*;
 import com.JobTracker.demo.Repository.BillRepository;
 import com.JobTracker.demo.Repository.JobRepository;
-import com.JobTracker.demo.Repository.TaskRepository;
 import com.JobTracker.demo.Repository.VendorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +16,12 @@ import java.util.List;
 public class BillService {
 
     private final BillRepository billRepository;
-    private final TaskRepository taskRepository;
     private final VendorRepository vendorRepository;
     private final JobRepository jobRepository;
 
     public BillService(BillRepository billRepository,
-                       TaskRepository taskRepository,
                        VendorRepository vendorRepository, JobRepository jobRepository) {
         this.billRepository = billRepository;
-        this.taskRepository = taskRepository;
         this.vendorRepository = vendorRepository;
         this.jobRepository = jobRepository;
     }

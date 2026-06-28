@@ -14,6 +14,7 @@ import { VendorService } from '../../services/vendor';
 import { SubContractor } from '../../models/sub-contractor.model';
 import { PrimeContractor } from '../../models/prime-contractor.model';
 import { Vendor } from '../../models/vendor.model';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'app-contractor-dashboard',
@@ -24,6 +25,7 @@ import { Vendor } from '../../models/vendor.model';
     SubContractorTable,
     PrimeContractorTable,
     VendorTable,
+    MatIcon,
   ],
   templateUrl: './contractor-dashboard.html',
   styleUrl: './contractor-dashboard.css',
