@@ -1,15 +1,14 @@
 
 <div class="container mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Project Management Workspace</h2>
-    <button mat-raised-button color="primary" routerLink="/jobs/new">
-      Add Job
-    </button>
+
+  <div>
+    <h1>Job Dashboard</h1>
+    <p class="subtitle">Monitor, track, and manage jobs.</p>
   </div>
 
 
 
-  <div class="card p-3 mb-4 shadow-sm" style="background-color: #fcfcfc; border: 1px solid #e0e0e0;">
+  <div class="card p-3 mb-4 shadow-sm" style="background-color: #fcfcfc; border: 1px solid #e0e0e0; margin-bottom: 0">
     <h5 style="color: #555; font-size: 0.95rem; font-weight: 500; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;">
       <mat-icon style="font-size: 1.2rem; width: 20px; height: 20px;">filter_list</mat-icon> Search Filters Ledger Mappings
     </h5>
@@ -92,6 +91,11 @@
     No job entries found in the system tracking ledger.
   </div>
 
+  <div style="display: flex; position: relative; bottom: 12px; justify-content: right; ">
+    <button mat-raised-button color="primary" routerLink="/jobs/new">
+      Add Job
+    </button>
+  </div>
   <!-- TABLE-->
 
 
@@ -113,15 +117,7 @@
         <td mat-cell *matCellDef="let job"> {{ job.jobType }} </td>
       </ng-container>
 
-      <ng-container matColumnDef="estimatedCost">
-        <th mat-header-cell *matHeaderCellDef> Est. Cost </th>
-        <td mat-cell *matCellDef="let job"> {{ job.estimatedCost | currency }} </td>
-      </ng-container>
 
-      <ng-container matColumnDef="totalPayment">
-        <th mat-header-cell *matHeaderCellDef> Total Payments </th>
-        <td mat-cell *matCellDef="let job"> {{ job.totalPayment | currency }} </td>
-      </ng-container>
 
       <ng-container matColumnDef="client">
         <th mat-header-cell *matHeaderCellDef> Assigned Client </th>

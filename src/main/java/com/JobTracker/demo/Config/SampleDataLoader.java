@@ -111,7 +111,7 @@ public class SampleDataLoader {
 
             Task taskB = new Task();
             taskB.setDescription("Main Electrical Panel Grid Install");
-            taskB.setStatus(TaskStatus.IN_PROGRESS);
+            taskB.setStatus(TaskStatus.STARTED);
             taskB.setIsSubContracted(true);
             taskB = taskService.createTask(taskB, sub1.getSubContractorId(), job1.getJobId());
 

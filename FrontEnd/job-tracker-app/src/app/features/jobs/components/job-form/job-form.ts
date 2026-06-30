@@ -62,7 +62,6 @@ export class JobForm implements OnInit {
   statusOptions = [
     { value: 'NOT_STARTED', label: 'Not Started' },
     { value: 'STARTED', label: 'started' },
-    { value: 'IN_PROGRESS', label: 'In Progress' },
     { value: 'COMPLETED', label: 'Completed' }
   ];
 

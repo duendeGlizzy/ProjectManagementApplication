@@ -62,8 +62,6 @@ export class JobDashboard implements OnInit {
     'jobId',
     'description',
     'jobType',
-    'estimatedCost',
-    'totalPayment',
     'client',
     'primeContractor',
     'status'

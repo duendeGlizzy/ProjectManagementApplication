@@ -11,8 +11,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { JobStatus } from '../../models/job-status.enum';
-import {FormGroup} from '@angular/forms';
 import {TaskTable} from '../task-table/task-table';
 
 @Component({
@@ -49,10 +47,9 @@ export class JobDetails implements OnInit, OnDestroy {
     this.routeSub = this.route.paramMap.subscribe(params => {
       const id = params.get('id');
       if (id) {
-        this.jobId = +id; // Now it's explicitly assigned!
+        this.jobId = +id;
         this.loadJobData(this.jobId);
 
-        // 💡 MOVE THIS HERE so it waits for the jobId to exist!
         this.refreshFinancialMetrics();
       }
     });
@@ -75,7 +72,7 @@ export class JobDetails implements OnInit, OnDestroy {
       next: (data: Job) => {
         this.job = data;
         this.isLoading = false;
-        this.cdr.detectChanges(); // Push refreshed data details into template fields
+        this.cdr.detectChanges();
       },
       error: (err) => {
         console.error('API Retrieval Error:', err);
