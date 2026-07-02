@@ -1,6 +1,9 @@
 package com.JobTracker.demo.Security;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -11,8 +14,17 @@ import java.util.Date;
 @Component
 public class JwtUtils {
 
-    private final SecretKey key = Jwts.SIG.HS256.key().build();
-    private final long jwtExpirationMs = 86400000;
+    private final SecretKey key;
+    private final long jwtExpirationMs;
+
+    public JwtUtils(
+            @Value("${jobTracker.app.jwtSecret}") String secret,
+            @Value("${jobTracker.app.jwtExpirationsMs}") long expiration){
+
+    this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret));
+
+    this.jwtExpirationMs = expiration;
+    }
 
     public String generateToken(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();

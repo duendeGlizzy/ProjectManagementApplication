@@ -13,50 +13,50 @@ import {ClientForm} from './features/jobs/components/client-form/client-form';
 import {BillForm} from './features/financials/components/bill-form/bill-form';
 import {PaymentForm} from './features/financials/components/payment-form/payment-form';
 import {FinancialDashboard} from './features/financials/components/financial-dashboard/financial-dashboard';
+import {Login} from './features/security/components/login/login';
+import {authGuard} from './features/security/guards/auth-guard';
 
 
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'jobs', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+
+  {path: 'login', component: Login},
 
 
-  { path: 'jobs', component: JobDashboard },
+  { path: 'jobs', component: JobDashboard, canActivate: [authGuard] },
 
-  { path: 'jobs/new', component: JobForm },
-  { path: 'jobs/new/:id', component: JobForm },
-  { path: 'jobs/:id', component: JobDetails },
+  { path: 'jobs/new', component: JobForm, canActivate: [authGuard] },
+  { path: 'jobs/new/:id', component: JobForm, canActivate: [authGuard] },
+  { path: 'jobs/:id', component: JobDetails, canActivate: [authGuard] },
 
-  {path: 'jobs/:id/bills/new', component: BillForm},
-  {path: 'jobs/:id/payments/new', component: PaymentForm},
-
-
-  { path: 'tasks/new', component: TaskForm },
-  { path: 'tasks/new/:id', component: TaskForm },
-  { path: 'tasks/:id', component: TaskDetails },
-
-  {path: 'contractors', component: ContractorDashboard},
-
-  {path: 'contractors/subContractor/new', component: SubContractorForm },
-  {path: 'contractors/subContractor/new/:id', component: SubContractorForm},
-
-  {path: 'contractors/primeContractor/new', component: PrimeContractorForm},
-  {path: 'contractors/primeContractor/new/:id', component: PrimeContractorForm},
-
-  {path: 'contractors/vendor/new', component: VendorForm},
-  {path: 'contractors/vendor/new/:id', component: VendorForm},
-
-  {path: 'clients', component: ClientDashboard},
-  {path: 'clients/new', component: ClientForm},
-  {path: 'clients/new/:id', component: ClientForm},
-
-  {path: 'financials', component: FinancialDashboard},
+  {path: 'jobs/:id/bills/new', component: BillForm, canActivate: [authGuard] },
+  {path: 'jobs/:id/payments/new', component: PaymentForm, canActivate: [authGuard] },
 
 
+  { path: 'tasks/new', component: TaskForm, canActivate: [authGuard] },
+  { path: 'tasks/new/:id', component: TaskForm, canActivate: [authGuard] },
+  { path: 'tasks/:id', component: TaskDetails, canActivate: [authGuard] },
+
+  {path: 'contractors', component: ContractorDashboard, canActivate: [authGuard] },
+
+  {path: 'contractors/subContractor/new', component: SubContractorForm, canActivate: [authGuard] },
+  {path: 'contractors/subContractor/new/:id', component: SubContractorForm, canActivate: [authGuard] },
+
+  {path: 'contractors/primeContractor/new', component: PrimeContractorForm, canActivate: [authGuard] },
+  {path: 'contractors/primeContractor/new/:id', component: PrimeContractorForm, canActivate: [authGuard] },
+
+  {path: 'contractors/vendor/new', component: VendorForm, canActivate: [authGuard] },
+  {path: 'contractors/vendor/new/:id', component: VendorForm, canActivate: [authGuard] },
+
+  {path: 'clients', component: ClientDashboard, canActivate: [authGuard] },
+  {path: 'clients/new', component: ClientForm, canActivate: [authGuard] },
+  {path: 'clients/new/:id', component: ClientForm, canActivate: [authGuard] },
+
+  {path: 'financials', component: FinancialDashboard, canActivate: [authGuard] },
 
 
-
-
-  { path: '**', redirectTo: 'jobs' }
+  { path: '**', redirectTo: 'login' }
 
 
 ];

@@ -2,6 +2,7 @@ package com.JobTracker.demo.Security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         throws ServletException, IOException {
 
         try{
-            String jwt = parseJwt(request);
+            String jwt = parseJwtFromCookie(request);
             if(jwt != null && jwtUtils.validateToken(jwt)) {
                 String username = jwtUtils.getUsernameFromToken(jwt);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -44,10 +45,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String parseJwt(HttpServletRequest request) {
-        String headerAuth = request.getHeader("Authorization");
-        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
-            return headerAuth.substring(7);
+    private String parseJwtFromCookie(HttpServletRequest request) {
+        if(request.getCookies() != null){
+            for (Cookie cookie : request.getCookies()) {
+                if("auth_token".equals(cookie.getName())){
+                    return cookie.getValue();
+                }
+            }
         }
         return null;
     }
