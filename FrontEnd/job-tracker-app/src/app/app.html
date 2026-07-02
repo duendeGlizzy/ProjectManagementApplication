@@ -1,42 +1,59 @@
-<mat-toolbar color="primary" class="main-header shadow-sm">
-  <button mat-icon-button (click)="sidenav.toggle()">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span style="font-weight: 500; margin-left: 8px;">JobTracker Enterprise Enterprise</span>
-</mat-toolbar>
+<div *ngIf="authService.isLoggedIn(); else loggedOut" class="app-wrapper">
 
-<mat-sidenav-container class="app-container">
-  <mat-sidenav #sidenav mode="side" opened class="app-sidenav">
-    <mat-nav-list class="navigation-links">
+  <mat-toolbar color="primary" class="main-header shadow-sm">
+    <button mat-icon-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span style="font-weight: 500; margin-left: 8px;">JobTracker Enterprise</span>
 
-      <div class="nav-section-title">Operations</div>
-      <a mat-list-item routerLink="/jobs" routerLinkActive="active-link" (click)="sidenav.mode === 'over' && sidenav.close()">
-        <mat-icon matListItemIcon color="primary">dashboard</mat-icon>
-        <span matListItemTitle>Job Dashboard</span>
-      </a>
+    <span class="toolbar-spacer"></span>
 
-      <a mat-list-item routerLink="/contractors" routerLinkActive="active-link" (click)="sidenav.mode === 'over' && sidenav.close()">
-        <mat-icon matListItemIcon color="accent">engineering</mat-icon>
-        <span matListItemTitle>Contractor Ledger</span>
-      </a>
+    <button mat-icon-button (click)="onLogout()" title="Log Out">
+      <mat-icon>logout</mat-icon>
+    </button>
 
-      <div class="nav-section-title">Accounts</div>
-      <a mat-list-item routerLink="/financials" routerLinkActive="active-link" (click)="sidenav.mode === 'over' && sidenav.close()">
-        <mat-icon matListItemIcon style="color: #2e7d32;">payments</mat-icon>
-        <span matListItemTitle>Financial Dashboard</span>
-      </a>
+  </mat-toolbar>
 
-      <a mat-list-item routerLink="/clients" routerLinkActive="active-link" (click)="sidenav.mode === 'over' && sidenav.close()">
-        <mat-icon matListItemIcon style="color: #7b1fa2;">groups</mat-icon>
-        <span matListItemTitle>Client Profiles</span>
-      </a>
+  <mat-sidenav-container class="app-container">
+    <mat-sidenav #sidenav mode="side" opened class="app-sidenav">
+      <mat-nav-list class="navigation-links">
 
-    </mat-nav-list>
-  </mat-sidenav>
+        <div class="nav-section-title">Operations</div>
+        <a mat-list-item routerLink="/jobs" routerLinkActive="active-link" (click)="sidenav.mode === 'over' && sidenav.close()">
+          <mat-icon matListItemIcon color="primary">dashboard</mat-icon>
+          <span matListItemTitle>Job Dashboard</span>
+        </a>
 
-  <mat-sidenav-content class="main-viewport-content">
-    <div class="router-stage">
-      <router-outlet></router-outlet>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+        <a mat-list-item routerLink="/contractors" routerLinkActive="active-link" (click)="sidenav.mode === 'over' && sidenav.close()">
+          <mat-icon matListItemIcon color="accent">engineering</mat-icon>
+          <span matListItemTitle>Contractor Ledger</span>
+        </a>
+
+        <div class="nav-section-title">Accounts</div>
+        <a mat-list-item routerLink="/financials" routerLinkActive="active-link" (click)="sidenav.mode === 'over' && sidenav.close()">
+          <mat-icon matListItemIcon style="color: #2e7d32;">payments</mat-icon>
+          <span matListItemTitle>Financial Dashboard</span>
+        </a>
+
+        <a mat-list-item routerLink="/clients" routerLinkActive="active-link" (click)="sidenav.mode === 'over' && sidenav.close()">
+          <mat-icon matListItemIcon style="color: #7b1fa2;">groups</mat-icon>
+          <span matListItemTitle>Client Profiles</span>
+        </a>
+
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="main-content-pane">
+      <div class="page-container">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</div>
+
+<ng-template #loggedOut>
+  <div class="auth-fullscreen-wrapper">
+    <router-outlet></router-outlet>
+  </div>
+</ng-template>
