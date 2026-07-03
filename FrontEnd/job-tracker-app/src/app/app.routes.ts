@@ -15,11 +15,18 @@ import {PaymentForm} from './features/financials/components/payment-form/payment
 import {FinancialDashboard} from './features/financials/components/financial-dashboard/financial-dashboard';
 import {Login} from './features/security/components/login/login';
 import {authGuard} from './features/security/guards/auth-guard';
+import {Homepage} from './features/public/component/homepage/homepage';
+import {InvoiceRequest} from './features/public/component/invoice-request/invoice-request';
+import { EmailBrowser } from './features/email-browser/components/email-browser/email-browser';
+import {FileBrowser} from './features/file-browser/components/file-browser/file-browser';
 
 
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'homepage', pathMatch: 'full' },
+
+  {path: 'homepage', component:Homepage},
+  {path: 'request-invoice', component:InvoiceRequest},
 
   {path: 'login', component: Login},
 
@@ -55,8 +62,12 @@ export const routes: Routes = [
 
   {path: 'financials', component: FinancialDashboard, canActivate: [authGuard] },
 
+  {path: 'email', component:EmailBrowser, canActivate: [authGuard] },
 
-  { path: '**', redirectTo: 'login' }
+  {path: 'file-browser', component: FileBrowser, canActivate: [authGuard] },
+
+
+  { path: '**', redirectTo: 'homepage' }
 
 
 ];

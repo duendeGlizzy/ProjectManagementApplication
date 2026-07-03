@@ -1,0 +1,42 @@
+<div class="public-form-wrapper">
+  <mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>Request an Invoice</mat-card-title>
+      <mat-card-subtitle>Fill out the details below to receive your invoice via email.</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content *ngIf="!submitted; else successState">
+      <form #invoiceForm="ngForm" (ngSubmit)="invoiceForm.form.valid && onSubmit()" class="invoice-form">
+
+        <mat-form-field appearance="outline">
+          <mat-label>Your Full Name</mat-label>
+          <input matInput [(ngModel)]="model.name" name="name" required #nameField="ngModel">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Email Address</mat-label>
+          <input matInput type="email" [(ngModel)]="model.email" name="email" required email #emailField="ngModel">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Job Description / References</mat-label>
+          <textarea matInput rows="5" [(ngModel)]="model.jobDetails" name="jobDetails" required placeholder="Provide project dates, quote numbers, or description of work completed..."></textarea>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="!invoiceForm.form.valid || loading">
+          {{ loading ? 'Submitting...' : 'Submit Request' }}
+        </button>
+
+      </form>
+      <button mat-raised-button color="primary" routerLink="/homepage" >
+        back
+      </button>
+    </mat-card-content>
+
+    <ng-template #successState>
+      <mat-card-content class="success-content">
+        <p>Thank you! Your invoice request has been submitted successfully. A team member will review the job details and email your invoice shortly.</p>
+      </mat-card-content>
+    </ng-template>
+  </mat-card>
+</div>

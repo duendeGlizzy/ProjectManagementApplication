@@ -40,6 +40,17 @@
           <span matListItemTitle>Client Profiles</span>
         </a>
 
+        <div class="nav-section-title">Util</div>
+        <a mat-list-item routerLink="/email" routerLinkActive="active-link" (click)="sidenav.mode === 'over' && sidenav.close()">
+          <mat-icon matListItemIcon style="color: cornflowerblue;">email</mat-icon>
+          <span matListItemTitle>Email</span>
+        </a>
+
+        <a mat-list-item routerLink="/file-browser" routerLinkActive="active-link" (click)="sidenav.mode === 'over' && sidenav.close()">
+          <mat-icon matListItemIcon style="color: gold;">folder</mat-icon>
+          <span matListItemTitle>Files</span>
+        </a>
+
       </mat-nav-list>
     </mat-sidenav>
 
