@@ -1,1 +1,64 @@
-<p>email-browser works!</p>
+<div class="inbox-container">
+  <mat-card class="inbox-card">
+    <mat-card-header class="inbox-header">
+      <div class="header-title-group">
+        <mat-icon color="primary">mail</mat-icon>
+        <mat-card-title>Shared Business Inbox</mat-card-title>
+      </div>
+      <button mat-icon-button color="primary" (click)="loadInbox()" [disabled]="loading" title="Refresh Inbox">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </mat-card-header>
+
+    <mat-card-content class="inbox-content">
+      <!-- Loading State Spinner -->
+      <div *ngIf="loading" class="center-state">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Syncing messages with Microsoft Server...</p>
+      </div>
+
+      <!-- Error Handling Banner -->
+      <div *ngIf="!loading && errorMessage" class="error-box">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <!-- Empty State View -->
+      <div *ngIf="!loading && !errorMessage && emails.length === 0" class="center-state empty-state">
+        <mat-icon class="huge-icon">mail_outline</mat-icon>
+        <h3>No recent messages found</h3>
+        <p>Inbound customer form submissions or queries will pop up here.</p>
+      </div>
+
+      <!-- Actionable Email Accordion Stream -->
+      <mat-accordion *ngIf="!loading && emails.length > 0" class="email-stream">
+        <mat-expansion-panel *ngFor="let email of emails" class="email-panel">
+
+          <!-- Closed Row Header View -->
+          <mat-expansion-panel-header>
+            <mat-panel-title class="sender-info">
+              <strong>{{ email.from.emailAddress.name || email.from.emailAddress.address }}</strong>
+            </mat-panel-title>
+            <mat-panel-description class="subject-line">
+              <span class="subject-text">{{ email.subject }}</span>
+              <span class="timestamp">{{ email.receivedDateTime | date:'short' }}</span>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+
+          <!-- Inside Dropped Down Body Details -->
+          <div class="email-details-expanded">
+            <div class="meta-details">
+              <p><strong>From:</strong> {{ email.from.emailAddress.name }} ({{ email.from.emailAddress.address }})</p>
+              <p><strong>Received:</strong> {{ email.receivedDateTime | date:'medium' }}</p>
+            </div>
+            <hr class="divider">
+            <div class="email-body-preview">
+              {{ email.bodyPreview }}
+            </div>
+          </div>
+
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-card-content>
+  </mat-card>
+</div>
