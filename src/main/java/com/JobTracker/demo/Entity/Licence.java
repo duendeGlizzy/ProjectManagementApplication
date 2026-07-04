@@ -24,8 +24,6 @@ public class Licence {
 
     private LocalDateTime expirationDate;
 
-    private String licencePdfUrl;
-
     @ManyToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;

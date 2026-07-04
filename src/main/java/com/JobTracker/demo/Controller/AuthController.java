@@ -51,22 +51,5 @@ public class AuthController {
         ));
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> registerEmployee(@RequestBody Employee employee) {
-
-        if (employeeRepository.findByEmail(employee.getEmail()).isPresent()) {
-            return ResponseEntity.badRequest().body(Map.of("message", "Email already exists"));
-        }
-
-        employee.setPassword(passwordEncoder.encode(employee.getPassword()));
-
-        Employee savedEmployee = employeeRepository.save(employee);
-
-        return ResponseEntity.ok(Map.of(
-                "message", "Employee account created",
-                "employeeId", savedEmployee.getEmployeeId()
-        ));
-    }
-
 
 }
