@@ -1,9 +1,7 @@
 package com.JobTracker.demo.Controller;
 
 import com.JobTracker.demo.Entity.Employee;
-import com.JobTracker.demo.Repository.EmployeeRepository;
 import com.JobTracker.demo.Service.EmployeeService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;

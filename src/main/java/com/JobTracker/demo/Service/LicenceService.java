@@ -28,7 +28,7 @@ public class LicenceService {
     public Licence findById(Long id) {
         return licenceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Licence not found"));
-    }
+   }
 
     @Transactional
     public Licence createLicence(Licence licence, Long employeeId) {

@@ -8,9 +8,26 @@
 
     <span class="toolbar-spacer"></span>
 
-    <button mat-icon-button (click)="onLogout()" title="Log Out">
-      <mat-icon>logout</mat-icon>
-    </button>
+    <div class="user-action-capsule" *ngIf="employee">
+
+      <button mat-button
+              routerLink="/employee-details"
+              class="profile-toolbar-btn"
+              title="View Account Details">
+        <mat-icon class="btn-avatar-icon">account_circle</mat-icon>
+        <span class="employee-name-text">{{ employee.firstName }} {{ employee.lastName }}</span>
+      </button>
+
+      <div class="capsule-divider"></div>
+
+      <button mat-icon-button
+              (click)="onLogout()"
+              class="logout-toolbar-btn"
+              title="Log Out">
+        <mat-icon class="btn-logout-icon">logout</mat-icon>
+      </button>
+
+    </div>
 
   </mat-toolbar>
 

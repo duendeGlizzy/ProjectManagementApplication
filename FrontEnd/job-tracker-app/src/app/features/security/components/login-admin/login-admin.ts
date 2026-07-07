@@ -1,0 +1,29 @@
+import { Component } from '@angular/core';
+import {AuthService} from '../../service/auth-service';
+import {Router, RouterLink} from '@angular/router';
+import {FormsModule} from '@angular/forms';
+
+@Component({
+  selector: 'app-login-admin',
+  standalone: true,
+  imports: [FormsModule, RouterLink],
+  templateUrl: './login-admin.html',
+  styleUrl: './login-admin.css',
+})
+export class LoginAdmin {
+
+  credentials = { email: '', password: '' };
+
+  constructor(private authService: AuthService, private router: Router) { }
+
+  onSubmit(){
+    this.authService.adminLogin(this.credentials).subscribe({
+      next: (res) => {
+        console.log('logged in')
+        this.router.navigate(['/admin'])
+      },
+      error: err => console.error('logged in failed',err)
+    });
+  }
+
+}

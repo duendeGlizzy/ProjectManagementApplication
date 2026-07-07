@@ -19,6 +19,9 @@ import {Homepage} from './features/public/component/homepage/homepage';
 import {InvoiceRequest} from './features/public/component/invoice-request/invoice-request';
 import { EmailBrowser } from './features/email-browser/components/email-browser/email-browser';
 import {FileBrowser} from './features/file-browser/components/file-browser/file-browser';
+import {EmployeeDetails} from './features/employee/components/employee-details/employee-details';
+import { LoginAdmin } from './features/security/components/login-admin/login-admin';
+import {AdminDashboard} from './features/admin/components/admin-dashboard/admin-dashboard';
 
 
 
@@ -29,6 +32,7 @@ export const routes: Routes = [
   {path: 'request-invoice', component:InvoiceRequest},
 
   {path: 'login', component: Login},
+  {path: 'login/admin', component: LoginAdmin},
 
 
   { path: 'jobs', component: JobDashboard, canActivate: [authGuard] },
@@ -65,6 +69,11 @@ export const routes: Routes = [
   {path: 'email', component:EmailBrowser, canActivate: [authGuard] },
 
   {path: 'file-browser', component: FileBrowser, canActivate: [authGuard] },
+
+  {path: 'employee-details', component: EmployeeDetails, canActivate: [authGuard] },
+
+  {path: 'admin', component: AdminDashboard, canActivate: [authGuard] },
+
 
 
   { path: '**', redirectTo: 'homepage' }

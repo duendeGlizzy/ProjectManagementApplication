@@ -71,3 +71,95 @@
 .toolbar-spacer {
   flex: 1 1 auto;
 }
+
+
+
+/* ==========================================================================
+   UNIFIED USER UTILITY CAPSULE LAYOUT
+   ========================================================================== */
+
+/* The solid outer container holding both buttons securely */
+.user-action-capsule {
+  display: flex;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.28) !important; /* Higher contrast dark overlay capsule */
+  border: 1px solid rgba(255, 255, 255, 0.25);      /* Bright crisp bounding edge border */
+  border-radius: 24px;                               /* Creates the unified capsule shape */
+  padding: 2px 4px 2px 6px;
+  height: 40px;
+  box-sizing: border-box;
+  margin-right: 8px;
+}
+
+/* Inside container divider line */
+.capsule-divider {
+  width: 1px;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.3);
+  margin: 0 4px;
+}
+
+/* Inner Profile Button Overrides */
+.profile-toolbar-btn {
+  border-radius: 20px 0 0 20px !important;
+  padding: 0 8px 0 10px !important;
+  height: 34px !important;
+  min-width: auto !important;
+}
+
+/* Inner Logout Button Overrides */
+.logout-toolbar-btn {
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hover effects isolated inside the shared capsule frame */
+.profile-toolbar-btn:hover,
+.logout-toolbar-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* ==========================================================================
+   CRITICAL TEXT & ICON VISIBILITY FORCING (PIERCING THE MATERIAL ENGINES)
+   ========================================================================== */
+
+/* Forces absolute full white brightness across all text wrapper variants */
+::ng-deep .profile-toolbar-btn .mat-mdc-button-label,
+::ng-deep .profile-toolbar-btn .mdc-button__label,
+.employee-name-text {
+  color: #ffffff !important;
+  opacity: 1 !important;
+  font-weight: 600 !important;   /* Thicker text weight for maximum legibility */
+  font-size: 14px !important;
+  letter-spacing: 0.4px !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.2); /* Soft shadow layer to pop text forward */
+}
+
+/* Centers layouts neatly within modern Angular MDC elements */
+::ng-deep .profile-toolbar-btn .mat-mdc-button-touch-target {
+  display: flex;
+  align-items: center;
+}
+
+/* Maximizes avatar icon opacity and color fill */
+.btn-avatar-icon {
+  margin-right: 6px;
+  font-size: 22px !important;
+  width: 22px !important;
+  height: 22px !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Maximizes logout icon opacity and color fill */
+.btn-logout-icon {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  color: #ffffff !important;
+  opacity: 1 !important;
+}

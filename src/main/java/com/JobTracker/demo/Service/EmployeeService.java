@@ -10,13 +10,10 @@ import java.util.List;
 @Service
 public class EmployeeService {
 
-    private final PasswordEncoder passwordEncoder;
     private final EmployeeRepository employeeRepository;
 
-    public EmployeeService(EmployeeRepository employeeRepository,
-                           PasswordEncoder passwordEncoder) {
+    public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
 

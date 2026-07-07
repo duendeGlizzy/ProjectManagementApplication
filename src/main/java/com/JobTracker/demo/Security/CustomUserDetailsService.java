@@ -19,14 +19,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     private AdminRepository adminRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException{
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         var admin = adminRepository.findByEmail(email);
-        if(admin.isPresent()){
+        if (admin.isPresent()) {
             return admin.get();
         }
 
-        return employeeRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("no employee found with email: " +email));
+        return employeeRepository.findByEmail(email);
     }
 }

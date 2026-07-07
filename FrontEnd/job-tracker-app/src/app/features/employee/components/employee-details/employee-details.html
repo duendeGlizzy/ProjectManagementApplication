@@ -1,0 +1,94 @@
+<div class="profile-container">
+  <!-- Dynamic loading fallback spinner -->
+  <div *ngIf="loading" class="profile-loading-state">
+    <mat-spinner diameter="45"></mat-spinner>
+    <p>Retrieving secure profile configuration...</p>
+  </div>
+
+  <!-- Primary Interactive Configuration Card Frame -->
+  <mat-card class="profile-card" *ngIf="!loading && employee">
+    <mat-card-header class="profile-card-header">
+      <div class="header-icon-wrapper">
+        <mat-icon color="primary" class="panel-icon">manage_accounts</mat-icon>
+      </div>
+      <div class="header-text-group">
+        <mat-card-title>Account Settings</mat-card-title>
+        <mat-card-subtitle>Review your corporate metrics and modify editable identification info.</mat-card-subtitle>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content class="profile-card-body">
+
+      <!-- Operational Status Feedback Banners -->
+      <div *ngIf="successMessage" class="feedback-banner success">
+        <mat-icon>check_circle</mat-icon>
+        <span>{{ successMessage }}</span>
+      </div>
+
+      <div *ngIf="errorMessage" class="feedback-banner fault">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <!-- Main Template-Driven Form Block -->
+      <form #profileForm="ngForm" (ngSubmit)="profileForm.form.valid && onUpdateEmployee()" class="profile-form-layout">
+
+        <!-- Row Layout for Names -->
+        <div class="form-row-split">
+
+          <!-- First Name Field -->
+          <mat-form-field appearance="outline" class="flex-field">
+            <mat-label>First Name</mat-label>
+            <input matInput
+                   [(ngModel)]="employee.firstName"
+                   name="firstName"
+                   required
+                   placeholder="e.g. John">
+            <mat-error *ngIf="profileForm.submitted && !employee.firstName">First name is a required database field.</mat-error>
+          </mat-form-field>
+
+          <!-- Last Name Field -->
+          <mat-form-field appearance="outline" class="flex-field">
+            <mat-label>Last Name</mat-label>
+            <input matInput
+                   [(ngModel)]="employee.lastName"
+                   name="lastName"
+                   required
+                   placeholder="e.g. Doe">
+            <mat-error *ngIf="profileForm.submitted && !employee.lastName">Last name is a required database field.</mat-error>
+          </mat-form-field>
+
+        </div>
+
+        <!-- Corporate Email Field -->
+        <mat-form-field appearance="outline" class="full-width-field">
+          <mat-label>Email Address</mat-label>
+          <input matInput
+                 type="email"
+                 [(ngModel)]="employee.email"
+                 name="email"
+                 required
+                 email
+                 placeholder="name@company.com">
+          <mat-icon matSuffix class="muted-input-icon">mail_outline</mat-icon>
+          <mat-error *ngIf="profileForm.submitted && !employee.email">A valid corporate distribution email is required.</mat-error>
+        </mat-form-field>
+
+        <hr class="form-divider">
+
+        <!-- Form Dispatch Controls -->
+        <div class="form-action-row">
+          <button mat-raised-button
+                  color="primary"
+                  type="submit"
+                  class="save-profile-btn"
+                  [disabled]="!profileForm.form.valid || saving">
+            <mat-icon class="btn-context-icon" *ngIf="!saving">save</mat-icon>
+            <span>{{ saving ? 'Syncing Server Records...' : 'Save Profile Changes' }}</span>
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

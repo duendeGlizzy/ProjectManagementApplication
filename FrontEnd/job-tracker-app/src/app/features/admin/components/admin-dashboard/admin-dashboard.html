@@ -1,0 +1,140 @@
+<div class="profile-container">
+
+  <div *ngIf="loading" class="profile-loading-state">
+    <mat-spinner diameter="45"></mat-spinner>
+    <p>Opening database master index context directories...</p>
+  </div>
+
+  <div *ngIf="!loading" class="admin-dashboard-layout" style="display: flex; flex-direction: column; gap: 24px; width: 100%;">
+
+    <div *ngIf="successMessage" class="feedback-banner success">
+      <mat-icon>check_circle</mat-icon>
+      <span>{{ successMessage }}</span>
+    </div>
+
+    <div *ngIf="errorMessage" class="feedback-banner fault">
+      <mat-icon>error_outline</mat-icon>
+      <span>{{ errorMessage }}</span>
+    </div>
+
+    <mat-card class="profile-card">
+      <mat-card-header class="profile-card-header">
+        <div class="header-icon-wrapper" style="background-color: #e3f2fd;">
+          <mat-icon color="primary" class="panel-icon">person_add</mat-icon>
+        </div>
+        <div class="header-text-group">
+          <mat-card-title>Provision New Profile</mat-card-title>
+          <mat-card-subtitle>Inject standard corporate accounts onto production entity registries.</mat-card-subtitle>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content class="profile-card-body">
+        <form #addForm="ngForm" (ngSubmit)="addForm.form.valid && onCreateEmployee()" class="profile-form-layout">
+
+          <div class="form-row-split">
+            <mat-form-field appearance="outline">
+              <mat-label>First Name</mat-label>
+              <input matInput [(ngModel)]="newEmployee.firstName" name="firstName" required placeholder="John">
+              <mat-error *ngIf="addForm.submitted && !newEmployee.firstName">First name is a mandatory entity field.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Last Name</mat-label>
+              <input matInput [(ngModel)]="newEmployee.lastName" name="lastName" required placeholder="Doe">
+              <mat-error *ngIf="addForm.submitted && !newEmployee.lastName">Last name is a mandatory entity field.</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row-split">
+            <mat-form-field appearance="outline">
+              <mat-label>Email Address</mat-label>
+              <input matInput type="email" [(ngModel)]="newEmployee.email" name="email" required email placeholder="j.doe@company.com">
+              <mat-icon matSuffix class="muted-input-icon">mail_outline</mat-icon>
+              <mat-error *ngIf="addForm.submitted && !newEmployee.email">Valid distribution email configuration required.</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Initial Plaintext Password String</mat-label>
+              <input matInput type="password" [(ngModel)]="newEmployee.password" name="password" required placeholder="••••••••">
+              <mat-icon matSuffix class="muted-input-icon">lock_outline</mat-icon>
+              <mat-error *ngIf="addForm.submitted && !newEmployee.password">Initial profile security seed mandatory.</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-action-row">
+            <button mat-raised-button color="primary" type="submit" class="save-profile-btn" [disabled]="!addForm.form.valid">
+              <mat-icon class="btn-context-icon">cloud_upload</mat-icon>
+              <span>Deploy Corporate Account</span>
+            </button>
+          </div>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="profile-card">
+      <mat-card-header class="profile-card-header">
+        <div class="header-icon-wrapper" style="background-color: #f3e5f5;">
+          <mat-icon style="color: #7b1fa2;" class="panel-icon">badge</mat-icon>
+        </div>
+        <div class="header-text-group">
+          <mat-card-title>Corporate Registry Records Directory</mat-card-title>
+          <mat-card-subtitle>Review active employee instances, rewrite passwords, or trigger database purges.</mat-card-subtitle>
+        </div>
+      </mat-card-header>
+
+      <mat-card-content class="profile-card-body" style="padding: 16px 0;">
+
+        <div *ngIf="employees.length === 0" style="text-align: center; padding: 32px; color: #777;">
+          <mat-icon style="font-size: 40px; width:40px; height:40px;">group_off</mat-icon>
+          <p>No logged employee profile rows localized inside schema persistent nodes.</p>
+        </div>
+
+        <div *ngIf="employees.length > 0" style="overflow-x: auto; width: 100%;">
+          <table class="admin-roster-table" style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+            <tr style="background-color: #fafafa; border-bottom: 2px solid #e0e0e0;">
+              <th style="padding: 12px 24px; font-weight: 600; color: #555;">ID</th>
+              <th style="padding: 12px; font-weight: 600; color: #555;">Full Account Name</th>
+              <th style="padding: 12px; font-weight: 600; color: #555;">Distribution Email</th>
+              <th style="padding: 12px 24px; font-weight: 600; color: #555; text-align: right;">Administrative Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let emp of employees" style="border-bottom: 1px solid #eef0f4;">
+              <td style="padding: 16px 24px; font-weight: 700; color: #3f51b5;">#{{ emp.employeeId }}</td>
+              <td style="padding: 16px 12px; font-weight: 500;">{{ emp.firstName }} {{ emp.lastName }}</td>
+              <td style="padding: 16px 12px;"><code>{{ emp.email }}</code></td>
+              <td style="padding: 12px 24px; text-align: right;">
+
+                <div style="display: inline-flex; gap: 8px; justify-content: flex-end; width:100%;">
+                  <button mat-stroked-button color="accent" (click)="togglePasswordResetRow(emp.employeeId)">
+                    <mat-icon>vpn_key</mat-icon> Reset Pass
+                  </button>
+                  <button mat-flat-button color="warn" (click)="onDeleteEmployee(emp.employeeId)">
+                    <mat-icon>delete_forever</mat-icon> Purge
+                  </button>
+                </div>
+
+                <div *ngIf="activePasswordResetId === emp.employeeId"
+                     style="background-color: #fff9c4; padding: 12px; border-radius: 6px; margin-top: 12px; display: flex; gap: 12px; align-items: center; justify-content: flex-end; border: 1px solid #fff59d;">
+                  <mat-form-field appearance="outline" style="margin-bottom: -16px; width: 260px;">
+                    <mat-label>New Target Password</mat-label>
+                    <input matInput type="password" [(ngModel)]="targetNewPassword" placeholder="Enter override characters">
+                  </mat-form-field>
+                  <button mat-raised-button color="warn" (click)="onUpdatePassword(emp.employeeId)" [disabled]="!targetNewPassword.trim()">
+                    Commit Overwrite
+                  </button>
+                </div>
+
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>
