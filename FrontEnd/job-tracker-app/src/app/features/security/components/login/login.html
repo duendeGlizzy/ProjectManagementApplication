@@ -1,7 +1,55 @@
-<form (ngSubmit)="onSubmit()">
-  <input [(ngModel)]="credentials.email" name="email" placeholder="Email" type="email">
-  <input [(ngModel)]="credentials.password" name="password" placeholder="Password" type="password">
-  <button type="submit">Log In</button>
-</form>
-<button routerLink="/homepage">back</button>
+<div class="login-page-container">
+  <mat-card class="login-card shadow-sm">
+    <mat-card-header class="login-card-header">
+      <div class="header-icon-wrapper">
+        <mat-icon color="primary">lock_open</mat-icon>
+      </div>
+      <div class="header-text-group">
+        <mat-card-title>Account Sign In</mat-card-title>
+      </div>
+    </mat-card-header>
 
+    <mat-card-content class="login-card-body">
+      <form #loginForm="ngForm" (ngSubmit)="loginForm.form.valid && onSubmit()" class="login-material-form">
+
+        <mat-form-field appearance="outline" class="full-width-field">
+          <mat-label>Email Address</mat-label>
+          <input matInput
+                 type="email"
+                 [(ngModel)]="credentials.email"
+                 name="email"
+                 required
+                 email
+                 placeholder="name@company.com">
+          <mat-icon matSuffix class="muted-input-icon">mail_outline</mat-icon>
+          <mat-error *ngIf="loginForm.submitted && !credentials.email">A valid email identifier is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width-field">
+          <mat-label>Account Password</mat-label>
+          <input matInput
+                 type="password"
+                 [(ngModel)]="credentials.password"
+                 name="password"
+                 required
+                 placeholder="••••••••">
+          <mat-icon matSuffix class="muted-input-icon">vpn_key</mat-icon>
+          <mat-error *ngIf="loginForm.submitted && !credentials.password">Please supply your security password hash.</mat-error>
+        </mat-form-field>
+
+        <div class="login-actions-row">
+          <button mat-stroked-button type="button" routerLink="/homepage">
+            <mat-icon>arrow_back</mat-icon>
+            <span>Back</span>
+          </button>
+
+          <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.form.valid">
+            <span>Login</span>
+            <mat-icon class="btn-context-icon">login</mat-icon>
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
