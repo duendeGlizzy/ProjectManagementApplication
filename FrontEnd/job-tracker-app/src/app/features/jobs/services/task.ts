@@ -3,13 +3,14 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import { Task } from '../models/task.model';
 import {TaskStatus} from '../models/task-status.enum';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
 
-  private apiUrl = 'http://localhost:8080/api/tasks'
+  private apiUrl = `${environment.apiUrl}/api/tasks`
 
   constructor(private http: HttpClient) { }
 

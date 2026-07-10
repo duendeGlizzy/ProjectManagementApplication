@@ -1,13 +1,14 @@
 import {inject, Injectable, Service} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class FileBrowserService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:8080/api/files';
+  private baseUrl = `${environment.apiUrl}/api/files`;
 
   getFiles(): Observable<string[]> {
     return this.http.get<string[]>(this.baseUrl);

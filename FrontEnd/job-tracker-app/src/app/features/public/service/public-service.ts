@@ -1,6 +1,7 @@
 import {Injectable, Service} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {environment} from '../../../../environments/environment';
 
 export interface InvoiceRequestData{
   name: string;
@@ -15,7 +16,7 @@ export interface InvoiceRequestData{
 
 
 export class PublicService {
-  private baseUrl = 'http://localhost:8080/api/public';
+  private baseUrl = `${environment.apiUrl}/api/public`;
 
   constructor(private http: HttpClient) {}
 

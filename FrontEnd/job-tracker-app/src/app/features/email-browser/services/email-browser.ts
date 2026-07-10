@@ -1,6 +1,7 @@
 import {inject, Injectable, Service} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {environment} from '../../../../environments/environment';
 
 export interface EmailMessage {
   id: string;
@@ -24,7 +25,7 @@ export interface GraphEmailResponse {
 })
 export class EmailBrowserService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:8080/api/emails';
+  private baseUrl = `${environment.apiUrl}/api/emails`;
 
   getRecentEmails(): Observable<GraphEmailResponse> {
     return this.http.get<GraphEmailResponse>(this.baseUrl);

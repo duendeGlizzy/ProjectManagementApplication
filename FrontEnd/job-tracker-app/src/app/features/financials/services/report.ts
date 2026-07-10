@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {environment} from '../../../../environments/environment';
 
 // Unified DTO Schema interfaces for the financial engine data shapes
 export interface LineItemReportSummary {
@@ -50,7 +51,7 @@ export interface FinancialReportDto {
   providedIn: 'root'
 })
 export class FinancialReportService {
-  private apiUrl = 'http://localhost:8080/api/reports/financial-summary';
+  private apiUrl = `${environment.apiUrl}/api/reports/financial-summary`;
 
   constructor(private http: HttpClient) {}
 

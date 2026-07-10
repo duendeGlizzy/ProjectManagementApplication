@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { PrimeContractor} from '../models/prime-contractor.model';
+import {environment} from '../../../../environments/environment';
 
 
 @Injectable({
@@ -9,7 +10,7 @@ import { PrimeContractor} from '../models/prime-contractor.model';
 })
 export class PrimeContractorService {
 
-  private apiUrl = 'http://localhost:8080/api/prime-contractors';
+  private apiUrl = `${environment.apiUrl}/api/prime-contractors`;
 
   constructor(private http: HttpClient) {}
 

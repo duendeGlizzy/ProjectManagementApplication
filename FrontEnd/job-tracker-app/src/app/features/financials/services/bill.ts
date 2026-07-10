@@ -3,6 +3,7 @@ import { Observable } from "rxjs";
 import { HttpClient,HttpParams } from "@angular/common/http";
 import { Bill} from '../models/bill.model';
 import {BillStatus} from '../models/bill-status.enum';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
   providedIn: "root",
@@ -10,7 +11,7 @@ import {BillStatus} from '../models/bill-status.enum';
 
 export class BillService {
 
-  private apiUrl = 'http://localhost:8080/api/bills';
+  private apiUrl = `${environment.apiUrl}/api/bills`;
 
   constructor(private http: HttpClient) {}
 

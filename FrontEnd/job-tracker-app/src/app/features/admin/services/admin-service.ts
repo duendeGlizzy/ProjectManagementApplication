@@ -2,13 +2,14 @@ import {inject, Injectable, Service} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Employee} from '../../employee/models/employee-model';
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdminService {
   private http = inject(HttpClient);
-  private baseUrl = 'http://localhost:8080/api/admins'
+  private baseUrl = `${environment.apiUrl}/api/admins`
 
   getAllEmployees(): Observable<Employee[]> {
     return this.http.get<Employee[]>(this.baseUrl);

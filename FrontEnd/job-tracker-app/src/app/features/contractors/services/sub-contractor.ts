@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { SubContractor } from '../models/sub-contractor.model';
+import {environment} from '../../../../environments/environment';
 
 
 @Injectable({
@@ -10,7 +11,7 @@ import { SubContractor } from '../models/sub-contractor.model';
 
 export class SubContractorService {
 
-  private apiUrl = 'http://localhost:8080/api/sub-contractors';
+  private apiUrl = `${environment.apiUrl}/api/sub-contractors`;
 
   constructor(private http: HttpClient) {}
 

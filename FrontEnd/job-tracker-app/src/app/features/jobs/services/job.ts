@@ -4,13 +4,14 @@ import { Observable } from 'rxjs';
 import { Job } from '../models/job.model';
 import { JobStatus } from '../models/job-status.enum';
 import { Task } from '../models/task.model';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class JobService {
 
-  private apiUrl = 'http://localhost:8080/api/jobs'
+  private apiUrl = `${environment.apiUrl}/api/jobs`
 
   constructor(private http: HttpClient) { }
 

@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { LineItem} from '../models/line-item.model';
+import {environment} from '../../../../environments/environment';
 
 @Injectable({
   providedIn: "root",
@@ -9,7 +10,7 @@ import { LineItem} from '../models/line-item.model';
 
 export class LineItemService {
 
-  private apiUrl = 'http://localhost:8080/api/line-items';
+  private apiUrl = `${environment.apiUrl}/api/line-items`;
 
   constructor(private http: HttpClient) {}
 
