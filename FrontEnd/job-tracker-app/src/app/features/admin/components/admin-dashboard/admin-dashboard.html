@@ -54,7 +54,7 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-              <mat-label>Initial Plaintext Password String</mat-label>
+              <mat-label>password</mat-label>
               <input matInput type="password" [(ngModel)]="newEmployee.password" name="password" required placeholder="••••••••">
               <mat-icon matSuffix class="muted-input-icon">lock_outline</mat-icon>
               <mat-error *ngIf="addForm.submitted && !newEmployee.password">Initial profile security seed mandatory.</mat-error>

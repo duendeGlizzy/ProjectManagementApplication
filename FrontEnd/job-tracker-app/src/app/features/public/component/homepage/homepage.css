@@ -1,0 +1,175 @@
+/* Color & Design Tokens */
+:host {
+  --bg-primary: #f8f9fa;
+  --bg-surface: #ffffff;
+  --text-main: #212529;
+  --text-muted: #6c757d;
+  --border-color: #dee2e6;
+  --primary-color: #d97706; /* Warm amber/carpentry tone */
+  --primary-hover: #b45309;
+  --secondary-color: #343a40;
+  --secondary-hover: #212529;
+  --hero-overlay: rgba(0, 0, 0, 0.6);
+
+  display: block;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Mode Overrides */
+:host(.dark-mode) {
+  --bg-primary: #121212;
+  --bg-surface: #1e1e1e;
+  --text-main: #f8f9fa;
+  --text-muted: #adb5bd;
+  --border-color: #2d2d2d;
+  --secondary-color: #495057;
+  --secondary-hover: #6c757d;
+}
+
+/* Base Container */
+.homepage-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header Styling */
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 2rem;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.brand-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.brand-name .accent {
+  color: var(--primary-color);
+}
+
+/* Hero Section with Sharp Edges */
+.hero-section {
+  background: linear-gradient(var(--hero-overlay), var(--hero-overlay)),
+  url('https://images.unsplash.com/photo-1581858726788-75bc0f6a952d?q=80&w=1200') center/cover no-repeat;
+  color: #ffffff;
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.hero-content h1 {
+  font-size: 2.75rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  max-width: 600px;
+  margin: 0 auto;
+  opacity: 0.9;
+}
+
+/* Portal Grid and Action Cards (Sharp Edges) */
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  width: 100%;
+  margin: -3rem auto 4rem auto;
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+
+.portal-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  padding: 2.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 0px; /* Sharp, clean corporate edges */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.card-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.portal-card h3 {
+  font-size: 1.35rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.portal-card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+/* Buttons with Sharp Edges */
+.btn {
+  width: 100%;
+  padding: 0.85rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 0px; /* Sharp corners */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: #ffffff;
+}
+
+.btn-secondary:hover {
+  background-color: var(--secondary-hover);
+}
+
+.icon-btn {
+  background: none;
+  border: 1px solid var(--border-color);
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Footer */
+.main-footer {
+  margin-top: auto;
+  padding: 2rem;
+  text-align: center;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-surface);
+  color: var(--text-muted);
+  font-size: 0.87rem;
+}

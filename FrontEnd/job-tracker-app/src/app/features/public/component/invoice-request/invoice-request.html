@@ -23,19 +23,24 @@
           <textarea matInput rows="5" [(ngModel)]="model.jobDetails" name="jobDetails" required placeholder="Provide project dates, quote numbers, or description of work completed..."></textarea>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="!invoiceForm.form.valid || loading">
-          {{ loading ? 'Submitting...' : 'Submit Request' }}
-        </button>
+        <div class="form-actions">
+          <button mat-flat-button class="btn-primary" type="submit" [disabled]="!invoiceForm.form.valid || loading">
+            {{ loading ? 'Submitting...' : 'Submit Request' }}
+          </button>
+
+          <button mat-stroked-button class="btn-back" type="button" routerLink="/homepage">
+            Back to Home
+          </button>
+        </div>
 
       </form>
-      <button mat-raised-button color="primary" routerLink="/homepage" >
-        back
-      </button>
     </mat-card-content>
 
     <ng-template #successState>
       <mat-card-content class="success-content">
+        <div class="success-icon">✔️</div>
         <p>Thank you! Your invoice request has been submitted successfully. A team member will review the job details and email your invoice shortly.</p>
+        <button mat-flat-button class="btn-primary" routerLink="/homepage">Return Home</button>
       </mat-card-content>
     </ng-template>
   </mat-card>

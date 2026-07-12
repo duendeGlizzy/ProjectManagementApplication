@@ -1,7 +1,46 @@
-<p>homepage works!</p>
+<div class="homepage-container">
+  <!-- Header / Navigation Bar -->
+  <header class="main-header">
+    <div class="logo">
+      <span class="brand-name">Carpenters<span class="accent">LLC</span></span>
+    </div>
+    <div class="header-actions">
+      <!-- Dark Mode Toggle Button -->
+      <button class="icon-btn" (click)="toggleDarkMode()" aria-label="Toggle Dark Mode">
+        <span class="mode-icon">{{ isDarkMode ? '☀️' : '🌙' }}</span>
+      </button>
+    </div>
+  </header>
 
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <h1>Quality Craftsmanship, Built to Last</h1>
+      <p class="hero-subtitle">Professional carpentry services tailored to your residential and commercial needs.</p>
+    </div>
+  </section>
 
+  <!-- Main Action Portal -->
+  <main class="portal-grid">
+    <!-- Card 1: Request Invoice -->
+    <div class="portal-card action-card">
+      <div class="card-icon">📋</div>
+      <h3>Need an Estimate or Invoice?</h3>
+      <p>Submit your project details directly to our team to request a formal invoice or detailed service quote.</p>
+      <button class="btn btn-primary" routerLink="/request-invoice">Request Invoice</button>
+    </div>
 
-<button routerLink="/login">login</button>
+    <!-- Card 2: Client/Admin Login -->
+    <div class="portal-card login-card">
+      <div class="card-icon">🔒</div>
+      <h3>Management Portal</h3>
+      <p>Access your personal dashboard to track ongoing projects, review previous invoices, and view contract details.</p>
+      <button class="btn btn-secondary" routerLink="/login">Client Login</button>
+    </div>
+  </main>
 
-<button routerLink="/request-invoice">request Invoice</button>
+  <!-- Footer -->
+  <footer class="main-footer">
+    <p>&copy; 2026 CarpentersLLC. All rights reserved.</p>
+  </footer>
+</div>
