@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {MatCard, MatCardContent, MatCardHeader, MatCardModule, MatCardTitle} from '@angular/material/card';
 import {MatIcon} from '@angular/material/icon';
 import {MatList, MatListItem} from '@angular/material/list';
@@ -26,6 +26,8 @@ import {NgForOf} from '@angular/common';
 })
 export class FileBrowser implements OnInit {
 
+  cdr = inject(ChangeDetectorRef);
+
 
   constructor(private fileBrowserService: FileBrowserService) {
   }
@@ -47,10 +49,12 @@ export class FileBrowser implements OnInit {
       next: (data) => {
         this.files = data || [];
         this.loading = false;
+        this.cdr.detectChanges();
       },
       error: (error) => {
         this.errorMessage = 'failed to load storage';
         this.loading = false;
+        this.cdr.detectChanges();
         console.error('failed to load storage', error);
       }
     });
