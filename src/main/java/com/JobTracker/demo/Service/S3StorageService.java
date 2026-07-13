@@ -25,8 +25,8 @@ public class S3StorageService {
     private final S3Presigner s3Presigner;
 
     public S3StorageService(
-            @Value("${aws.s3.bucket-name}") String bucketName,
-            @Value("${aws.s3.region}") String regionStr){
+            @Value("${aws.s3.bucket-name:}") String bucketName,
+            @Value("${aws.s3.region:}") String regionStr){
 
         this.bucketName = bucketName;
 
