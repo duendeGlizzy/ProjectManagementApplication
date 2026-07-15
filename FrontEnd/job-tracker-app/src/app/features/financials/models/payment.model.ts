@@ -13,6 +13,8 @@ export interface Payment {
  paymentMethod: PaymentMethod;
  referenceNumber: string;
 
+ checkImageKey?: string;
+
  job?: Job;
 
 

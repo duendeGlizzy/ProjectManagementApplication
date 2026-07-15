@@ -32,8 +32,8 @@ public class Bill {
     private String description;
 
     //metaData for pdf file uploads handing storage with aws
-    private String receiptAttachmentKey;
-    private String receiptFileName;
+    @Column(name = "bill_file_key")
+    private String billFileKey;
 
     @Enumerated(EnumType.STRING)
     private BillStatus status;

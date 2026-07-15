@@ -3,6 +3,8 @@ package com.JobTracker.demo.Controller;
 import com.JobTracker.demo.Entity.Payment;
 import com.JobTracker.demo.Repository.FileStorageService;
 import com.JobTracker.demo.Service.PaymentService;
+import com.JobTracker.demo.Service.S3StorageService;
+import com.JobTracker.demo.Service.StorageAttachmentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -22,11 +25,13 @@ import java.util.List;
 public class PaymentController {
 
     private final PaymentService paymentService;
-    private final FileStorageService fileStorageService;
+    private final StorageAttachmentService storageAttachmentService;
+    private final S3StorageService s3StorageService;
 
-    public PaymentController(PaymentService paymentService, FileStorageService fileStorageService) {
+    public PaymentController(PaymentService paymentService, StorageAttachmentService storageAttachmentService, S3StorageService s3StorageService) {
         this.paymentService = paymentService;
-        this.fileStorageService = fileStorageService;
+        this.storageAttachmentService = storageAttachmentService;
+        this.s3StorageService = s3StorageService;
     }
 
     @GetMapping
@@ -52,16 +57,11 @@ public class PaymentController {
             objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
             Payment payment = objectMapper.readValue(paymentJson, Payment.class);
 
-            if(file != null && !file.isEmpty()){
-                String storageKey = fileStorageService.storeFile(file, "checks");
+            Payment preparedPayment = paymentService.createPayment(payment, jobId);
 
-                payment.setCheckAttachmentKey(storageKey);
-                payment.setCheckFileName(file.getOriginalFilename());
-            }
+            Payment savedPayment = storageAttachmentService.createPayment(preparedPayment, file);
 
-            Payment newPayment = paymentService.createPayment(payment, jobId);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(newPayment);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedPayment);
         }catch(Exception e){
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -69,16 +69,14 @@ public class PaymentController {
     }
 
     @GetMapping("/download/{id}")
-    public ResponseEntity<Resource> downloadPayment(@PathVariable Long id) {
+    public ResponseEntity<?> downloadPayment(@PathVariable Long id) {
         Payment payment = paymentService.findById(id);
-        if(payment.getCheckAttachmentKey() == null){
+        if(payment.getCheckImageKey() == null){
             return ResponseEntity.notFound().build();
         }
-        Resource resource = fileStorageService.loadFileAsResource(payment.getCheckAttachmentKey());
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_PDF)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + payment.getCheckFileName() + "\"")
-                .body(resource);
+
+        String url = s3StorageService.generateDownloadUrl(payment.getCheckImageKey());
+        return ResponseEntity.ok(Map.of("url", url));
     }
 
 

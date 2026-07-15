@@ -15,6 +15,8 @@ export interface Bill{
   issueDate?: string | Date;
   dueDate?: string | Date;
 
+  billFileKey?: string;
+
   status: BillStatus;
 
   vendor?: Vendor;

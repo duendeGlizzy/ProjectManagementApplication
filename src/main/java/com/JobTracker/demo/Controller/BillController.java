@@ -4,6 +4,8 @@ import com.JobTracker.demo.ENum.BillStatus;
 import com.JobTracker.demo.Entity.Bill;
 import com.JobTracker.demo.Repository.FileStorageService;
 import com.JobTracker.demo.Service.BillService;
+import com.JobTracker.demo.Service.S3StorageService;
+import com.JobTracker.demo.Service.StorageAttachmentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -21,12 +24,15 @@ import java.util.List;
 public class BillController {
 
     private final BillService billService;
-    private final FileStorageService fileStorageService;
+    private final StorageAttachmentService storageAttachmentService;
+    private final S3StorageService s3StorageService;
 
     public BillController(BillService billService,
-                          FileStorageService fileStorageService) {
+                          StorageAttachmentService storageAttachmentService,
+                          S3StorageService s3StorageService) {
         this.billService = billService;
-        this.fileStorageService = fileStorageService;
+        this.storageAttachmentService = storageAttachmentService;
+        this.s3StorageService = s3StorageService;
     }
 
     @GetMapping
@@ -53,15 +59,11 @@ public class BillController {
             objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
             Bill bill = objectMapper.readValue(billJson, Bill.class);
 
-            if(file != null && !file.isEmpty()) {
-                String storageKey = fileStorageService.storeFile(file, "receipts");
+            Bill preparedBill = billService.createBill(bill, jobId, vendorId);
 
-                bill.setReceiptAttachmentKey(storageKey);
-                bill.setReceiptFileName(file.getOriginalFilename());
-            }
+            Bill savedBill = storageAttachmentService.createBill(preparedBill, file);
 
-            Bill newBill = billService.createBill(bill, vendorId, jobId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(newBill);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedBill);
         }catch(Exception e){
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -69,16 +71,14 @@ public class BillController {
     }
 
     @GetMapping("/download/{id}")
-    public ResponseEntity<Resource> downloadReceipt(@PathVariable long id) {
+    public ResponseEntity<?> downloadReceipt(@PathVariable long id) {
         Bill bill = billService.findById(id);
-        if (bill.getReceiptAttachmentKey() == null) {
+        if (bill.getBillFileKey() == null) {
             return ResponseEntity.notFound().build();
         }
-        Resource resource = fileStorageService.loadFileAsResource(bill.getReceiptAttachmentKey());
-        return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_PDF)
-                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + bill.getReceiptFileName() + "\"")
-                .body(resource);
+
+        String url = s3StorageService.generateDownloadUrl(bill.getBillFileKey());
+        return ResponseEntity.ok(Map.of("url", url));
     }
 
     @PutMapping("/{id}")
@@ -97,6 +97,10 @@ public class BillController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBill(@PathVariable Long id){
+        Bill bill = billService.findById(id);
+        if(bill != null && bill.getBillFileKey() != null){
+            s3StorageService.deleteFile(bill.getBillFileKey());
+        }
         billService.deleteBill(id);
         return ResponseEntity.noContent().build();
     }
