@@ -6,6 +6,10 @@
       <mat-card-title style="margin: 0;">Project Cloud Files (S3)</mat-card-title> <!--[cite: 5] -->
     </div>
     <div>
+      <button (click)="createNewFolder()">
+        <mat-icon>create_new_folder</mat-icon> Create Folder
+      </button>
+
       <button mat-flat-button color="primary" [disabled]="isLoading" (click)="triggerFileUpload()">
         <mat-icon>upload_file</mat-icon> Upload File
       </button>

@@ -1,6 +1,7 @@
 package com.JobTracker.demo.Controller;
 
 import com.JobTracker.demo.Service.S3StorageService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -48,6 +49,16 @@ public class FileBrowserController {
             return ResponseEntity.ok(Map.of("message", "Successfully deleted "));
         }catch (Exception e){
             return ResponseEntity.status(500).body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/folders")
+    public ResponseEntity<?> createFolder(@RequestParam String folderPath){
+        try{
+            s3StorageService.createFolder(folderPath);
+            return ResponseEntity.ok().build();
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 

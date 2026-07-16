@@ -36,6 +36,7 @@ export class FileBrowser implements OnInit {
   pathHistory: string[] = [];
   currentPrefix: string = '';
   isLoading: boolean = false;
+  currentPath: string = '';
 
   cdr = inject(ChangeDetectorRef);
 
@@ -135,6 +136,26 @@ export class FileBrowser implements OnInit {
       error: (error) => console.error('Presigning', error)
     });
   }
+
+  createNewFolder(){
+    const folderName = prompt("Enter folder name");
+    if(!folderName || folderName.trim() === '') return;
+
+    const fullFolderPath = this.currentPath
+    ? `${this.currentPath}/${folderName.trim()}`
+      : folderName.trim();
+
+    this.fileBrowserService.createFolder(fullFolderPath).subscribe({
+      next: () => {
+        alert('Folder created!');
+        this.loadDirectoryContents();
+      },
+      error: (error) => {
+        console.error('Error deleting file', error);
+      }
+    })
+  }
+
 
 }
 

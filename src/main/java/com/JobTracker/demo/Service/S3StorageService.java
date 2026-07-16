@@ -119,6 +119,19 @@ public class S3StorageService {
         return s3Presigner.presignGetObject(presignRequest).url().toString();
     }
 
+    public void createFolder(String folderPath){
+
+        String folderKey = folderPath.endsWith("/") ? folderPath : folderPath + "/";
+
+        PutObjectRequest putObjectRequest = PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(folderKey)
+                .build();
+
+        s3Client.putObject(putObjectRequest, RequestBody.empty());
+    }
+
+
     @PreDestroy
     public void cleanUp(){
         if(s3Client != null) s3Client.close();

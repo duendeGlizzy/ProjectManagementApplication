@@ -44,6 +44,10 @@ export class FileBrowserService {
     return this.http.get<{ url : string }>(`${this.baseUrl}/download`, {params});
   }
 
+  createFolder(folderPath: string): Observable<void> {
+    return this.http.post<void>(`${this.baseUrl}/folders?folderPath=${folderPath}`, {});
+  }
+
 
 
 }
