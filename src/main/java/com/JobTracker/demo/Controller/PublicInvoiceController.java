@@ -1,5 +1,6 @@
 package com.JobTracker.demo.Controller;
 
+import com.JobTracker.demo.Service.MsGraphEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -16,7 +17,7 @@ import java.util.Map;
 public class PublicInvoiceController {
 
     @Autowired(required = false)
-    private JavaMailSender mailSender;
+    private MsGraphEmailService msGraphEmailService;
 
     @PostMapping("/request-invoice")
     public ResponseEntity<?> handleInvoiceRequest(@RequestBody Map<String, String> formData){
@@ -24,22 +25,13 @@ public class PublicInvoiceController {
         String customerEmail = formData.get("email");
         String jobDetails = formData.get("jobDetails");
 
-        String emailBody = String.format(
-                "New Invoice Requested!\n\nClient Name: %s\nClient Email: %s\nJob/Work Details: %s",
-                customerName, customerEmail, jobDetails
-        );
-
-        if(mailSender != null){
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo("your email");
-            message.setSubject("New Invoice Requested from " + customerName);
-            message.setText(emailBody);
-            mailSender.send(message);
-        }else{
-            System.out.println("mailSender is null" + emailBody);
+        try{
+            msGraphEmailService.sendInvoiceRequestEmail(customerName, customerEmail, jobDetails);
+            return ResponseEntity.ok(Map.of("message", "Invoice Requested successfully!"));
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().body(Map.of("error", "could not send invoice request! please try again later"));
         }
 
-        return ResponseEntity.ok(Map.of("message", "Invoice Requested successfully!"));
     }
 
 }
