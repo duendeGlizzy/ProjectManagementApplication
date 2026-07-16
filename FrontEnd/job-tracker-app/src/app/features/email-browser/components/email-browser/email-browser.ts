@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, inject, OnInit} from '@angular/core';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
@@ -23,6 +23,7 @@ import {EmailBrowserService, EmailMessage} from '../../services/email-browser';
 })
 export class EmailBrowser implements OnInit {
   private emailService = inject(EmailBrowserService);
+  private cdr = inject(ChangeDetectorRef);
 
   protected emails: EmailMessage[] = [];
   protected loading = true;
@@ -40,10 +41,12 @@ export class EmailBrowser implements OnInit {
       next: (res) => {
         this.emails = res.value || [];
         this.loading = false;
+        this.cdr.detectChanges();
     },
       error: (err) => {
         this.errorMessage = 'unable to sync email steam'
         this.loading = false;
+        this.cdr.detectChanges();
         console.error('graph api component link failure: ',err);
       }
     });
