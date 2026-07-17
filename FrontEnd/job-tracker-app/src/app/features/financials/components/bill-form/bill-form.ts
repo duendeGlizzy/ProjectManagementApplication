@@ -23,6 +23,7 @@ import { TaxCategory } from '../../models/tax-category.enum';
 import {MatDialog} from '@angular/material/dialog';
 import {VendorDialogComponent} from '../vendor-dialog-component/vendor-dialog-component';
 import {MatTooltip} from '@angular/material/tooltip';
+import {environment} from '../../../../../environments/environment';
 
 @Component({
   selector: 'app-bill-form',
@@ -126,7 +127,7 @@ export class BillForm implements OnInit {
 
     // Direct match to your environment base paths
     forkJoin({
-      vendors: this.http.get<any[]>('http://localhost:8080/api/vendors')
+      vendors: this.http.get<any[]>(`${environment.apiUrl}/api/vendors`)
     }).subscribe({
       next: (res: any) => {
         // Handle variations in array response nesting packages if applicable
