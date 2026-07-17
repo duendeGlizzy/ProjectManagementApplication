@@ -1,5 +1,6 @@
 package com.JobTracker.demo.Service;
 
+import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
@@ -11,8 +12,11 @@ import org.springframework.web.client.RestClientResponseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URI;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class MsGraphEmailService {
@@ -51,7 +55,8 @@ public class MsGraphEmailService {
             return null;
 
         }catch (RestClientResponseException e) {
-            logger.error("failed to retrieve access token", e);
+            logger.error("OAuth token retrieval failed. Status: {}. Response: {}",
+                    e.getStatusCode(), e.getResponseBodyAsString(), e);
             throw new RuntimeException("MSGraph auth failed", e);
 
         }
@@ -62,24 +67,52 @@ public class MsGraphEmailService {
 
     public Map<String, Object> getRecentEmails() {
         String accessToken = getAccessToken();
+        if (accessToken == null) {
+            throw new RuntimeException("MSGraph auth failed: Access token is null");
+        }
         // Target endpoint for reading messages from the designated account
-        String graphUrl = "https://graph.microsoft.com/v1.0/users/" + targetMailbox +
-                "/messages?$top=20" +
-                "&$select=subject,receivedDateTime,from,bodyPreview" +
-                "&$filter=startsWith(subject, '[INVOICE REQUEST]')" +
-                "&$orderBy=receivedDateTime desc";
+        URI graphUri = UriComponentsBuilder.fromUriString("https://graph.microsoft.com/v1.0/users/" + targetMailbox + "/messages")
+                .queryParam("$top", "50") // Grab enough matches to sort
+                .queryParam("$select", "subject,receivedDateTime,from,bodyPreview")
+                .queryParam("$filter", "startswith(subject, '[INVOICE REQUEST]')")
+                .build()
+                .toUri();
+
+
+
         try {
-
-
-            return restClient.get()
-                    .uri(graphUrl)
+            Map<String, Object> rawResponse = restClient.get()
+                    .uri(graphUri)
                     .header("Authorization", "Bearer " + accessToken)
                     .accept(MediaType.APPLICATION_JSON)
                     .retrieve()
-                    .body(new ParameterizedTypeReference<Map<String, Object>>() {
-                    });
-        }catch (RestClientResponseException e) {
-            logger.error("failed to retrieve recent emails.", e);
+                    .body(new ParameterizedTypeReference<Map<String, Object>>() {});
+
+            if (rawResponse == null || !rawResponse.containsKey("value")) {
+                return rawResponse;
+            }
+
+            // 2. Extract the list of filtered emails
+            List<Map<String, Object>> emails = (List<Map<String, Object>>) rawResponse.get("value");
+
+            // 3. Sort them descending (newest first) locally in memory
+            List<Map<String, Object>> sortedEmails = emails.stream()
+                    .sorted((e1, e2) -> {
+                        String d1 = (String) e1.get("receivedDateTime");
+                        String d2 = (String) e2.get("receivedDateTime");
+                        if (d1 == null || d2 == null) return 0;
+                        return OffsetDateTime.parse(d2).compareTo(OffsetDateTime.parse(d1));
+                    })
+                    .limit(20) // Keep the top 20 newest results
+                    .collect(Collectors.toList());
+
+            // 4. Update the response payload with your beautifully sorted list
+            rawResponse.put("value", sortedEmails);
+            return rawResponse;
+
+        } catch (RestClientResponseException e) {
+            logger.error("MS Graph API (getRecentEmails) failed. Status: {}. Error Details: {}",
+                    e.getStatusCode(), e.getResponseBodyAsString(), e);
             throw new RuntimeException("MSGraph api call failed", e);
         }
     }
@@ -128,7 +161,8 @@ public class MsGraphEmailService {
 
             logger.info("Email sent successfully");
         }catch (RestClientResponseException e){
-            logger.error("failed to send email", e);
+            logger.error("MS Graph API (sendInvoiceRequestEmail) failed. Status: {}. Error Details: {}",
+                    e.getStatusCode(), e.getResponseBodyAsString(), e);
             throw new RuntimeException("MSGraph api call failed", e);
         }
 

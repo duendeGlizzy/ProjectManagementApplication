@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {ChangeDetectorRef, Component, inject} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {MatCardModule} from '@angular/material/card';
@@ -22,6 +22,7 @@ export class InvoiceRequest {
   protected model: InvoiceRequestData = { name: '', email: '', jobDetails: '' };
   protected  submitted = false;
   protected loading = false;
+  protected cdr = inject(ChangeDetectorRef);
 
 
   onSubmit(): void {
@@ -32,10 +33,13 @@ export class InvoiceRequest {
       next: () => {
         this.submitted = true;
         this.loading = false;
+        this.cdr.detectChanges();
+
       },
       error: (err) =>{
         console.error('submission failed ', err);
         this.loading = false;
+        this.cdr.detectChanges();
       }
       });
   }
