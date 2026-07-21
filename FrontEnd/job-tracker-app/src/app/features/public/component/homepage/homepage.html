@@ -1,46 +1,246 @@
-<div class="homepage-container">
-  <!-- Header / Navigation Bar -->
-  <header class="main-header">
-    <div class="logo">
-      <span class="brand-name">Carpenters<span class="accent">LLC</span></span>
+<!-- 1. HERO SECTION -->
+<section class="hero-section bg-light text-center py-5 border-bottom">
+  <div class="container py-4">
+    <div class="mb-3">
+      <span class="badge est-badge text-uppercase px-3 py-2 fw-semibold">
+        Established in 2007
+      </span>
     </div>
-    <div class="header-actions">
-      <!-- Dark Mode Toggle Button -->
-      <button class="icon-btn" (click)="toggleDarkMode()" aria-label="Toggle Dark Mode">
-        <span class="mode-icon">{{ isDarkMode ? '☀️' : '🌙' }}</span>
+
+    <h1 class="display-5 fw-bold text-dark">
+      Quality Craftsmanship, <span class="text-orange">Built to Last</span>
+    </h1>
+    <p class="lead text-muted col-lg-8 mx-auto mt-3">
+      Nearly two decades of professional carpentry and contracting services tailored to your residential and commercial needs.
+    </p>
+  </div>
+</section>
+
+<!-- 2. TRUST / STATS BAR -->
+<section class="bg-light text-light py-4 border-bottom">
+  <div class="container">
+    <div class="row text-center g-3">
+      <div class="col-6 col-md-3">
+        <h3 class="fw-bold text-orange mb-0">19+</h3>
+        <p class="small text-muted mb-0">Years in Business</p>
+      </div>
+      <div class="col-6 col-md-3">
+        <h3 class="fw-bold text-orange mb-0">100%</h3>
+        <p class="small text-muted mb-0">Licensed & Insured</p>
+      </div>
+      <div class="col-6 col-md-3">
+        <h3 class="fw-bold text-orange mb-0">On-Time</h3>
+        <p class="small text-muted mb-0">Project Delivery</p>
+      </div>
+      <div class="col-6 col-md-3">
+        <h3 class="fw-bold text-orange mb-0">Full-Service</h3>
+        <p class="small text-muted mb-0">Residential & Commercial</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. FEATURED ACTION CALLOUT (Invoice Request & Quote) -->
+<section class="py-5 bg-white border-bottom">
+  <div class="container py-3">
+    <div class="row align-items-center g-5">
+
+      <!-- Left Column: Content & Action -->
+      <div class="col-lg-6">
+        <div class="pe-lg-3">
+          <span class="badge bg-light text-orange border border-warning mb-3 px-3 py-2 fw-semibold">
+            Fast & Direct Processing
+          </span>
+          <h2 class="fw-bold text-dark display-6 mb-3">
+            Need an Estimate or Official Invoice?
+          </h2>
+          <p class="text-muted lead fs-6 mb-4">
+            Whether you are starting a new build or need paperwork for completed work, submit your job details directly to our team for quick processing.
+          </p>
+
+          <!-- Key Benefit Bullets -->
+          <ul class="list-unstyled mb-4">
+            <li class="d-flex align-items-center mb-2">
+              <span class="text-orange me-2 fw-bold">✓</span>
+              <span class="text-secondary small">Itemized breakdown for residential or commercial projects</span>
+            </li>
+            <li class="d-flex align-items-center mb-2">
+              <span class="text-orange me-2 fw-bold">✓</span>
+              <span class="text-secondary small">Direct email delivery upon review</span>
+            </li>
+            <li class="d-flex align-items-center">
+              <span class="text-orange me-2 fw-bold">✓</span>
+              <span class="text-secondary small">No commitment required for estimates</span>
+            </li>
+          </ul>
+
+          <div class="d-flex flex-column flex-sm-row gap-3">
+            <button class="btn btn-orange btn-lg fw-semibold px-4" routerLink="/request-invoice">
+              Request Invoice Now
+            </button>
+            <button class="btn btn-outline-dark btn-lg fw-semibold px-4" routerLink="/contact">
+              Contact Us First
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Image Showcase -->
+      <div class="col-lg-6">
+        <div class="position-relative">
+          <img
+            src="/placeHolderImage.jpg"
+            alt="Carpenters LLC active job site"
+            class="img-fluid rounded-4 shadow-lg w-100 feature-image"
+          >
+          <!-- Floating Badge Overlay -->
+          <div class="position-absolute bottom-0 start-0 m-4 p-3 bg-white rounded-3 shadow-sm border border-light d-none d-sm-flex align-items-center gap-3">
+            <div class="bg-orange text-white rounded-circle p-2 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+              📋
+            </div>
+            <div>
+              <div class="fw-bold text-dark small">Streamlined Invoicing</div>
+              <div class="text-muted extra-small">24-48 hr response time</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- 4. CORE SERVICES OVERVIEW -->
+<section class="py-5 bg-light border-bottom">
+  <div class="container py-3">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-dark">Our Carpentry & Contracting Services</h2>
+      <p class="text-muted col-lg-6 mx-auto">
+        From specialized remediation to structural renovations and custom finish work, we deliver reliable solutions for every stage of your build.
+      </p>
+    </div>
+
+    <div class="row g-4">
+
+      <!-- Service 1: Remodeling -->
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm p-3">
+          <div class="card-body text-center d-flex flex-column align-items-center">
+            <div class="fs-1 text-orange mb-3">🛠️</div>
+            <h5 class="fw-bold mb-2">Remodeling</h5>
+            <p class="text-muted small">
+              Full-service residential and commercial renovations, structural updates, and spatial redesigns built to exact specifications.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 2: De-Leading -->
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm p-3">
+          <div class="card-body text-center d-flex flex-column align-items-center">
+            <div class="fs-1 text-orange mb-3">🛡️</div>
+            <h5 class="fw-bold mb-2">De-Leading</h5>
+            <p class="text-muted small">
+              Safe, compliant lead paint abatement and remediation services ensuring health standards and property compliance.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 3: Window Repair & Replacement -->
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm p-3">
+          <div class="card-body text-center d-flex flex-column align-items-center">
+            <div class="fs-1 text-orange mb-3">🪟</div>
+            <h5 class="fw-bold mb-2">Window Repair & Replacement</h5>
+            <p class="text-muted small">
+              Expert installation and restoration of modern, energy-efficient windows, frame repairs, and precision weather-sealing.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 4: Contract Support -->
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 border-0 shadow-sm p-3">
+          <div class="card-body text-center d-flex flex-column align-items-center">
+            <div class="fs-1 text-orange mb-3">📝</div>
+            <h5 class="fw-bold mb-2">Contract Support</h5>
+            <p class="text-muted small">
+              Dependable prime and sub-contracting solutions for general contractors, commercial developers, and project leads.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="text-center mt-4">
+      <button class="btn btn-outline-orange px-4 fw-semibold" routerLink="/services">
+        View All Services →
       </button>
     </div>
-  </header>
+  </div>
+</section>
 
-  <!-- Hero Section -->
-  <section class="hero-section">
-    <div class="hero-content">
-      <h1>Quality Craftsmanship, Built to Last</h1>
-      <p class="hero-subtitle">Professional carpentry services tailored to your residential and commercial needs.</p>
+<!-- 5. WHY CHOOSE US -->
+<section class="py-5 bg-white border-bottom">
+  <div class="container py-3">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6">
+        <h2 class="fw-bold text-dark mb-4">Why Partner With Carpenters LLC?</h2>
+
+        <div class="d-flex align-items-start mb-4">
+          <div class="badge bg-orange text-white fs-5 p-2 me-3 rounded-circle">✓</div>
+          <div>
+            <h5 class="fw-bold mb-1">Nearly 20 Years of Proven Experience</h5>
+            <p class="text-muted small mb-0">Since 2007, we’ve built a reputation for reliable execution, structural integrity, and top-tier craftsmanship.</p>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-start mb-4">
+          <div class="badge bg-orange text-white fs-5 p-2 me-3 rounded-circle">✓</div>
+          <div>
+            <h5 class="fw-bold mb-1">Transparent & Digital Operations</h5>
+            <p class="text-muted small mb-0">Direct online invoice processing, project tracking, and clear communication from estimate to job completion.</p>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-start">
+          <div class="badge bg-orange text-white fs-5 p-2 me-3 rounded-circle">✓</div>
+          <div>
+            <h5 class="fw-bold mb-1">Licensed, Insured, & Safety Compliant</h5>
+            <p class="text-muted small mb-0">We prioritize site safety and strictly adhere to state and local building codes on every site.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="p-5 bg-light rounded-3 text-center border">
+          <h4 class="fw-bold mb-3">Ready to start your next build?</h4>
+          <p class="text-muted mb-4">Get in touch with our team to discuss project requirements, timelines, and contract details.</p>
+          <button class="btn btn-orange btn-lg fw-semibold px-4" routerLink="/contact">
+            Contact Our Team
+          </button>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- Main Action Portal -->
-  <main class="portal-grid">
-    <!-- Card 1: Request Invoice -->
-    <div class="portal-card action-card">
-      <div class="card-icon">📋</div>
-      <h3>Need an Estimate or Invoice?</h3>
-      <p>Submit your project details directly to our team to request a formal invoice or detailed service quote.</p>
-      <button class="btn btn-primary" routerLink="/request-invoice">Request Invoice</button>
+<!-- 6. SERVICE AREA BANNER -->
+<section class="py-4 bg-light border-bottom">
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row align-items-center justify-content-between p-4 bg-white rounded-3 shadow-sm border">
+      <div class="mb-3 mb-md-0">
+        <h5 class="fw-bold mb-1 text-dark">Servicing Local & Regional Projects</h5>
+        <p class="text-muted small mb-0">Unsure if your job site is within our service coverage?</p>
+      </div>
+      <button class="btn btn-outline-dark fw-semibold" routerLink="/service-area">
+        Check Service Area →
+      </button>
     </div>
-
-    <!-- Card 2: Client/Admin Login -->
-    <div class="portal-card login-card">
-      <div class="card-icon">🔒</div>
-      <h3>Management Portal</h3>
-      <p>Access your personal dashboard to track ongoing projects, review previous invoices, and view contract details.</p>
-      <button class="btn btn-secondary" routerLink="/login">Client Login</button>
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="main-footer">
-    <p>&copy; 2026 CarpentersLLC. All rights reserved.</p>
-  </footer>
-</div>
+  </div>
+</section>

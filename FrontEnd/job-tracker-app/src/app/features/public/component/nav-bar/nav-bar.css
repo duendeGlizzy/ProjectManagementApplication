@@ -1,0 +1,41 @@
+/* Brand Badge Styling */
+.brand-accent {
+  background-color: orange;
+  color: white;
+  border-radius: 3px;
+  padding: 2px 5px;
+  margin-left: 2px;
+  top: -2px;
+  position: relative;
+  font-size: 0.9em;
+}
+
+.custom-nav-link {
+  color: #333333;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 4px;
+}
+
+.custom-nav-link:hover {
+  color: #e68a00 !important;
+}
+
+.custom-nav-link.active {
+  color: #e68a00 !important;
+  border-bottom: 2px solid #ff9800;
+}
+
+.btn-portal {
+  color: #e68a00;
+  border: 1.5px solid #ff9800;
+  background-color: transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-portal:hover {
+  background-color: #ff9800;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(255, 152, 0, 0.25);
+}

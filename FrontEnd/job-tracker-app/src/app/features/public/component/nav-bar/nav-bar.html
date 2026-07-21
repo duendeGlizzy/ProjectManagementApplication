@@ -1,0 +1,44 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-3 px-lg-5 py-3">
+  <div class="container-fluid">
+
+    <a class="navbar-brand fw-bold fs-4" routerLink="/">
+      Carpenters<span class="brand-accent">LLC</span>
+    </a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#appNavbar"
+      aria-controls="appNavbar"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="appNavbar">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-2">
+        <li class="nav-item">
+          <a class="nav-link custom-nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link custom-nav-link" routerLink="/services" routerLinkActive="active">Services</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link custom-nav-link" routerLink="/service-area" routerLinkActive="active">Service Area</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link custom-nav-link" routerLink="/about" routerLinkActive="active">About Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link custom-nav-link" routerLink="/contact" routerLinkActive="active">Contact Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link custom-nav-link" routerLink="/request-invoice" routerLinkActive="active">Request Invoice</a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</nav>

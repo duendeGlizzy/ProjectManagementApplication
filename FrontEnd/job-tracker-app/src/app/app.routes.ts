@@ -22,14 +22,30 @@ import {FileBrowser} from './features/file-browser/components/file-browser/file-
 import {EmployeeDetails} from './features/employee/components/employee-details/employee-details';
 import { LoginAdmin } from './features/security/components/login-admin/login-admin';
 import {AdminDashboard} from './features/admin/components/admin-dashboard/admin-dashboard';
+import {MainLayout} from './features/public/component/main-layout/main-layout';
+import {AboutUs} from './features/public/component/about-us/about-us';
+import {ServiceArea} from './features/public/component/service-area/service-area';
+import {Services} from './features/public/component/services/services';
+import {ContactUs} from './features/public/component/contact-us/contact-us';
 
 
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'homepage', pathMatch: 'full' },
 
-  {path: 'homepage', component:Homepage},
-  {path: 'request-invoice', component:InvoiceRequest},
+
+  {
+    path: '',
+    component: MainLayout,
+    children: [
+      {path: '', component: Homepage, title: 'Carpenters LLC | Home'},
+      {path: 'request-invoice', component: InvoiceRequest, title: 'Carpenters LLC | Request Invoice'},
+      {path: 'about', component: AboutUs, title: 'Carpenters LLC | About Us'},
+      {path: 'service-area', component: ServiceArea, title: 'Carpenters LLC | Service Area'},
+      {path: 'services', component: Services, title: 'Carpenters LLC | Services'},
+      {path: 'contact', component: ContactUs, title: 'Carpenters LLC | Contacts Us'},
+    ]
+  },
+
 
   {path: 'login', component: Login},
   {path: 'login/admin', component: LoginAdmin},

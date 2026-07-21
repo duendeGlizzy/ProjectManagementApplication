@@ -1,0 +1,41 @@
+/* Brand Badge Styling */
+.brand-accent {
+  background-color: orange;
+  color: white;
+  border-radius: 3px;
+  padding: 2px 5px;
+  margin-left: 2px;
+  top: -2px;
+  position: relative;
+  font-size: 0.85em;
+}
+
+/* Footer Link Base Style */
+.footer-link {
+  transition: color 0.2s ease;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
+  display: inline-block;
+}
+
+/* Hover: Changes color to orange without adding an underline */
+.footer-link:hover {
+  color: #e68a00 !important;
+}
+
+/* Active Link: Shows orange text AND orange underline */
+.footer-link.active {
+  color: #e68a00 !important;
+  border-bottom: 2px solid #ff9800;
+  font-weight: 600;
+}
+
+/* Employee Portal Link */
+.text-orange {
+  color: #e68a00;
+}
+
+.footer-portal-link:hover {
+  color: #ff9800 !important;
+  text-decoration: underline !important;
+}
